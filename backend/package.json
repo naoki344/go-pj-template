@@ -1,0 +1,14 @@
+{
+  "name": "en-backend",
+  "version": "1.0.0",
+  "description": "``` go mod tidy ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-cdk": "^2.103.1"
+  }
+}
