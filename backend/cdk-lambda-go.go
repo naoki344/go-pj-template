@@ -1,14 +1,14 @@
 package main
 
 import (
-	"os"
 	"github.com/aws/aws-cdk-go/awscdk/v2"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 	awslambdago "github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
+	"os"
 )
 
 type CdkLambdaGoStackProps struct {
@@ -27,35 +27,34 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	})
 
 	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
-		Entry: jsii.String("lambda"),
+		Entry:        jsii.String("lambda"),
 		Description:  jsii.String("A function written in Go"),
 		MemorySize:   jsii.Number(512),
 		Timeout:      awscdk.Duration_Seconds(jsii.Number(30)),
 		Architecture: awslambda.Architecture_ARM_64(),
 		FunctionName: jsii.String("test-todos-handler"),
 		Environment: &map[string]*string{
-			"LOG_LEVEL": jsii.String(os.Getenv("LOG_LEVEL")),
-			"ENV":       jsii.String(os.Getenv("ENV")),
+			"LOG_LEVEL":   jsii.String(os.Getenv("LOG_LEVEL")),
+			"ENV":         jsii.String(os.Getenv("ENV")),
 			"DB_USERNAME": jsii.String(os.Getenv("DB_USERNAME")),
 			"DB_PASSWORD": jsii.String(os.Getenv("DB_PASSWORD")),
-			"DB_HOST": jsii.String(os.Getenv("DB_HOST")),
-			"DB_PORT": jsii.String(os.Getenv("DB_PORT")),
-			"DB_NAME": jsii.String(os.Getenv("DB_NAME")),
+			"DB_HOST":     jsii.String(os.Getenv("DB_HOST")),
+			"DB_PORT":     jsii.String(os.Getenv("DB_PORT")),
+			"DB_NAME":     jsii.String(os.Getenv("DB_NAME")),
 		},
 		Role: myRole,
 	})
 	dbPolicy := awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
-        Actions: &[]*string{
-            jsii.String("rds:*"),
-        },
-        Resources: &[]*string{
-            jsii.String("*"),
-        },
-    })
+		Actions: &[]*string{
+			jsii.String("rds:*"),
+		},
+		Resources: &[]*string{
+			jsii.String("*"),
+		},
+	})
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")))
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaVPCAccessExecutionRole")))
 	myRole.AddToPolicy(dbPolicy)
-
 
 	restapi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
 		RestApiName: jsii.String("test-api-gateway"),

@@ -4,22 +4,29 @@ Package yourpackage does something interesting.
 package main
 
 import (
-	"os"
-	"fmt"
-	"sync"
+	"cdk-lambda-go/ogen"
 	"context"
 	"database/sql"
-	"net/url"
-	_ "github.com/go-sql-driver/mysql"
-	"cdk-lambda-go/ogen"
+	"fmt"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/mysqldialect"
+	"net/url"
+	"os"
+	"sync"
 )
-
 
 type noteService struct {
 	notes map[int64]ogen.Note
 	mux   sync.Mutex
+}
+
+type Note struct {
+	ID      int64  `bun:"id"`
+	Title   string `bun:"title"`
+	Content string `bun:"content"`
 }
 
 func (n *noteService) CreateNote(_ context.Context, req *ogen.Note) (*ogen.Note, error) {
@@ -31,6 +38,7 @@ func (n *noteService) CreateNote(_ context.Context, req *ogen.Note) (*ogen.Note,
 }
 
 func (n *noteService) GetNoteByID(_ context.Context, params ogen.GetNoteByIDParams) (ogen.GetNoteByIDRes, error) {
+	// TODO: DIツール,db-migrator
 	USER := os.Getenv("DB_USERNAME")
 	PASS := os.Getenv("DB_PASSWORD")
 	DBHOST := os.Getenv("DB_HOST")
@@ -38,40 +46,28 @@ func (n *noteService) GetNoteByID(_ context.Context, params ogen.GetNoteByIDPara
 	DBNAME := os.Getenv("DB_NAME")
 	fmt.Println("before connection open")
 	conn, err := sql.Open(
-		"mysql", 
+		"mysql",
 		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=%s",
-		USER, PASS, DBHOST, DBPORT, DBNAME, url.PathEscape("Asia/Tokyo")),
+			USER, PASS, DBHOST, DBPORT, DBNAME, url.PathEscape("Asia/Tokyo")),
 	)
 	defer conn.Close()
 	if err != nil {
 		fmt.Println("Fail to connect db" + err.Error())
 	}
-	// 接続確認
-	err = conn.Ping()
-	if err != nil {
-		fmt.Println("Failed to connect rds " + err.Error())
-	} else {
-		fmt.Println("Success to connect rds")
+	db := bun.NewDB(conn, mysqldialect.New())
+
+	note_db := Note{}
+	get_err := db.NewSelect().Model(&note_db).Where("id = 1").Scan(context.Background())
+	if get_err != nil {
+		panic(get_err)
+	}
+	Note := ogen.Note{
+		ID:      note_db.ID,
+		Title:   note_db.Title,
+		Content: note_db.Content,
 	}
 
-	// TODO: DIツール,ormapper,db-migrator
-
-	// DBからレコードを抽出
-	rows, err := conn.Query("select id, title, content from notes;")
-	if err != nil {
-		fmt.Println("Fail to query from db " + err.Error())
-	}
-	// データを構造体へ変換
-	var Notes []ogen.Note
-	for rows.Next() {
-		var tmpNote ogen.Note
-		err := rows.Scan(&tmpNote.ID, &tmpNote.Title, &tmpNote.Content)
-		if err != nil {
-			fmt.Println("Fail to scan records " + err.Error())
-		}
-		Notes = append(Notes, tmpNote)
-	}
-	return &Notes[0], nil
+	return &Note, nil
 }
 
 func main() {
