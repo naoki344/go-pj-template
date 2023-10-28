@@ -4,6 +4,7 @@ import (
 	"os"
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
 	awslambdago "github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
@@ -21,6 +22,10 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
+	myRole := awsiam.NewRole(stack, jsii.String("MyLambdaRole"), &awsiam.RoleProps{
+		AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
+	})
+
 	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
 		Entry: jsii.String("lambda"),
 		Description:  jsii.String("A function written in Go"),
@@ -31,8 +36,26 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 		Environment: &map[string]*string{
 			"LOG_LEVEL": jsii.String(os.Getenv("LOG_LEVEL")),
 			"ENV":       jsii.String(os.Getenv("ENV")),
+			"DB_USERNAME": jsii.String(os.Getenv("DB_USERNAME")),
+			"DB_PASSWORD": jsii.String(os.Getenv("DB_PASSWORD")),
+			"DB_HOST": jsii.String(os.Getenv("DB_HOST")),
+			"DB_PORT": jsii.String(os.Getenv("DB_PORT")),
+			"DB_NAME": jsii.String(os.Getenv("DB_NAME")),
 		},
+		Role: myRole,
 	})
+	dbPolicy := awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
+        Actions: &[]*string{
+            jsii.String("rds:*"),
+        },
+        Resources: &[]*string{
+            jsii.String("*"),
+        },
+    })
+	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")))
+	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaVPCAccessExecutionRole")))
+	myRole.AddToPolicy(dbPolicy)
+
 
 	restapi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
 		RestApiName: jsii.String("test-api-gateway"),
