@@ -1,4 +1,6 @@
-export PATH=$PATH:./node_modules/.bin
+export LOG_LEVEL="DEBUG"
+export ENV="local"
+export PATH=$HOME/go/bin:./node_modules/.bin:$PATH
 export AWS_ACCOUNT_ID=""
 export AWS_REGION=""
 export AWS_ACCESS_KEY_ID=""

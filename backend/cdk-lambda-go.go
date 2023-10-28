@@ -1,17 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os/exec"
 	"os"
-	"path/filepath"
-	"runtime"
-
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awslambdaeventsources"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awss3assets"
-	"github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
+	awslambdago "github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
@@ -27,41 +21,39 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	queue := awssqs.NewQueue(stack, jsii.String("Queue"), &awssqs.QueueProps{
-		VisibilityTimeout: awscdk.Duration_Seconds(jsii.Number(60)),
+	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
+		Entry: jsii.String("lambda"),
+		Description:  jsii.String("A function written in Go"),
+		MemorySize:   jsii.Number(512),
+		Timeout:      awscdk.Duration_Seconds(jsii.Number(30)),
+		Architecture: awslambda.Architecture_ARM_64(),
+		FunctionName: jsii.String("test-todos-handler"),
+		Environment: &map[string]*string{
+			"LOG_LEVEL": jsii.String(os.Getenv("LOG_LEVEL")),
+			"ENV":       jsii.String(os.Getenv("ENV")),
+		},
 	})
 
-	fn := awslambda.NewFunction(stack, jsii.String("Lambda"), &awslambda.FunctionProps{
-		Runtime: awslambda.Runtime_GO_1_X(),
-		Code: awslambda.AssetCode_FromAsset(jsii.String("lambda"), &awss3assets.AssetOptions{
-			Bundling: &awscdk.BundlingOptions{
-				Image:   awslambda.Runtime_GO_1_X().BundlingImage(),
-				Command: jsii.Strings("bash", "-c", "GOOS=linux GOARCH=amd64 go build -o handler"),
-				Local:   &LocalBundling{},
-			},
-		}),
-		Handler: jsii.String("handler"),
-		Timeout: awscdk.Duration_Seconds(jsii.Number(30)),
+	restapi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
+		RestApiName: jsii.String("test-api-gateway"),
+		DefaultCorsPreflightOptions: &awsapigateway.CorsOptions{
+			AllowOrigins: awsapigateway.Cors_ALL_ORIGINS(),
+			AllowMethods: awsapigateway.Cors_ALL_METHODS(),
+			AllowHeaders: awsapigateway.Cors_DEFAULT_HEADERS(),
+			StatusCode:   jsii.Number(200),
+		},
 	})
-	fn.AddEventSource(awslambdaeventsources.NewSqsEventSource(queue, &awslambdaeventsources.SqsEventSourceProps{
-		BatchSize: jsii.Number(10),
-	}))
+	apiResource := restapi.
+		Root().
+		AddResource(jsii.String("notes"), nil)
+	apiResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	apiResource.AddMethod(jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	todoIdResource := apiResource.AddResource(jsii.String("{noteID}"), nil)
+	todoIdResource.AddMethod(jsii.String("get"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	todoIdResource.AddMethod(jsii.String("PUT"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	todoIdResource.AddMethod(jsii.String("DELETE"), awsapigateway.NewLambdaIntegration(function, nil), nil)
 
 	return stack
-}
-
-// Local build settings for lambda function with golang
-type LocalBundling struct{}
-
-func (*LocalBundling) TryBundle(outputDir *string, options *awscdk.BundlingOptions) *bool {
-	path := filepath.Join(*outputDir, "handler")
-	var err error
-	if runtime.GOOS == "windows" {
-		err = exec.Command("cmd", "/c", fmt.Sprintf("set GOOS=linux&set GOARCH=amd64&cd lambda&go build -o %s", path)).Run()
-	} else {
-		err = exec.Command("bash", "-c", fmt.Sprintf("GOOS=linux GOARCH=amd64 cd lambda && go build -o %s", path)).Run()
-	}
-	return jsii.Bool(err == nil)
 }
 
 func main() {

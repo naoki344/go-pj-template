@@ -1,38 +1,61 @@
+/*
+Package yourpackage does something interesting.
+*/
 package main
 
 import (
-	"context"
+	"log"
 	"fmt"
-
-	"github.com/aws/aws-lambda-go/events"
+	"sync"
+	"context"
+	"net/http"
+	"cdk-lambda-go/ogen"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
 )
 
-type Response struct {
-	MessageId   string `json:"messageId"`
-	EventSource string `json:"eventSource"`
-	Body        string `json:"body"`
+
+func handlerWithHttp(w http.ResponseWriter, r *http.Request) {
+	len := r.ContentLength
+	body := make([]byte, len) // Content-Length と同じサイズの byte 配列を用意
+	r.Body.Read(body)         // byte 配列にリクエストボディを読み込む
+	log.Printf("request: %s", string(body))
+	fmt.Fprintln(w, string(body))
 }
 
-func (r *Response) logger() string {
-	return fmt.Sprintf("The message %s for event source %s = %s \n", r.MessageId, r.EventSource, r.Body)
+type noteService struct {
+	notes map[int64]ogen.Note
+	mux   sync.Mutex
 }
 
-func handler(ctx context.Context, sqsEvent events.SQSEvent) ([]*Response, error) {
-	var responses []*Response
-	for _, message := range sqsEvent.Records {
-		resp := &Response{
-			MessageId:   message.MessageId,
-			EventSource: message.EventSource,
-			Body:        message.Body,
-		}
-		responses = append(responses, resp)
-		fmt.Println(resp.logger())
+func (n *noteService) CreateNote(_ context.Context, req *ogen.Note) (*ogen.Note, error) {
+	n.mux.Lock()
+	defer n.mux.Unlock()
+
+	n.notes[req.ID] = *req
+	return req, nil
+}
+
+func (n *noteService) GetNoteByID(_ context.Context, params ogen.GetNoteByIDParams) (ogen.GetNoteByIDRes, error) {
+	n.mux.Lock()
+	defer n.mux.Unlock()
+
+	note, ok := n.notes[params.NoteID]
+	if !ok {
+		return &ogen.GetNoteByIDNotFound{
+			Code:    1,
+			Message: "メモが見つかりません",
+		}, nil
 	}
-
-	return responses, nil
+	return &note, nil
 }
 
 func main() {
-	lambda.Start(handler)
+	service := &noteService{
+		notes: map[int64]ogen.Note{},
+	}
+	s, _ := ogen.NewServer(service)
+
+	http.HandleFunc("/notes", handlerWithHttp)
+	lambda.Start(httpadapter.New(s).ProxyWithContext)
 }
