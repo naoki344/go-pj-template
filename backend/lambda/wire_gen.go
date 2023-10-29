@@ -7,14 +7,18 @@
 package main
 
 import (
+	"log/slog"
+)
+
+import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
 // Injectors from wire.go:
 
-func InitializeNoteService(cfg *Config) *noteService {
-	sqlDb := NewDB(cfg)
+func InitializeNoteService(cfg *Config, logger *slog.Logger) *noteService {
+	sqlDb := NewDB(cfg, logger)
 	getNoteByIDRepository := NewGetNoteByIDRepository(sqlDb)
-	mainNoteService := NewNoteService(getNoteByIDRepository)
+	mainNoteService := NewNoteService(getNoteByIDRepository, logger)
 	return mainNoteService
 }

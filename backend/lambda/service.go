@@ -5,6 +5,7 @@ package main
 
 import (
 	"cdk-lambda-go/ogen"
+	"log/slog"
 	"context"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/uptrace/bun"
@@ -24,6 +25,7 @@ type noteService struct {
 	notes map[int64]ogen.Note
 	dbRepository *GetNoteByIDRepository
 	mux   sync.Mutex
+	logger *slog.Logger
 }
 
 func (n *noteService) CreateNote(_ context.Context, req *ogen.Note) (*ogen.Note, error) {
@@ -32,7 +34,8 @@ func (n *noteService) CreateNote(_ context.Context, req *ogen.Note) (*ogen.Note,
 	return req, nil
 }
 
-func (n *noteService) GetNoteByID(_ context.Context, params ogen.GetNoteByIDParams) (ogen.GetNoteByIDRes, error) {
+func (n *noteService) GetNoteByID(ctx context.Context, params ogen.GetNoteByIDParams) (ogen.GetNoteByIDRes, error) {
+	n.logger.Error("service unavailable.")
 	db := bun.NewDB(n.dbRepository.db.conn, mysqldialect.New())
 
 	note_db := Note{}
@@ -50,8 +53,9 @@ func (n *noteService) GetNoteByID(_ context.Context, params ogen.GetNoteByIDPara
 }
 
 
-func NewNoteService(dbRepository *GetNoteByIDRepository) *noteService {
+func NewNoteService(dbRepository *GetNoteByIDRepository, logger *slog.Logger) *noteService {
 	return &noteService{
 		dbRepository: dbRepository,
+		logger: logger,
 	}
 }
