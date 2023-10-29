@@ -1,11 +1,9 @@
 # 初期設定
-- node をインストールする
+- node(.node-versionに記載のバージョン)をインストールする
 - go をインストールする
 - 以下のコマンドを実行する
 ```
-npm install
-
-go install -v github.com/ogen-go/ogen/cmd/ogen@latest
+	make setup
 ```
 
 # ogenファイルの生成
@@ -13,6 +11,10 @@ go install -v github.com/ogen-go/ogen/cmd/ogen@latest
 ogen -package ogen -target ogen -clean ./openapi/openapi.yaml
  ```
 
+# DBのmigration(mysqldef)を利用
+```
+mysqldef -u ${DB_USERNAME} -p ${DB_PASSWORD} -h ${DB_HOST} -P ${DB_PORT} ${DB_NAME}  < ./migrations/mysql/schemas.sql
+```
 
 ## Deploy Stack
 
@@ -29,9 +31,3 @@ cdk deploy
 - `cdk diff` compare deployed stack with current state
 - `cdk synth` emits the synthesized CloudFormation template
 - `go test` run unit tests
-
-# Update Go Package
-```
-go mod tidy
-```
-

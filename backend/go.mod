@@ -12,6 +12,7 @@ require (
 	github.com/go-faster/errors v0.6.1
 	github.com/go-faster/jx v1.1.0
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/google/wire v0.5.0
 	github.com/ogen-go/ogen v0.77.0
 	github.com/uptrace/bun v1.1.16
 	github.com/uptrace/bun/dialect/mysqldialect v1.1.16
