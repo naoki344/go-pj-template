@@ -1,12 +1,12 @@
 package main
 
 
-type GetNoteByIDRepository struct {
+type GetCustomerByIDRepository struct {
     db SqlDb
 }
 
-func NewGetNoteByIDRepository(db SqlDb) *GetNoteByIDRepository {
-    return &GetNoteByIDRepository{
+func NewGetCustomerByIDRepository(db SqlDb) *GetCustomerByIDRepository {
+    return &GetCustomerByIDRepository{
         db: db,
     }
 }

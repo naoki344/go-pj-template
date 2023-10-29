@@ -16,9 +16,9 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeNoteService(cfg *Config, logger *slog.Logger) *noteService {
+func InitializeEnAPIService(cfg *Config, logger *slog.Logger) *enAPIService {
 	sqlDb := NewDB(cfg, logger)
-	getNoteByIDRepository := NewGetNoteByIDRepository(sqlDb)
-	mainNoteService := NewNoteService(getNoteByIDRepository, logger)
-	return mainNoteService
+	getCustomerByIDRepository := NewGetCustomerByIDRepository(sqlDb)
+	mainEnAPIService := NewEnAPIService(getCustomerByIDRepository, logger)
+	return mainEnAPIService
 }

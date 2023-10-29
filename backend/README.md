@@ -31,3 +31,4 @@ cdk deploy
 - `cdk diff` compare deployed stack with current state
 - `cdk synth` emits the synthesized CloudFormation template
 - `go test` run unit tests
+- ` mysql -u ${DB_USERNAME} -p  -h ${DB_HOST} -P ${DB_PORT}` connect mysql

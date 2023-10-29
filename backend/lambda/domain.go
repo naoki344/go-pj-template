@@ -1,12 +1,12 @@
 package main
 
 
-type GetNoteByIDService struct {
-    getNoteByIDRDBRepository *GetNoteByIDRepository
+type GetCustomerByIDService struct {
+    getCustomerByIDRepository *GetCustomerByIDRepository
 }
 
-func NewGetNoteByIDService(rdbRepository *GetNoteByIDRepository) *GetNoteByIDService {
-    return &GetNoteByIDService{
-        getNoteByIDRDBRepository: rdbRepository,
+func NewGetCustomerByIDService(rdbRepository *GetCustomerByIDRepository) *GetCustomerByIDService {
+    return &GetCustomerByIDService{
+        getCustomerByIDRepository: rdbRepository,
     }
 }

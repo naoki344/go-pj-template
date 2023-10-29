@@ -67,7 +67,7 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	})
 	apiResource := restapi.
 		Root().
-		AddResource(jsii.String("notes"), nil)
+		AddResource(jsii.String("customers"), nil)
 	apiResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil), nil)
 	apiResource.AddMethod(jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil), nil)
 	todoIdResource := apiResource.AddResource(jsii.String("{noteID}"), nil)

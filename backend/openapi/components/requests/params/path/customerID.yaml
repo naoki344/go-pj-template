@@ -1,5 +1,5 @@
 customerID:
-  name: noteID
+  name: customerID
   in: path
   required: true
   schema:

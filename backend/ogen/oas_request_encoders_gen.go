@@ -11,8 +11,8 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 )
 
-func encodeCreateNoteRequest(
-	req *Note,
+func encodePostCreateCustomerRequest(
+	req *PostCreateCustomerReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

@@ -34,7 +34,7 @@ func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 			PORT: os.Getenv("DB_PORT"),
 			NAME: os.Getenv("DB_NAME"),
 		}
-	service := InitializeNoteService(cfg, logger)
+	service := InitializeEnAPIService(cfg, logger)
 	defer service.dbRepository.db.conn.Close()
 	s, _ := ogen.NewServer(service)
 	// NOTE: https://github.com/awslabs/aws-lambda-go-api-proxy/blob/master/httpadapter/adapter.go#L16
