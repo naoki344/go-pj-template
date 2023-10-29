@@ -32,5 +32,8 @@ deploy: build-wire build-ogen
 
 setup-all: setup-install migrate build-wire build-ogen
 
+test:
+	go test
+
 help:
 	cat README.md
