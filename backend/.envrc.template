@@ -1,0 +1,14 @@
+export LOG_LEVEL="DEBUG"
+export ENV="local"
+export PATH=$HOME/go/bin:./node_modules/.bin:$PATH
+export AWS_ACCOUNT_ID=""
+export AWS_REGION=""
+export DB_USERNAME=""
+export DB_PASSWORD=""
+export DB_PROTOCOL=""
+export DB_NAME=""
+
+
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""
+export AWS_SESSION_TOKEN=""

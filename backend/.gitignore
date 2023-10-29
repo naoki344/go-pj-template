@@ -1,6 +1,3 @@
-.envrc
-
-### Go ignore settings ###
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -17,15 +14,6 @@
 # go.sum should be committed
 !go.sum
 
-
-
-### AWS CDK ignore settings ###
 # CDK asset staging directory
 .cdk.staging
 cdk.out
-
-
-
-### NODE ignore settings ###
-node_modules/
-
