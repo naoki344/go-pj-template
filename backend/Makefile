@@ -27,6 +27,9 @@ build-ogen:
 	echo "build ogen file"
 	ogen -package ogen -target ogen -clean ./openapi/openapi.yaml
 
+build-openapi:
+	swagger-cli bundle -o openapi/openapi.yaml -t yaml openapi/docsroot.yaml -r
+
 deploy: build-wire build-ogen
 	cdk deploy
 

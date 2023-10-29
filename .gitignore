@@ -29,3 +29,4 @@ cdk.out
 ### NODE ignore settings ###
 node_modules/
 
+backend/openapi/openapi.yaml

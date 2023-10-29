@@ -1,0 +1,15 @@
+customer:
+  type: object
+  additionalProperties: false
+  properties:
+    id:
+      type: integer
+      format: int64
+    title:
+      type: string
+    content:
+      type: string
+  required:
+    - id
+    - title
+    - content

@@ -1,0 +1,11 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Note API
+paths:
+  /customers:
+    post:
+      $ref: "./components/paths/customers/postCreateCustomer.yaml#/postCreateCustomer"
+  /customers/{customerID}:
+    get:
+      $ref: "./components/paths/customers/getCustomerByID.yaml#/getCustomerByID"
