@@ -1,0 +1,6 @@
+createCustomerRequest:
+  content:
+    application/json:
+      schema:
+        $ref: "../../models/customer.yaml#/customer"
+  required: true

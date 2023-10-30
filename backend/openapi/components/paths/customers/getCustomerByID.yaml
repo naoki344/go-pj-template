@@ -1,0 +1,8 @@
+getCustomerByID:
+  summary: 顧客を取得する
+  operationId: getCustomerByID
+  parameters:
+    - $ref: "../../requests/params/path/customerID.yaml#/customerID"
+  responses:
+    200:
+      $ref: "../../responses/body/getCustomerByIDResponse.yaml#/getCustomerByIDResponse"

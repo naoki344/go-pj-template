@@ -15,24 +15,24 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-// GetNoteByIDParams is parameters of getNoteByID operation.
-type GetNoteByIDParams struct {
-	NoteID int64
+// GetCustomerByIDParams is parameters of getCustomerByID operation.
+type GetCustomerByIDParams struct {
+	CustomerID int64
 }
 
-func unpackGetNoteByIDParams(packed middleware.Parameters) (params GetNoteByIDParams) {
+func unpackGetCustomerByIDParams(packed middleware.Parameters) (params GetCustomerByIDParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "noteID",
+			Name: "customerID",
 			In:   "path",
 		}
-		params.NoteID = packed[key].(int64)
+		params.CustomerID = packed[key].(int64)
 	}
 	return params
 }
 
-func decodeGetNoteByIDParams(args [1]string, argsEscaped bool, r *http.Request) (params GetNoteByIDParams, _ error) {
-	// Decode path: noteID.
+func decodeGetCustomerByIDParams(args [1]string, argsEscaped bool, r *http.Request) (params GetCustomerByIDParams, _ error) {
+	// Decode path: customerID.
 	if err := func() error {
 		param := args[0]
 		if argsEscaped {
@@ -44,7 +44,7 @@ func decodeGetNoteByIDParams(args [1]string, argsEscaped bool, r *http.Request) 
 		}
 		if len(param) > 0 {
 			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "noteID",
+				Param:   "customerID",
 				Value:   param,
 				Style:   uri.PathStyleSimple,
 				Explode: false,
@@ -61,7 +61,7 @@ func decodeGetNoteByIDParams(args [1]string, argsEscaped bool, r *http.Request) 
 					return err
 				}
 
-				params.NoteID = c
+				params.CustomerID = c
 				return nil
 			}(); err != nil {
 				return err
@@ -72,7 +72,7 @@ func decodeGetNoteByIDParams(args [1]string, argsEscaped bool, r *http.Request) 
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "noteID",
+			Name: "customerID",
 			In:   "path",
 			Err:  err,
 		}

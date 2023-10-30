@@ -7,7 +7,7 @@ import (
 	"log/slog"
 )
 
-func InitializeNoteService(cfg *Config, logger *slog.Logger) *noteService {
-    wire.Build(SuperSet, NewNoteService)
+func InitializeEnAPIService(cfg *Config, logger *slog.Logger) *enAPIService {
+    wire.Build(SuperSet, NewEnAPIService)
     return nil
 }

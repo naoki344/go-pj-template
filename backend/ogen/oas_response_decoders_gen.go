@@ -14,7 +14,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func decodeCreateNoteResponse(resp *http.Response) (res *Note, _ error) {
+func decodeGetCustomerByIDResponse(resp *http.Response) (res *GetCustomerByIDOK, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -30,7 +30,7 @@ func decodeCreateNoteResponse(resp *http.Response) (res *Note, _ error) {
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response Note
+			var response GetCustomerByIDOK
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -55,7 +55,7 @@ func decodeCreateNoteResponse(resp *http.Response) (res *Note, _ error) {
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeGetNoteByIDResponse(resp *http.Response) (res GetNoteByIDRes, _ error) {
+func decodePostCreateCustomerResponse(resp *http.Response) (res *PostCreateCustomerOK, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -71,42 +71,7 @@ func decodeGetNoteByIDResponse(resp *http.Response) (res GetNoteByIDRes, _ error
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response Note
-			if err := func() error {
-				if err := response.Decode(d); err != nil {
-					return err
-				}
-				if err := d.Skip(); err != io.EOF {
-					return errors.New("unexpected trailing data")
-				}
-				return nil
-			}(); err != nil {
-				err = &ogenerrors.DecodeBodyError{
-					ContentType: ct,
-					Body:        buf,
-					Err:         err,
-				}
-				return res, err
-			}
-			return &response, nil
-		default:
-			return res, validate.InvalidContentType(ct)
-		}
-	case 404:
-		// Code 404.
-		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-		if err != nil {
-			return res, errors.Wrap(err, "parse media type")
-		}
-		switch {
-		case ct == "application/json":
-			buf, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return res, err
-			}
-			d := jx.DecodeBytes(buf)
-
-			var response GetNoteByIDNotFound
+			var response PostCreateCustomerOK
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err

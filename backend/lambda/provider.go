@@ -6,5 +6,5 @@ import (
 
 var SuperSet = wire.NewSet(
     NewDB,
-    NewGetNoteByIDRepository,
+    NewGetCustomerByIDRepository,
 )

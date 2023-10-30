@@ -8,18 +8,18 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
-	// CreateNote implements createNote operation.
+	// GetCustomerByID implements getCustomerByID operation.
 	//
-	// メモを作成する.
+	// 顧客を取得する.
 	//
-	// POST /notes
-	CreateNote(ctx context.Context, req *Note) (*Note, error)
-	// GetNoteByID implements getNoteByID operation.
+	// GET /customers/{customerID}
+	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error)
+	// PostCreateCustomer implements postCreateCustomer operation.
 	//
-	// メモを取得する.
+	// 顧客を登録する.
 	//
-	// GET /notes/{noteID}
-	GetNoteByID(ctx context.Context, params GetNoteByIDParams) (GetNoteByIDRes, error)
+	// POST /customers
+	PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (*PostCreateCustomerOK, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

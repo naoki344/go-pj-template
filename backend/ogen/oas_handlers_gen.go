@@ -20,20 +20,20 @@ import (
 	"github.com/ogen-go/ogen/otelogen"
 )
 
-// handleCreateNoteRequest handles createNote operation.
+// handleGetCustomerByIDRequest handles getCustomerByID operation.
 //
-// メモを作成する.
+// 顧客を取得する.
 //
-// POST /notes
-func (s *Server) handleCreateNoteRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+// GET /customers/{customerID}
+func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("createNote"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/notes"),
+		otelogen.OperationID("getCustomerByID"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/customers/{customerID}"),
 	}
 
 	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "CreateNote",
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetCustomerByID",
 		trace.WithAttributes(otelAttrs...),
 		serverSpanKind,
 	)
@@ -58,11 +58,117 @@ func (s *Server) handleCreateNoteRequest(args [0]string, argsEscaped bool, w htt
 		}
 		err          error
 		opErrContext = ogenerrors.OperationContext{
-			Name: "CreateNote",
-			ID:   "createNote",
+			Name: "GetCustomerByID",
+			ID:   "getCustomerByID",
 		}
 	)
-	request, close, err := s.decodeCreateNoteRequest(r)
+	params, err := decodeGetCustomerByIDParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	var response *GetCustomerByIDOK
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "GetCustomerByID",
+			OperationSummary: "顧客を取得する",
+			OperationID:      "getCustomerByID",
+			Body:             nil,
+			Params: middleware.Parameters{
+				{
+					Name: "customerID",
+					In:   "path",
+				}: params.CustomerID,
+			},
+			Raw: r,
+		}
+
+		type (
+			Request  = struct{}
+			Params   = GetCustomerByIDParams
+			Response = *GetCustomerByIDOK
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			unpackGetCustomerByIDParams,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.GetCustomerByID(ctx, params)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.GetCustomerByID(ctx, params)
+	}
+	if err != nil {
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodeGetCustomerByIDResponse(response, w, span); err != nil {
+		recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
+// handlePostCreateCustomerRequest handles postCreateCustomer operation.
+//
+// 顧客を登録する.
+//
+// POST /customers
+func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("postCreateCustomer"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/customers"),
+	}
+
+	// Start a span for this request.
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostCreateCustomer",
+		trace.WithAttributes(otelAttrs...),
+		serverSpanKind,
+	)
+	defer span.End()
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		elapsedDuration := time.Since(startTime)
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	var (
+		recordError = func(stage string, err error) {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "PostCreateCustomer",
+			ID:   "postCreateCustomer",
+		}
+	)
+	request, close, err := s.decodePostCreateCustomerRequest(r)
 	if err != nil {
 		err = &ogenerrors.DecodeRequestError{
 			OperationContext: opErrContext,
@@ -78,22 +184,22 @@ func (s *Server) handleCreateNoteRequest(args [0]string, argsEscaped bool, w htt
 		}
 	}()
 
-	var response *Note
+	var response *PostCreateCustomerOK
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
-			OperationName:    "CreateNote",
-			OperationSummary: "メモを作成する",
-			OperationID:      "createNote",
+			OperationName:    "PostCreateCustomer",
+			OperationSummary: "顧客を登録する",
+			OperationID:      "postCreateCustomer",
 			Body:             request,
 			Params:           middleware.Parameters{},
 			Raw:              r,
 		}
 
 		type (
-			Request  = *Note
+			Request  = *PostCreateCustomerReq
 			Params   = struct{}
-			Response = *Note
+			Response = *PostCreateCustomerOK
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -104,12 +210,12 @@ func (s *Server) handleCreateNoteRequest(args [0]string, argsEscaped bool, w htt
 			mreq,
 			nil,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.CreateNote(ctx, request)
+				response, err = s.h.PostCreateCustomer(ctx, request)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.CreateNote(ctx, request)
+		response, err = s.h.PostCreateCustomer(ctx, request)
 	}
 	if err != nil {
 		recordError("Internal", err)
@@ -117,113 +223,7 @@ func (s *Server) handleCreateNoteRequest(args [0]string, argsEscaped bool, w htt
 		return
 	}
 
-	if err := encodeCreateNoteResponse(response, w, span); err != nil {
-		recordError("EncodeResponse", err)
-		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
-			s.cfg.ErrorHandler(ctx, w, r, err)
-		}
-		return
-	}
-}
-
-// handleGetNoteByIDRequest handles getNoteByID operation.
-//
-// メモを取得する.
-//
-// GET /notes/{noteID}
-func (s *Server) handleGetNoteByIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("getNoteByID"),
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/notes/{noteID}"),
-	}
-
-	// Start a span for this request.
-	ctx, span := s.cfg.Tracer.Start(r.Context(), "GetNoteByID",
-		trace.WithAttributes(otelAttrs...),
-		serverSpanKind,
-	)
-	defer span.End()
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		elapsedDuration := time.Since(startTime)
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	var (
-		recordError = func(stage string, err error) {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		err          error
-		opErrContext = ogenerrors.OperationContext{
-			Name: "GetNoteByID",
-			ID:   "getNoteByID",
-		}
-	)
-	params, err := decodeGetNoteByIDParams(args, argsEscaped, r)
-	if err != nil {
-		err = &ogenerrors.DecodeParamsError{
-			OperationContext: opErrContext,
-			Err:              err,
-		}
-		recordError("DecodeParams", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	var response GetNoteByIDRes
-	if m := s.cfg.Middleware; m != nil {
-		mreq := middleware.Request{
-			Context:          ctx,
-			OperationName:    "GetNoteByID",
-			OperationSummary: "メモを取得する",
-			OperationID:      "getNoteByID",
-			Body:             nil,
-			Params: middleware.Parameters{
-				{
-					Name: "noteID",
-					In:   "path",
-				}: params.NoteID,
-			},
-			Raw: r,
-		}
-
-		type (
-			Request  = struct{}
-			Params   = GetNoteByIDParams
-			Response = GetNoteByIDRes
-		)
-		response, err = middleware.HookMiddleware[
-			Request,
-			Params,
-			Response,
-		](
-			m,
-			mreq,
-			unpackGetNoteByIDParams,
-			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.GetNoteByID(ctx, params)
-				return response, err
-			},
-		)
-	} else {
-		response, err = s.h.GetNoteByID(ctx, params)
-	}
-	if err != nil {
-		recordError("Internal", err)
-		s.cfg.ErrorHandler(ctx, w, r, err)
-		return
-	}
-
-	if err := encodeGetNoteByIDResponse(response, w, span); err != nil {
+	if err := encodePostCreateCustomerResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

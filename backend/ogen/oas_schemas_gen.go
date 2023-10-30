@@ -2,68 +2,110 @@
 
 package ogen
 
-type GetNoteByIDNotFound struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// GetCode returns the value of Code.
-func (s *GetNoteByIDNotFound) GetCode() int {
-	return s.Code
-}
-
-// GetMessage returns the value of Message.
-func (s *GetNoteByIDNotFound) GetMessage() string {
-	return s.Message
-}
-
-// SetCode sets the value of Code.
-func (s *GetNoteByIDNotFound) SetCode(val int) {
-	s.Code = val
-}
-
-// SetMessage sets the value of Message.
-func (s *GetNoteByIDNotFound) SetMessage(val string) {
-	s.Message = val
-}
-
-func (*GetNoteByIDNotFound) getNoteByIDRes() {}
-
-// Ref: #/components/schemas/Note
-type Note struct {
+type GetCustomerByIDOK struct {
 	ID      int64  `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
 }
 
 // GetID returns the value of ID.
-func (s *Note) GetID() int64 {
+func (s *GetCustomerByIDOK) GetID() int64 {
 	return s.ID
 }
 
 // GetTitle returns the value of Title.
-func (s *Note) GetTitle() string {
+func (s *GetCustomerByIDOK) GetTitle() string {
 	return s.Title
 }
 
 // GetContent returns the value of Content.
-func (s *Note) GetContent() string {
+func (s *GetCustomerByIDOK) GetContent() string {
 	return s.Content
 }
 
 // SetID sets the value of ID.
-func (s *Note) SetID(val int64) {
+func (s *GetCustomerByIDOK) SetID(val int64) {
 	s.ID = val
 }
 
 // SetTitle sets the value of Title.
-func (s *Note) SetTitle(val string) {
+func (s *GetCustomerByIDOK) SetTitle(val string) {
 	s.Title = val
 }
 
 // SetContent sets the value of Content.
-func (s *Note) SetContent(val string) {
+func (s *GetCustomerByIDOK) SetContent(val string) {
 	s.Content = val
 }
 
-func (*Note) getNoteByIDRes() {}
+type PostCreateCustomerOK struct {
+	ID      int64  `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
+
+// GetID returns the value of ID.
+func (s *PostCreateCustomerOK) GetID() int64 {
+	return s.ID
+}
+
+// GetTitle returns the value of Title.
+func (s *PostCreateCustomerOK) GetTitle() string {
+	return s.Title
+}
+
+// GetContent returns the value of Content.
+func (s *PostCreateCustomerOK) GetContent() string {
+	return s.Content
+}
+
+// SetID sets the value of ID.
+func (s *PostCreateCustomerOK) SetID(val int64) {
+	s.ID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *PostCreateCustomerOK) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetContent sets the value of Content.
+func (s *PostCreateCustomerOK) SetContent(val string) {
+	s.Content = val
+}
+
+type PostCreateCustomerReq struct {
+	ID      int64  `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
+
+// GetID returns the value of ID.
+func (s *PostCreateCustomerReq) GetID() int64 {
+	return s.ID
+}
+
+// GetTitle returns the value of Title.
+func (s *PostCreateCustomerReq) GetTitle() string {
+	return s.Title
+}
+
+// GetContent returns the value of Content.
+func (s *PostCreateCustomerReq) GetContent() string {
+	return s.Content
+}
+
+// SetID sets the value of ID.
+func (s *PostCreateCustomerReq) SetID(val int64) {
+	s.ID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *PostCreateCustomerReq) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetContent sets the value of Content.
+func (s *PostCreateCustomerReq) SetContent(val string) {
+	s.Content = val
+}

@@ -13,20 +13,20 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
-// CreateNote implements createNote operation.
+// GetCustomerByID implements getCustomerByID operation.
 //
-// メモを作成する.
+// 顧客を取得する.
 //
-// POST /notes
-func (UnimplementedHandler) CreateNote(ctx context.Context, req *Note) (r *Note, _ error) {
+// GET /customers/{customerID}
+func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (r *GetCustomerByIDOK, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
-// GetNoteByID implements getNoteByID operation.
+// PostCreateCustomer implements postCreateCustomer operation.
 //
-// メモを取得する.
+// 顧客を登録する.
 //
-// GET /notes/{noteID}
-func (UnimplementedHandler) GetNoteByID(ctx context.Context, params GetNoteByIDParams) (r GetNoteByIDRes, _ error) {
+// POST /customers
+func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (r *PostCreateCustomerOK, _ error) {
 	return r, ht.ErrNotImplemented
 }

@@ -23,18 +23,18 @@ import (
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
-	// CreateNote invokes createNote operation.
+	// GetCustomerByID invokes getCustomerByID operation.
 	//
-	// メモを作成する.
+	// 顧客を取得する.
 	//
-	// POST /notes
-	CreateNote(ctx context.Context, request *Note) (*Note, error)
-	// GetNoteByID invokes getNoteByID operation.
+	// GET /customers/{customerID}
+	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error)
+	// PostCreateCustomer invokes postCreateCustomer operation.
 	//
-	// メモを取得する.
+	// 顧客を登録する.
 	//
-	// GET /notes/{noteID}
-	GetNoteByID(ctx context.Context, params GetNoteByIDParams) (GetNoteByIDRes, error)
+	// POST /customers
+	PostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (*PostCreateCustomerOK, error)
 }
 
 // Client implements OAS client.
@@ -85,96 +85,21 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
-// CreateNote invokes createNote operation.
+// GetCustomerByID invokes getCustomerByID operation.
 //
-// メモを作成する.
+// 顧客を取得する.
 //
-// POST /notes
-func (c *Client) CreateNote(ctx context.Context, request *Note) (*Note, error) {
-	res, err := c.sendCreateNote(ctx, request)
+// GET /customers/{customerID}
+func (c *Client) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error) {
+	res, err := c.sendGetCustomerByID(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendCreateNote(ctx context.Context, request *Note) (res *Note, err error) {
+func (c *Client) sendGetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (res *GetCustomerByIDOK, err error) {
 	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("createNote"),
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/notes"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CreateNote",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/notes"
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "POST", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-	if err := encodeCreateNoteRequest(request, r); err != nil {
-		return res, errors.Wrap(err, "encode request")
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCreateNoteResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// GetNoteByID invokes getNoteByID operation.
-//
-// メモを取得する.
-//
-// GET /notes/{noteID}
-func (c *Client) GetNoteByID(ctx context.Context, params GetNoteByIDParams) (GetNoteByIDRes, error) {
-	res, err := c.sendGetNoteByID(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendGetNoteByID(ctx context.Context, params GetNoteByIDParams) (res GetNoteByIDRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		otelogen.OperationID("getNoteByID"),
+		otelogen.OperationID("getCustomerByID"),
 		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/notes/{noteID}"),
+		semconv.HTTPRouteKey.String("/customers/{customerID}"),
 	}
 
 	// Run stopwatch.
@@ -189,7 +114,7 @@ func (c *Client) sendGetNoteByID(ctx context.Context, params GetNoteByIDParams) 
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "GetNoteByID",
+	ctx, span := c.cfg.Tracer.Start(ctx, "GetCustomerByID",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -207,16 +132,16 @@ func (c *Client) sendGetNoteByID(ctx context.Context, params GetNoteByIDParams) 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
-	pathParts[0] = "/notes/"
+	pathParts[0] = "/customers/"
 	{
-		// Encode "noteID" parameter.
+		// Encode "customerID" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "noteID",
+			Param:   "customerID",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.Int64ToString(params.NoteID))
+			return e.EncodeValue(conv.Int64ToString(params.CustomerID))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -242,7 +167,82 @@ func (c *Client) sendGetNoteByID(ctx context.Context, params GetNoteByIDParams) 
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeGetNoteByIDResponse(resp)
+	result, err := decodeGetCustomerByIDResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// PostCreateCustomer invokes postCreateCustomer operation.
+//
+// 顧客を登録する.
+//
+// POST /customers
+func (c *Client) PostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (*PostCreateCustomerOK, error) {
+	res, err := c.sendPostCreateCustomer(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendPostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (res *PostCreateCustomerOK, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("postCreateCustomer"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/customers"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "PostCreateCustomer",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/customers"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodePostCreateCustomerRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodePostCreateCustomerResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

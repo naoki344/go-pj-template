@@ -49,8 +49,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/notes"
-			if l := len("/notes"); len(elem) >= l && elem[0:l] == "/notes" {
+		case '/': // Prefix: "/customers"
+			if l := len("/customers"); len(elem) >= l && elem[0:l] == "/customers" {
 				elem = elem[l:]
 			} else {
 				break
@@ -59,7 +59,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			if len(elem) == 0 {
 				switch r.Method {
 				case "POST":
-					s.handleCreateNoteRequest([0]string{}, elemIsEscaped, w, r)
+					s.handlePostCreateCustomerRequest([0]string{}, elemIsEscaped, w, r)
 				default:
 					s.notAllowed(w, r, "POST")
 				}
@@ -74,7 +74,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 
-				// Param: "noteID"
+				// Param: "customerID"
 				// Leaf parameter
 				args[0] = elem
 				elem = ""
@@ -83,7 +83,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					// Leaf node.
 					switch r.Method {
 					case "GET":
-						s.handleGetNoteByIDRequest([1]string{
+						s.handleGetCustomerByIDRequest([1]string{
 							args[0],
 						}, elemIsEscaped, w, r)
 					default:
@@ -173,8 +173,8 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 			break
 		}
 		switch elem[0] {
-		case '/': // Prefix: "/notes"
-			if l := len("/notes"); len(elem) >= l && elem[0:l] == "/notes" {
+		case '/': // Prefix: "/customers"
+			if l := len("/customers"); len(elem) >= l && elem[0:l] == "/customers" {
 				elem = elem[l:]
 			} else {
 				break
@@ -183,10 +183,10 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 			if len(elem) == 0 {
 				switch method {
 				case "POST":
-					r.name = "CreateNote"
-					r.summary = "メモを作成する"
-					r.operationID = "createNote"
-					r.pathPattern = "/notes"
+					r.name = "PostCreateCustomer"
+					r.summary = "顧客を登録する"
+					r.operationID = "postCreateCustomer"
+					r.pathPattern = "/customers"
 					r.args = args
 					r.count = 0
 					return r, true
@@ -202,7 +202,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					break
 				}
 
-				// Param: "noteID"
+				// Param: "customerID"
 				// Leaf parameter
 				args[0] = elem
 				elem = ""
@@ -210,11 +210,11 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				if len(elem) == 0 {
 					switch method {
 					case "GET":
-						// Leaf: GetNoteByID
-						r.name = "GetNoteByID"
-						r.summary = "メモを取得する"
-						r.operationID = "getNoteByID"
-						r.pathPattern = "/notes/{noteID}"
+						// Leaf: GetCustomerByID
+						r.name = "GetCustomerByID"
+						r.summary = "顧客を取得する"
+						r.operationID = "getCustomerByID"
+						r.pathPattern = "/customers/{customerID}"
 						r.args = args
 						r.count = 1
 						return r, true
