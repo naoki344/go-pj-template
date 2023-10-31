@@ -1,14 +1,15 @@
 package main
 
 import (
+	"os"
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
+	"github.com/aws/aws-cdk-go/awscdk/v2/awscognito"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsiam"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awslambda"
 	awslambdago "github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
-	"os"
 )
 
 type CdkLambdaGoStackProps struct {
@@ -56,7 +57,8 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaVPCAccessExecutionRole")))
 	myRole.AddToPolicy(dbPolicy)
 
-	restapi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
+
+	restApi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
 		RestApiName: jsii.String("test-api-gateway"),
 		DefaultCorsPreflightOptions: &awsapigateway.CorsOptions{
 			AllowOrigins: awsapigateway.Cors_ALL_ORIGINS(),
@@ -65,15 +67,97 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 			StatusCode:   jsii.Number(200),
 		},
 	})
-	apiResource := restapi.
+
+
+
+	cognitoUserPool := awscognito.NewUserPool(stack, jsii.String("en-userpool"), &awscognito.UserPoolProps{
+		UserPoolName: jsii.String("myawesomeapp-userpool"),
+		SignInCaseSensitive: jsii.Bool(false),
+	})
+	userPoolClient := cognitoUserPool.AddClient(jsii.String("en-userpool-client"), &awscognito.UserPoolClientOptions{
+		GenerateSecret: jsii.Bool(false),
+		AuthFlows: &awscognito.AuthFlow{
+			AdminUserPassword: jsii.Bool(true),
+			UserPassword: jsii.Bool(true),
+			UserSrp: jsii.Bool(true),
+		},
+		SupportedIdentityProviders: &[]awscognito.UserPoolClientIdentityProvider{
+			awscognito.UserPoolClientIdentityProvider_COGNITO(),
+		},
+	})
+	identityPool := awscognito.NewCfnIdentityPool(stack, jsii.String("en-cognito-id-pool"), &awscognito.CfnIdentityPoolProps{
+		IdentityPoolName: jsii.String("en-cognito-id-pool"),
+		AllowUnauthenticatedIdentities: jsii.Bool(false),
+		CognitoIdentityProviders: &[]*awscognito.CfnIdentityPool_CognitoIdentityProviderProperty{
+			{
+				ClientId: userPoolClient.UserPoolClientId(),
+				ProviderName: cognitoUserPool.UserPoolProviderName(),
+			},
+		},
+	})
+
+	// IAM Role for Cognito Identity Pool
+	identityPoolRole := awsiam.NewRole(stack, jsii.String("CognitoUserIdentityPoolRole"), &awsiam.RoleProps{
+		AssumedBy: awsiam.NewFederatedPrincipal(
+			jsii.String("cognito-identity.amazonaws.com"),
+			&map[string]interface{}{
+				"StringEquals": map[string]interface{}{
+					"cognito-identity.amazonaws.com:aud": identityPool.Ref(),
+				},
+				"ForAnyValue:StringLike": map[string]interface{}{
+					"cognito-identity.amazonaws.com:amr": "authenticated",
+				},
+			},
+			jsii.String("sts:AssumeRoleWithWebIdentity")),
+	})
+
+	// Cognito Identity Pool Role Attachment
+	awscognito.NewCfnIdentityPoolRoleAttachment(
+		stack, jsii.String("CognitoUserIdentityPoolRoleAttachment"), &awscognito.CfnIdentityPoolRoleAttachmentProps{
+			IdentityPoolId: identityPool.Ref(),
+			Roles: &map[string]interface{}{
+				"authenticated": identityPoolRole.RoleArn(),
+			},
+	})
+
+	// Custom policy statements
+	identityPoolRole.AddToPolicy(awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
+		Effect: awsiam.Effect_ALLOW,
+		Actions: &[]*string{
+			jsii.String("mobileanalytics:PutEvents"),
+			jsii.String("cognito-sync:*"),
+			jsii.String("cognito-identity:*"),
+		},
+		Resources: &[]*string{jsii.String("*")},
+	}))
+
+	identityPoolRole.AddToPolicy(awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
+		Effect: awsiam.Effect_ALLOW,
+		Actions: &[]*string{
+			jsii.String("execute-api:Invoke"),
+		},
+		Resources: &[]*string{
+			restApi.ArnForExecuteApi(
+				jsii.String("*"),
+				jsii.String("/*"),
+				jsii.String("*"),
+			),
+		},
+	}))
+
+
+	apiResource := restApi.
 		Root().
 		AddResource(jsii.String("customers"), nil)
-	apiResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	apiResource.AddMethod(
+		jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil),
+		&awsapigateway.MethodOptions{
+			AuthorizationType: awsapigateway.AuthorizationType_IAM,
+	})
 	apiResource.AddMethod(jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil), nil)
-	todoIdResource := apiResource.AddResource(jsii.String("{noteID}"), nil)
-	todoIdResource.AddMethod(jsii.String("get"), awsapigateway.NewLambdaIntegration(function, nil), nil)
-	todoIdResource.AddMethod(jsii.String("PUT"), awsapigateway.NewLambdaIntegration(function, nil), nil)
-	todoIdResource.AddMethod(jsii.String("DELETE"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+
+	customerIdResource := apiResource.AddResource(jsii.String("{customerID}"), nil)
+	customerIdResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil), nil)
 
 	return stack
 }
