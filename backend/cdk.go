@@ -28,7 +28,7 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	})
 
 	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
-		Entry:        jsii.String("lambda"),
+		Entry:        jsii.String("cmd/api"),
 		Description:  jsii.String("A function written in Go"),
 		MemorySize:   jsii.Number(512),
 		Timeout:      awscdk.Duration_Seconds(jsii.Number(30)),

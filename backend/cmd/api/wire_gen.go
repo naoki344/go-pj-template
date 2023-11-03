@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package cmdapi
+package main
 
 import (
 	"github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"

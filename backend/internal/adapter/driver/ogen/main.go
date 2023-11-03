@@ -29,4 +29,9 @@ func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCusto
 }
 
 
-func NewEnAPIAdapter(getCustomerByID *apiport.GetCustomerByIDAPIPort) *EnAPIAdapter
+func NewEnAPIAdapter(getCustomerByID *apiport.GetCustomerByIDAPIPort) *EnAPIAdapter {
+	slog.Error("create APIAdapter")
+	return &EnAPIAdapter{
+		getCustomerByID: getCustomerByID,
+	}
+}

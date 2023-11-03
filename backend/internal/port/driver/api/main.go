@@ -19,8 +19,8 @@ type GetCustomerByIDAPIPort struct {
 	usecase customerusecase.GetCustomerByIDInterface
 }
 
-func NewGetCustomerByIDAPIPort(usecase customerusecase.GetCustomerByIDInterface) GetCustomerByIDAPIPort {
-	return GetCustomerByIDAPIPort{usecase}
+func NewGetCustomerByIDAPIPort(usecase customerusecase.GetCustomerByIDInterface) *GetCustomerByIDAPIPort {
+	return &GetCustomerByIDAPIPort{usecase}
 }
 
 func (port *GetCustomerByIDAPIPort) Run(customerId CustomerID) (*Customer, error){

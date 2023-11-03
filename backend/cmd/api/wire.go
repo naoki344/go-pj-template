@@ -1,6 +1,6 @@
 //+build wireinject
 
-package cmdapi
+package main
 
 import (
 	"github.com/google/wire"
