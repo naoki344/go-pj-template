@@ -4,7 +4,7 @@ Package yourpackage does something interesting.
 package main
 
 import (
-	"cdk-lambda-go/ogen"
+	"github.com/g-stayfresh/en/backend/api/lib/ogen"
 	"log/slog"
 	"context"
 	_ "github.com/go-sql-driver/mysql"

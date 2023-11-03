@@ -5,4 +5,4 @@ getCustomerByID:
     - $ref: "../../requests/params/path/customerID.yaml#/customerID"
   responses:
     200:
-      $ref: "../../responses/body/getCustomerByIDResponse.yaml#/getCustomerByIDResponse"
+      $ref: "../../responses/getCustomerByIDResponse.yaml#/getCustomerByIDResponse"

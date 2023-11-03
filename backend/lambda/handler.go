@@ -4,7 +4,8 @@ import (
 	"os"
 	"log/slog"
 	"context"
-	"cdk-lambda-go/ogen"
+	"dario.cat/mergo"
+	"github.com/g-stayfresh/en/backend/api/lib/ogen"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
@@ -38,8 +39,17 @@ func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	defer service.dbRepository.db.conn.Close()
 	s, _ := ogen.NewServer(service)
 	// NOTE: https://github.com/awslabs/aws-lambda-go-api-proxy/blob/master/httpadapter/adapter.go#L16
-
-	return httpadapter.New(s).ProxyWithContext(ctx, event)
+	res, err := httpadapter.New(s).ProxyWithContext(ctx, event)
+	if err != nil {
+		return res, err
+	}
+	newHeader := map[string]string{
+		"Access-Control-Allow-Origin": "*",
+		"Access-Control-Allow-Methods": "*",
+		"Access-Control-Allow-Headers": "*",
+	}
+	mergo.Merge(&res.Headers, newHeader)
+	return res, err
 }
 
 

@@ -5,4 +5,4 @@ postCreateCustomer:
     $ref: "../../requests/body/createCustomerRequest.yaml#/createCustomerRequest"
   responses:
     200:
-      $ref: "../../responses/body/createCustomerResponse.yaml#/createCustomerResponse"
+      $ref: "../../responses/createCustomerResponse.yaml#/createCustomerResponse"

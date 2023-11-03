@@ -1,0 +1,8 @@
+getCustomerByIDResponse:
+  description: 成功
+  content:
+    application/json:
+      schema:
+        $ref: "../models/customer.yaml#/customer"
+      headers:
+        $ref: "./headers.yaml#/headers"
