@@ -1,4 +1,4 @@
-package main
+package rdbadapter
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 )
 
 
-type Config struct {
+type MySQLConfig struct {
     USERNAME string
 	PASSWORD string
 	HOST string
@@ -17,21 +17,21 @@ type Config struct {
 	NAME string
 }
 
-type SqlDb struct {
-	conn *sql.DB
-	logger *slog.Logger
+type MySQL struct {
+	Conn *sql.DB
 }
 
-func NewDB(cfg *Config, logger *slog.Logger) SqlDb {
+func NewMySQL(cfg *MySQLConfig) (*MySQL, error) {
     var err error
 	conn, err := sql.Open(
 		"mysql",
 		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=%s",
 			cfg.USERNAME, cfg.PASSWORD, cfg.HOST, cfg.PORT, cfg.NAME, url.PathEscape("Asia/Tokyo")),
 	)
-	logger.Info("Create DB connection.")
 	if err != nil {
-		logger.Info("Fail to connect db", "error_detail", err.Error())
+		slog.Info("Fail to connect db", "error_detail", err.Error())
+		return &MySQL{}, nil
 	}
-    return SqlDb{conn, logger}
+	slog.Info("Create DB connection.")
+	return &MySQL{Conn: conn}, nil
 }
