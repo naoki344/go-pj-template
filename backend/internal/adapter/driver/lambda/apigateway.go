@@ -34,6 +34,7 @@ func (handler *ApiGatewayHandler) SetLogger() {
 	}
 }
 
+
 func (handler *ApiGatewayHandler) Run() (events.APIGatewayProxyResponse, error){
 	handler.SetLogger()
 

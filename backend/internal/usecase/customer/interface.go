@@ -6,5 +6,5 @@ import (
 
 
 type GetCustomerByIDInterface interface {
-	Run(customerID customermodel.CustomerID) (customermodel.Customer, error)
+	Run(customerID customermodel.CustomerID) (*customermodel.Customer, error)
 }

@@ -17,7 +17,7 @@ jobs:
       - run: go version
       - name: go mod tidy
         run: |
-          cd go
+          cd backend
           go mod tidy
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3

@@ -4,6 +4,7 @@ package apiport
 import (
 	customerusecase "github.com/g-stayfresh/en/backend/internal/usecase/customer"
 	customermodel "github.com/g-stayfresh/en/backend/internal/app/model/customer"
+	errormodel "github.com/g-stayfresh/en/backend/internal/app/model/error"
 )
 
 
@@ -25,9 +26,15 @@ func NewGetCustomerByIDAPIPort(usecase customerusecase.GetCustomerByIDInterface)
 
 func (port *GetCustomerByIDAPIPort) Run(customerId CustomerID) (*Customer, error){
 	res, err := port.usecase.Run(customermodel.CustomerID(customerId))
+	if err != nil {
+		if err == errormodel.CustomerNotFound {
+			return nil, &APIErrCustomerNotFound{customerId}
+		}
+		return nil, errormodel.UnexpectedError
+	}
 	return &Customer{
 		ID: CustomerID(res.ID),
 		Title: res.Title,
 		Content: res.Content,
-	}, err
+	}, nil
 }

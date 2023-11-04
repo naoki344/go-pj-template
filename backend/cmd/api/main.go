@@ -8,7 +8,6 @@ import (
 	"github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-lambda-go/events"
-	"log/slog"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -21,7 +20,6 @@ func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 			PORT: os.Getenv("DB_PORT"),
 			NAME: os.Getenv("DB_NAME"),
 		})
-	slog.Info("hello", "count", 3)
 	defer dbadapter.Conn.Close()
 	service := InitializeEnAPIService(dbadapter)
 	server, _ := ogen.NewServer(service)

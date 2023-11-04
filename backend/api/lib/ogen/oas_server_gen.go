@@ -13,7 +13,7 @@ type Handler interface {
 	// 顧客を取得する.
 	//
 	// GET /customers/{customerID}
-	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error)
+	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (GetCustomerByIDRes, error)
 	// PostCreateCustomer implements postCreateCustomer operation.
 	//
 	// 顧客を登録する.

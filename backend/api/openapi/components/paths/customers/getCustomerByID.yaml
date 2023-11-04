@@ -6,3 +6,7 @@ getCustomerByID:
   responses:
     200:
       $ref: "../../responses/getCustomerByIDResponse.yaml#/getCustomerByIDResponse"
+    404:
+      $ref: "../../responses/createCustomerResponse_404.yaml#/customerNotFound"
+    500:
+      $ref: "../../responses/createCustomerResponse_500.yaml#/systemError"

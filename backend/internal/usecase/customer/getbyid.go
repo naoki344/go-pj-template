@@ -14,6 +14,6 @@ func NewGetCustomerByIDUsecase (port rdbport.GetCustomerByIDPortInterface) *GetC
 }
 
 
-func (usecase *GetCustomerByIDUsecase) Run(customerId customermodel.CustomerID) (customermodel.Customer, error) {
+func (usecase *GetCustomerByIDUsecase) Run(customerId customermodel.CustomerID) (*customermodel.Customer, error) {
 	return usecase.port.Get(customerId)
 }

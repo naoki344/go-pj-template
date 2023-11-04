@@ -1,0 +1,31 @@
+systemError:
+  description: システムエラー
+  properties:
+    message:
+      type: string
+      example: SystemError
+    type:
+      type: string
+  content:
+    application/json:
+      schema:
+        type: object
+        additionalProperties: false
+        properties:
+          type:
+            type: string
+          message:
+            type: string
+        required:
+          - type
+          - message
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string

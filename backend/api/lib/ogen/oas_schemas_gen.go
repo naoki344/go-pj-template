@@ -2,6 +2,60 @@
 
 package ogen
 
+type GetCustomerByIDInternalServerError struct {
+	Type    string `json:"type"`
+	Message string `json:"message"`
+}
+
+// GetType returns the value of Type.
+func (s *GetCustomerByIDInternalServerError) GetType() string {
+	return s.Type
+}
+
+// GetMessage returns the value of Message.
+func (s *GetCustomerByIDInternalServerError) GetMessage() string {
+	return s.Message
+}
+
+// SetType sets the value of Type.
+func (s *GetCustomerByIDInternalServerError) SetType(val string) {
+	s.Type = val
+}
+
+// SetMessage sets the value of Message.
+func (s *GetCustomerByIDInternalServerError) SetMessage(val string) {
+	s.Message = val
+}
+
+func (*GetCustomerByIDInternalServerError) getCustomerByIDRes() {}
+
+type GetCustomerByIDNotFound struct {
+	Type    string `json:"type"`
+	Message string `json:"message"`
+}
+
+// GetType returns the value of Type.
+func (s *GetCustomerByIDNotFound) GetType() string {
+	return s.Type
+}
+
+// GetMessage returns the value of Message.
+func (s *GetCustomerByIDNotFound) GetMessage() string {
+	return s.Message
+}
+
+// SetType sets the value of Type.
+func (s *GetCustomerByIDNotFound) SetType(val string) {
+	s.Type = val
+}
+
+// SetMessage sets the value of Message.
+func (s *GetCustomerByIDNotFound) SetMessage(val string) {
+	s.Message = val
+}
+
+func (*GetCustomerByIDNotFound) getCustomerByIDRes() {}
+
 type GetCustomerByIDOK struct {
 	ID      int64  `json:"id"`
 	Title   string `json:"title"`
@@ -37,6 +91,8 @@ func (s *GetCustomerByIDOK) SetTitle(val string) {
 func (s *GetCustomerByIDOK) SetContent(val string) {
 	s.Content = val
 }
+
+func (*GetCustomerByIDOK) getCustomerByIDRes() {}
 
 type PostCreateCustomerOK struct {
 	ID      int64  `json:"id"`

@@ -7,5 +7,5 @@ import (
 
 
 type GetCustomerByIDPortInterface interface {
-	Get(customerId customermodel.CustomerID) (customermodel.Customer, error)
+	Get(customerId customermodel.CustomerID) (*customermodel.Customer, error)
 }

@@ -28,7 +28,7 @@ type Invoker interface {
 	// 顧客を取得する.
 	//
 	// GET /customers/{customerID}
-	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error)
+	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (GetCustomerByIDRes, error)
 	// PostCreateCustomer invokes postCreateCustomer operation.
 	//
 	// 顧客を登録する.
@@ -90,12 +90,12 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 // 顧客を取得する.
 //
 // GET /customers/{customerID}
-func (c *Client) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (*GetCustomerByIDOK, error) {
+func (c *Client) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (GetCustomerByIDRes, error) {
 	res, err := c.sendGetCustomerByID(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (res *GetCustomerByIDOK, err error) {
+func (c *Client) sendGetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (res GetCustomerByIDRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("getCustomerByID"),
 		semconv.HTTPMethodKey.String("GET"),

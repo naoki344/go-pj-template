@@ -4,6 +4,7 @@ Package yourpackage does something interesting.
 package ogenadapter
 
 import (
+	"errors"
 	"github.com/g-stayfresh/en/backend/api/lib/ogen"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
 	"log/slog"
@@ -19,13 +20,32 @@ func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCre
 	return &ogen.PostCreateCustomerOK{}, nil
 }
 
-func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (*ogen.GetCustomerByIDOK, error) {
-	res, _ := n.getCustomerByID.Run(apiport.CustomerID(params.CustomerID))
+func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
+	res, err := n.getCustomerByID.Run(apiport.CustomerID(params.CustomerID))
+	if err != nil {
+		return CreateErrorResponse(err), nil
+	}
 	return &ogen.GetCustomerByIDOK{
 		ID:      int64(res.ID),
 		Title:   res.Title,
 		Content: res.Content,
 	}, nil
+}
+
+func CreateErrorResponse(err error) ogen.GetCustomerByIDRes{
+	var customerErr *apiport.APIErrCustomerNotFound
+	if errors.As(err, &customerErr) {
+		return &ogen.GetCustomerByIDNotFound{
+			Type: "ResourceNotFound",
+			Message: "aaaaaaaaaaaaaaa",
+
+		}
+	}
+	return &ogen.GetCustomerByIDInternalServerError{
+		Type: "SystemError",
+		Message: "unexpected error occurred.",
+
+	}
 }
 
 

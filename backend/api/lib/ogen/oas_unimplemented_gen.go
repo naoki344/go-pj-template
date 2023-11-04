@@ -18,7 +18,7 @@ var _ Handler = UnimplementedHandler{}
 // 顧客を取得する.
 //
 // GET /customers/{customerID}
-func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (r *GetCustomerByIDOK, _ error) {
+func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (r GetCustomerByIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

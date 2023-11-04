@@ -73,7 +73,7 @@ func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, 
 		return
 	}
 
-	var response *GetCustomerByIDOK
+	var response GetCustomerByIDRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
@@ -93,7 +93,7 @@ func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, 
 		type (
 			Request  = struct{}
 			Params   = GetCustomerByIDParams
-			Response = *GetCustomerByIDOK
+			Response = GetCustomerByIDRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
