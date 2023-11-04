@@ -32,3 +32,22 @@ cdk deploy
 - `cdk synth` emits the synthesized CloudFormation template
 - `go test` run unit tests
 - ` mysql -u ${DB_USERNAME} -p  -h ${DB_HOST} -P ${DB_PORT}` connect mysql
+
+
+
+
+# 開発ツール
+
+## 一覧
+| ツール名 | 目的 | 設定ファイル |
+|:--:|:--:|:--:|
+| [pre-commit](https://pre-commit.com/) | Git hooks | .pre-commit-config.yaml |
+| [direnv](https://direnv.net) | 環境変数の管理 | .envrc |
+
+## pre-commitの設定
+[pre-commit](https://pre-commit.com/)利用している。以下のコマンドでpre-commitをインストールし設定を適応する。
+```sh
+brew install pre-commit
+
+pre-commit install
+```

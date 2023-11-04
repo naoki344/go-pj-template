@@ -1,8 +1,0 @@
-postCreateCustomer:
-  summary: 顧客を登録する
-  operationId: postCreateCustomer
-  requestBody:
-    $ref: "../../requests/body/createCustomerRequest.yaml#/createCustomerRequest"
-  responses:
-    200:
-      $ref: "../../responses/body/createCustomerResponse.yaml#/createCustomerResponse"
