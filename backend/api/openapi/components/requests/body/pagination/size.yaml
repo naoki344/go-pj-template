@@ -1,0 +1,5 @@
+size:
+  title: size
+  description: ページサイズ
+  type: integer
+  format: int64

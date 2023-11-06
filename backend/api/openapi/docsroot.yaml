@@ -6,6 +6,11 @@ paths:
   /customers:
     post:
       $ref: "./components/paths/customers/postCreateCustomer.yaml#/postCreateCustomer"
+  /customers/search:
+    post:
+      $ref: "./components/paths/customers/postSearchCustomer.yaml#/postSearchCustomer"
   /customers/{customerID}:
     get:
       $ref: "./components/paths/customers/getCustomerByID.yaml#/getCustomerByID"
+    put:
+      $ref: "./components/paths/customers/putModifyCustomerByID.yaml#/putModifyCustomerByID"

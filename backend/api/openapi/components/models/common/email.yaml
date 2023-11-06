@@ -1,0 +1,7 @@
+email:
+  title: email
+  description: メールアドレス
+  type: string
+  format: email
+  minLength: 1
+  maxLength: 300

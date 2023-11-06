@@ -1,0 +1,6 @@
+personInChargeNameKana:
+  title: person_in_charge_name_kana
+  description: 担当者名(カナ)
+  type: string
+  minLength: 1
+  maxLength: 100

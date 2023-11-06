@@ -1,0 +1,6 @@
+name:
+  title: name
+  description: 顧客名称
+  type: string
+  minLength: 1
+  maxLength: 100

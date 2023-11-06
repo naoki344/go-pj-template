@@ -22,7 +22,7 @@ import (
 
 // handleGetCustomerByIDRequest handles getCustomerByID operation.
 //
-// 顧客を取得する.
+// 顧客情報参照.
 //
 // GET /customers/{customerID}
 func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -78,7 +78,7 @@ func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, 
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "GetCustomerByID",
-			OperationSummary: "顧客を取得する",
+			OperationSummary: "顧客情報参照",
 			OperationID:      "getCustomerByID",
 			Body:             nil,
 			Params: middleware.Parameters{
@@ -128,7 +128,7 @@ func (s *Server) handleGetCustomerByIDRequest(args [1]string, argsEscaped bool, 
 
 // handlePostCreateCustomerRequest handles postCreateCustomer operation.
 //
-// 顧客を登録する.
+// 顧客情報登録.
 //
 // POST /customers
 func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -184,12 +184,12 @@ func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped boo
 		}
 	}()
 
-	var response *PostCreateCustomerOK
+	var response PostCreateCustomerRes
 	if m := s.cfg.Middleware; m != nil {
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "PostCreateCustomer",
-			OperationSummary: "顧客を登録する",
+			OperationSummary: "顧客情報登録",
 			OperationID:      "postCreateCustomer",
 			Body:             request,
 			Params:           middleware.Parameters{},
@@ -199,7 +199,7 @@ func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped boo
 		type (
 			Request  = *PostCreateCustomerReq
 			Params   = struct{}
-			Response = *PostCreateCustomerOK
+			Response = PostCreateCustomerRes
 		)
 		response, err = middleware.HookMiddleware[
 			Request,
@@ -224,6 +224,233 @@ func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped boo
 	}
 
 	if err := encodePostCreateCustomerResponse(response, w, span); err != nil {
+		recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
+// handlePostSearchCustomerRequest handles postSearchCustomer operation.
+//
+// 顧客情報検索.
+//
+// POST /customers/search
+func (s *Server) handlePostSearchCustomerRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("postSearchCustomer"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/customers/search"),
+	}
+
+	// Start a span for this request.
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "PostSearchCustomer",
+		trace.WithAttributes(otelAttrs...),
+		serverSpanKind,
+	)
+	defer span.End()
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		elapsedDuration := time.Since(startTime)
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	var (
+		recordError = func(stage string, err error) {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "PostSearchCustomer",
+			ID:   "postSearchCustomer",
+		}
+	)
+	request, close, err := s.decodePostSearchCustomerRequest(r)
+	if err != nil {
+		err = &ogenerrors.DecodeRequestError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeRequest", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+	defer func() {
+		if err := close(); err != nil {
+			recordError("CloseRequest", err)
+		}
+	}()
+
+	var response PostSearchCustomerRes
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "PostSearchCustomer",
+			OperationSummary: "顧客情報検索",
+			OperationID:      "postSearchCustomer",
+			Body:             request,
+			Params:           middleware.Parameters{},
+			Raw:              r,
+		}
+
+		type (
+			Request  = *PostSearchCustomerReq
+			Params   = struct{}
+			Response = PostSearchCustomerRes
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			nil,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.PostSearchCustomer(ctx, request)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.PostSearchCustomer(ctx, request)
+	}
+	if err != nil {
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodePostSearchCustomerResponse(response, w, span); err != nil {
+		recordError("EncodeResponse", err)
+		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
+			s.cfg.ErrorHandler(ctx, w, r, err)
+		}
+		return
+	}
+}
+
+// handlePutModifyCustomerByIDRequest handles putModifyCustomerByID operation.
+//
+// 顧客情報更新.
+//
+// PUT /customers/{customerID}
+func (s *Server) handlePutModifyCustomerByIDRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("putModifyCustomerByID"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/customers/{customerID}"),
+	}
+
+	// Start a span for this request.
+	ctx, span := s.cfg.Tracer.Start(r.Context(), "PutModifyCustomerByID",
+		trace.WithAttributes(otelAttrs...),
+		serverSpanKind,
+	)
+	defer span.End()
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		elapsedDuration := time.Since(startTime)
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		s.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	s.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	var (
+		recordError = func(stage string, err error) {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			s.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		err          error
+		opErrContext = ogenerrors.OperationContext{
+			Name: "PutModifyCustomerByID",
+			ID:   "putModifyCustomerByID",
+		}
+	)
+	params, err := decodePutModifyCustomerByIDParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+	request, close, err := s.decodePutModifyCustomerByIDRequest(r)
+	if err != nil {
+		err = &ogenerrors.DecodeRequestError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		recordError("DecodeRequest", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+	defer func() {
+		if err := close(); err != nil {
+			recordError("CloseRequest", err)
+		}
+	}()
+
+	var response PutModifyCustomerByIDRes
+	if m := s.cfg.Middleware; m != nil {
+		mreq := middleware.Request{
+			Context:          ctx,
+			OperationName:    "PutModifyCustomerByID",
+			OperationSummary: "顧客情報更新",
+			OperationID:      "putModifyCustomerByID",
+			Body:             request,
+			Params: middleware.Parameters{
+				{
+					Name: "customerID",
+					In:   "path",
+				}: params.CustomerID,
+			},
+			Raw: r,
+		}
+
+		type (
+			Request  = *PutModifyCustomerByIDReq
+			Params   = PutModifyCustomerByIDParams
+			Response = PutModifyCustomerByIDRes
+		)
+		response, err = middleware.HookMiddleware[
+			Request,
+			Params,
+			Response,
+		](
+			m,
+			mreq,
+			unpackPutModifyCustomerByIDParams,
+			func(ctx context.Context, request Request, params Params) (response Response, err error) {
+				response, err = s.h.PutModifyCustomerByID(ctx, request, params)
+				return response, err
+			},
+		)
+	} else {
+		response, err = s.h.PutModifyCustomerByID(ctx, request, params)
+	}
+	if err != nil {
+		recordError("Internal", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
+
+	if err := encodePutModifyCustomerByIDResponse(response, w, span); err != nil {
 		recordError("EncodeResponse", err)
 		if !errors.Is(err, ht.ErrInternalServerErrorResponse) {
 			s.cfg.ErrorHandler(ctx, w, r, err)

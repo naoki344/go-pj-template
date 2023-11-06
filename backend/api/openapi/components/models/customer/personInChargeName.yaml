@@ -1,0 +1,6 @@
+personInChargeName:
+  title: person_in_charge_name
+  description: 担当者名
+  type: string
+  minLength: 1
+  maxLength: 100

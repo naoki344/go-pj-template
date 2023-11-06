@@ -74,6 +74,29 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 
+				if len(elem) == 0 {
+					break
+				}
+				switch elem[0] {
+				case 's': // Prefix: "search"
+					if l := len("search"); len(elem) >= l && elem[0:l] == "search" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch r.Method {
+						case "POST":
+							s.handlePostSearchCustomerRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "POST")
+						}
+
+						return
+					}
+				}
 				// Param: "customerID"
 				// Leaf parameter
 				args[0] = elem
@@ -86,8 +109,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						s.handleGetCustomerByIDRequest([1]string{
 							args[0],
 						}, elemIsEscaped, w, r)
+					case "PUT":
+						s.handlePutModifyCustomerByIDRequest([1]string{
+							args[0],
+						}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "GET")
+						s.notAllowed(w, r, "GET,PUT")
 					}
 
 					return
@@ -184,7 +211,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				switch method {
 				case "POST":
 					r.name = "PostCreateCustomer"
-					r.summary = "顧客を登録する"
+					r.summary = "顧客情報登録"
 					r.operationID = "postCreateCustomer"
 					r.pathPattern = "/customers"
 					r.args = args
@@ -202,6 +229,33 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					break
 				}
 
+				if len(elem) == 0 {
+					break
+				}
+				switch elem[0] {
+				case 's': // Prefix: "search"
+					if l := len("search"); len(elem) >= l && elem[0:l] == "search" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						switch method {
+						case "POST":
+							// Leaf: PostSearchCustomer
+							r.name = "PostSearchCustomer"
+							r.summary = "顧客情報検索"
+							r.operationID = "postSearchCustomer"
+							r.pathPattern = "/customers/search"
+							r.args = args
+							r.count = 0
+							return r, true
+						default:
+							return
+						}
+					}
+				}
 				// Param: "customerID"
 				// Leaf parameter
 				args[0] = elem
@@ -212,8 +266,17 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					case "GET":
 						// Leaf: GetCustomerByID
 						r.name = "GetCustomerByID"
-						r.summary = "顧客を取得する"
+						r.summary = "顧客情報参照"
 						r.operationID = "getCustomerByID"
+						r.pathPattern = "/customers/{customerID}"
+						r.args = args
+						r.count = 1
+						return r, true
+					case "PUT":
+						// Leaf: PutModifyCustomerByID
+						r.name = "PutModifyCustomerByID"
+						r.summary = "顧客情報更新"
+						r.operationID = "putModifyCustomerByID"
 						r.pathPattern = "/customers/{customerID}"
 						r.args = args
 						r.count = 1

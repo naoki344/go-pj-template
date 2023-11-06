@@ -10,7 +10,9 @@ import (
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
 
+	"github.com/ogen-go/ogen/conv"
 	"github.com/ogen-go/ogen/ogenerrors"
+	"github.com/ogen-go/ogen/uri"
 	"github.com/ogen-go/ogen/validate"
 )
 
@@ -47,7 +49,270 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			return &response, nil
+			var wrapper GetCustomerByIDOKHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response GetCustomerByIDBadRequest
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper GetCustomerByIDBadRequestHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
@@ -82,7 +347,121 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			return &response, nil
+			var wrapper GetCustomerByIDNotFoundHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
@@ -117,7 +496,121 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			return &response, nil
+			var wrapper GetCustomerByIDInternalServerErrorHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}
@@ -125,7 +618,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodePostCreateCustomerResponse(resp *http.Response) (res *PostCreateCustomerOK, _ error) {
+func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustomerRes, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -158,7 +651,1772 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res *PostCreateCusto
 				}
 				return res, err
 			}
-			return &response, nil
+			var wrapper PostCreateCustomerOKHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostCreateCustomerBadRequest
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostCreateCustomerBadRequestHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 404:
+		// Code 404.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostCreateCustomerNotFound
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostCreateCustomerNotFoundHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 500:
+		// Code 500.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostCreateCustomerInternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostCreateCustomerInternalServerErrorHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}
+	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+}
+
+func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustomerRes, _ error) {
+	switch resp.StatusCode {
+	case 200:
+		// Code 200.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostSearchCustomerOK
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostSearchCustomerOKHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostSearchCustomerBadRequest
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostSearchCustomerBadRequestHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 404:
+		// Code 404.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostSearchCustomerNotFound
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostSearchCustomerNotFoundHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 500:
+		// Code 500.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PostSearchCustomerInternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PostSearchCustomerInternalServerErrorHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}
+	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+}
+
+func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCustomerByIDRes, _ error) {
+	switch resp.StatusCode {
+	case 200:
+		// Code 200.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PutModifyCustomerByIDOK
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PutModifyCustomerByIDOKHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PutModifyCustomerByIDBadRequest
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PutModifyCustomerByIDBadRequestHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 404:
+		// Code 404.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PutModifyCustomerByIDNotFound
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PutModifyCustomerByIDNotFoundHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 500:
+		// Code 500.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response PutModifyCustomerByIDInternalServerError
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			var wrapper PutModifyCustomerByIDInternalServerErrorHeaders
+			wrapper.Response = response
+			h := uri.NewHeaderDecoder(resp.Header)
+			// Parse "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowHeadersVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowHeadersVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
+				}
+			}
+			// Parse "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowMethodsVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowMethodsVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
+				}
+			}
+			// Parse "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterDecodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := func() error {
+					if err := h.HasParam(cfg); err == nil {
+						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+							var wrapperDotAccessControlAllowOriginVal string
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								wrapperDotAccessControlAllowOriginVal = c
+								return nil
+							}(); err != nil {
+								return err
+							}
+							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
+							return nil
+						}); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
+				}
+			}
+			return &wrapper, nil
 		default:
 			return res, validate.InvalidContentType(ct)
 		}

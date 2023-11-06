@@ -1,0 +1,5 @@
+total:
+  title: total
+  description: 合計件数
+  type: integer
+  format: int64

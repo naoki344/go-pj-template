@@ -1,0 +1,5 @@
+id:
+  title: id
+  description: 顧客ID
+  type: integer
+  format: int64

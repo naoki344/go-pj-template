@@ -1,8 +1,8 @@
 createCustomerResponse:
   description: 成功
+  headers:
+    $ref: "./headers.yaml#/headers"
   content:
     application/json:
       schema:
-        $ref: "../models/customer.yaml#/customer"
-      headers:
-        $ref: "./headers.yaml#/headers"
+        $ref: "./model/customerResponseModel.yaml#/customer"

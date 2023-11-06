@@ -1,0 +1,17 @@
+address:
+  type: object
+  additionalProperties: false
+  required:
+    - postal_code
+    - pref_id
+    - address1
+    - address2
+  properties:
+    postal_code:
+      $ref: "./address/postalCode.yaml#/postalCode"
+    pref_id:
+      $ref: "./address/prefId.yaml#/prefId"
+    address1:
+      $ref: "./address/address1.yaml#/address1"
+    address2:
+      $ref: "./address/address2.yaml#/address2"

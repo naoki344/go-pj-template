@@ -10,16 +10,28 @@ import (
 type Handler interface {
 	// GetCustomerByID implements getCustomerByID operation.
 	//
-	// 顧客を取得する.
+	// 顧客情報参照.
 	//
 	// GET /customers/{customerID}
 	GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (GetCustomerByIDRes, error)
 	// PostCreateCustomer implements postCreateCustomer operation.
 	//
-	// 顧客を登録する.
+	// 顧客情報登録.
 	//
 	// POST /customers
-	PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (*PostCreateCustomerOK, error)
+	PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (PostCreateCustomerRes, error)
+	// PostSearchCustomer implements postSearchCustomer operation.
+	//
+	// 顧客情報検索.
+	//
+	// POST /customers/search
+	PostSearchCustomer(ctx context.Context, req *PostSearchCustomerReq) (PostSearchCustomerRes, error)
+	// PutModifyCustomerByID implements putModifyCustomerByID operation.
+	//
+	// 顧客情報更新.
+	//
+	// PUT /customers/{customerID}
+	PutModifyCustomerByID(ctx context.Context, req *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (PutModifyCustomerByIDRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

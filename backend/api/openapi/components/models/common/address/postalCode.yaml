@@ -1,0 +1,7 @@
+postalCode:
+  title: postal_code
+  description: 郵便番号
+  type: string
+  minLength: 7
+  maxLength: 7
+  pattern: '^[0-9]{7}$'

@@ -12,9 +12,14 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/middleware"
 	"github.com/ogen-go/ogen/ogenerrors"
+	"github.com/ogen-go/ogen/ogenregex"
 	"github.com/ogen-go/ogen/otelogen"
 )
 
+var regexMap = map[string]ogenregex.Regexp{
+	"^(0{1}\\d{9,10})$": ogenregex.MustCompile("^(0{1}\\d{9,10})$"),
+	"^[0-9]{7}$":        ogenregex.MustCompile("^[0-9]{7}$"),
+}
 var (
 	// Allocate option closure once.
 	clientSpanKind = trace.WithSpanKind(trace.SpanKindClient)

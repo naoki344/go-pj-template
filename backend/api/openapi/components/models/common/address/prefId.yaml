@@ -1,0 +1,7 @@
+prefId:
+  title: pref_id
+  description: 都道府県ID
+  type: integer
+  format: int64
+  minimum: 1
+  maximum: 47

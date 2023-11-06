@@ -1,0 +1,20 @@
+searchCustomerResponse:
+  description: 成功
+  headers:
+    $ref: "./headers.yaml#/headers"
+  content:
+    application/json:
+      schema:
+        type: object
+        additionalProperties: false
+        required:
+          - customers
+          - page
+        properties:
+          customers:
+            type: array
+            description: 検索結果
+            items:
+              $ref: "./model/customerResponseModel.yaml#/customer"
+          page:
+            $ref: "./page/page.yaml#/page"
