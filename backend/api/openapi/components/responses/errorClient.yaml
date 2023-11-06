@@ -1,0 +1,8 @@
+clientError:
+  description: クライアントエラー
+  headers:
+    $ref: "./headers.yaml#/headers"
+  content:
+    application/json:
+      schema:
+        $ref: "./model/errorModel.yaml#/error"

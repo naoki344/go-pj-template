@@ -1,0 +1,5 @@
+current:
+  title: current
+  description: 現在のページ
+  type: integer
+  format: int64

@@ -1,0 +1,6 @@
+address2:
+  title: address2
+  description: 番地・建物名・部屋
+  type: string
+  minLength: 1
+  maxLength: 100

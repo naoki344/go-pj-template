@@ -1,0 +1,11 @@
+pagination:
+  type: object
+  additionalProperties: false
+  required:
+    - size
+    - number
+  properties:
+    size:
+      $ref: "./size.yaml#/size"
+    number:
+      $ref: "./number.yaml#/number"

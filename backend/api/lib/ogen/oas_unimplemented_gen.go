@@ -15,7 +15,7 @@ var _ Handler = UnimplementedHandler{}
 
 // GetCustomerByID implements getCustomerByID operation.
 //
-// 顧客を取得する.
+// 顧客情報参照.
 //
 // GET /customers/{customerID}
 func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCustomerByIDParams) (r GetCustomerByIDRes, _ error) {
@@ -24,9 +24,27 @@ func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCusto
 
 // PostCreateCustomer implements postCreateCustomer operation.
 //
-// 顧客を登録する.
+// 顧客情報登録.
 //
 // POST /customers
-func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (r *PostCreateCustomerOK, _ error) {
+func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (r PostCreateCustomerRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// PostSearchCustomer implements postSearchCustomer operation.
+//
+// 顧客情報検索.
+//
+// POST /customers/search
+func (UnimplementedHandler) PostSearchCustomer(ctx context.Context, req *PostSearchCustomerReq) (r PostSearchCustomerRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// PutModifyCustomerByID implements putModifyCustomerByID operation.
+//
+// 顧客情報更新.
+//
+// PUT /customers/{customerID}
+func (UnimplementedHandler) PutModifyCustomerByID(ctx context.Context, req *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (r PutModifyCustomerByIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

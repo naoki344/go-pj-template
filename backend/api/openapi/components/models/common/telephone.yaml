@@ -1,0 +1,7 @@
+telephone:
+  title: telephone
+  description: 電話番号
+  type: string
+  minLength: 10
+  maxLength: 11
+  pattern: '^(0{1}\d{9,10})$'

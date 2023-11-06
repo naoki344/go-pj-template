@@ -1,4 +1,4 @@
-getCustomerByIDResponse:
+modifyCustomerResponse:
   description: 成功
   headers:
     $ref: "./headers.yaml#/headers"

@@ -1,0 +1,6 @@
+address1:
+  title: address1
+  description: 市区町村
+  type: string
+  minLength: 1
+  maxLength: 100

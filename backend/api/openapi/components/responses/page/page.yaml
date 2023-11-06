@@ -1,0 +1,14 @@
+page:
+  type: object
+  additionalProperties: false
+  required:
+    - total
+    - current
+    - size
+  properties:
+    size:
+      $ref: "./size.yaml#/size"
+    total:
+      $ref: "./total.yaml#/total"
+    current:
+      $ref: "./current.yaml#/current"

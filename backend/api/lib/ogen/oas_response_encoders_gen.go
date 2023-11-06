@@ -9,43 +9,255 @@ import (
 	"github.com/go-faster/jx"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
+
+	"github.com/ogen-go/ogen/conv"
+	"github.com/ogen-go/ogen/uri"
 )
 
 func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *GetCustomerByIDOK:
+	case *GetCustomerByIDOKHeaders:
 		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *GetCustomerByIDNotFound:
+	case *GetCustomerByIDBadRequestHeaders:
 		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *GetCustomerByIDNotFoundHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
 		w.WriteHeader(404)
 		span.SetStatus(codes.Error, http.StatusText(404))
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
 
 		return nil
 
-	case *GetCustomerByIDInternalServerError:
+	case *GetCustomerByIDInternalServerErrorHeaders:
 		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
 		w.WriteHeader(500)
 		span.SetStatus(codes.Error, http.StatusText(500))
 
 		e := new(jx.Encoder)
-		response.Encode(e)
+		response.Response.Encode(e)
 		if _, err := e.WriteTo(w); err != nil {
 			return errors.Wrap(err, "write")
 		}
@@ -57,16 +269,767 @@ func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseW
 	}
 }
 
-func encodePostCreateCustomerResponse(response *PostCreateCustomerOK, w http.ResponseWriter, span trace.Span) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-	span.SetStatus(codes.Ok, http.StatusText(200))
+func encodePostCreateCustomerResponse(response PostCreateCustomerRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *PostCreateCustomerOKHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
 
-	e := new(jx.Encoder)
-	response.Encode(e)
-	if _, err := e.WriteTo(w); err != nil {
-		return errors.Wrap(err, "write")
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostCreateCustomerBadRequestHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostCreateCustomerNotFoundHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(404)
+		span.SetStatus(codes.Error, http.StatusText(404))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostCreateCustomerInternalServerErrorHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(500)
+		span.SetStatus(codes.Error, http.StatusText(500))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
 	}
+}
 
-	return nil
+func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *PostSearchCustomerOKHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostSearchCustomerBadRequestHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostSearchCustomerNotFoundHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(404)
+		span.SetStatus(codes.Error, http.StatusText(404))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PostSearchCustomerInternalServerErrorHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(500)
+		span.SetStatus(codes.Error, http.StatusText(500))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
+	}
+}
+
+func encodePutModifyCustomerByIDResponse(response PutModifyCustomerByIDRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *PutModifyCustomerByIDOKHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PutModifyCustomerByIDBadRequestHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PutModifyCustomerByIDNotFoundHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(404)
+		span.SetStatus(codes.Error, http.StatusText(404))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *PutModifyCustomerByIDInternalServerErrorHeaders:
+		w.Header().Set("Content-Type", "application/json")
+		// Encoding response headers.
+		{
+			h := uri.NewHeaderEncoder(w.Header())
+			// Encode "Access-Control-Allow-Headers" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Headers",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
+				}
+			}
+			// Encode "Access-Control-Allow-Methods" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Methods",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowMethods.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
+				}
+			}
+			// Encode "Access-Control-Allow-Origin" header.
+			{
+				cfg := uri.HeaderParameterEncodingConfig{
+					Name:    "Access-Control-Allow-Origin",
+					Explode: false,
+				}
+				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
+						return e.EncodeValue(conv.StringToString(val))
+					}
+					return nil
+				}); err != nil {
+					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
+				}
+			}
+		}
+		w.WriteHeader(500)
+		span.SetStatus(codes.Error, http.StatusText(500))
+
+		e := new(jx.Encoder)
+		response.Response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
+	}
 }

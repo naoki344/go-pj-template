@@ -1,11 +1,13 @@
-getCustomerByID:
-  summary: 顧客情報参照
-  operationId: getCustomerByID
+putModifyCustomerByID:
+  summary: 顧客情報更新
+  operationId: putModifyCustomerByID
   parameters:
     - $ref: "../../requests/params/path/customerID.yaml#/customerID"
+  requestBody:
+    $ref: "../../requests/body/modifyCustomerRequest.yaml#/modifyCustomerRequest"
   responses:
     200:
-      $ref: "../../responses/getCustomerByIDResponse.yaml#/getCustomerByIDResponse"
+      $ref: "../../responses/modifyCustomerResponse.yaml#/modifyCustomerResponse"
     400:
       $ref: "../../responses/errorClient.yaml#/clientError"
     404:

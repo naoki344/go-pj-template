@@ -1,0 +1,6 @@
+nameKana:
+  title: name_kana
+  description: 名称(カナ)
+  type: string
+  minLength: 1
+  maxLength: 100
