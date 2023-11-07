@@ -11,13 +11,6 @@ import (
 )
 
 
-type Customer struct {
-	ID      int64  `bun:"i"`
-	Title   string `bun:"title"`
-	Content string `bun:"content"`
-}
-
-
 func (rdb *MySQL) GetCustomerByID(customerID int64) (*Customer, error){
 	db := bun.NewDB(rdb.Conn, mysqldialect.New())
 	customer := Customer{}

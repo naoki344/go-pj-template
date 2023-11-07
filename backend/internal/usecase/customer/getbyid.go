@@ -1,7 +1,7 @@
 package customerusecase
 
 import (
-	customermodel "github.com/g-stayfresh/en/backend/internal/app/model/customer"
+	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
 	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
 )
 
@@ -14,6 +14,6 @@ func NewGetCustomerByIDUsecase (port rdbport.GetCustomerByIDPortInterface) *GetC
 }
 
 
-func (usecase *GetCustomerByIDUsecase) Run(customerId customermodel.CustomerID) (*customermodel.Customer, error) {
+func (usecase *GetCustomerByIDUsecase) Run(customerId customermodel.ID) (*customermodel.Customer, error) {
 	return usecase.port.Get(customerId)
 }

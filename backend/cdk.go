@@ -150,14 +150,28 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 		Root().
 		AddResource(jsii.String("customers"), nil)
 	apiResource.AddMethod(
+		jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil),
+		&awsapigateway.MethodOptions{
+			AuthorizationType: awsapigateway.AuthorizationType_IAM,
+	})
+	customerSearchResource := apiResource.AddResource(jsii.String("search"), nil)
+	customerSearchResource.AddMethod(
+		jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil),
+		&awsapigateway.MethodOptions{
+			AuthorizationType: awsapigateway.AuthorizationType_IAM,
+	})
+
+	customerIdResource := apiResource.AddResource(jsii.String("{customerID}"), nil)
+	customerIdResource.AddMethod(
 		jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil),
 		&awsapigateway.MethodOptions{
 			AuthorizationType: awsapigateway.AuthorizationType_IAM,
 	})
-	apiResource.AddMethod(jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil), nil)
-
-	customerIdResource := apiResource.AddResource(jsii.String("{customerID}"), nil)
-	customerIdResource.AddMethod(jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil), nil)
+	customerIdResource.AddMethod(
+		jsii.String("PUT"), awsapigateway.NewLambdaIntegration(function, nil),
+		&awsapigateway.MethodOptions{
+			AuthorizationType: awsapigateway.AuthorizationType_IAM,
+	})
 
 	return stack
 }

@@ -4,4 +4,4 @@ email:
   type: string
   format: email
   minLength: 1
-  maxLength: 300
+  maxLength: 200
