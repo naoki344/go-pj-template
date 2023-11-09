@@ -2,19 +2,19 @@ package rdbadapter
 
 import (
 	"database/sql"
-	"log/slog"
 	"fmt"
+	"log/slog"
 	"net/url"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
-
 type MySQLConfig struct {
-    USERNAME string
+	USERNAME string
 	PASSWORD string
-	HOST string
-	PORT string
-	NAME string
+	HOST     string
+	PORT     string
+	NAME     string
 }
 
 type MySQL struct {
@@ -22,7 +22,7 @@ type MySQL struct {
 }
 
 func NewMySQL(cfg *MySQLConfig) (*MySQL, error) {
-    var err error
+	var err error
 	conn, err := sql.Open(
 		"mysql",
 		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=%s",

@@ -2,52 +2,41 @@ package lambdaadapter
 
 import (
 	"context"
-	"github.com/aws/aws-lambda-go/events"
+	"log/slog"
 	"net/http"
 	"os"
-	"log/slog"
-	"dario.cat/mergo"
+
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
 )
 
-
-type ApiGatewayHandler struct {
-	ctx context.Context
-	event events.APIGatewayProxyRequest
+type APIGatewayHandler struct {
 	server http.Handler
 }
 
-func NewAPIGatewayHandler(ctx context.Context, event events.APIGatewayProxyRequest, server http.Handler) *ApiGatewayHandler{
-	return &ApiGatewayHandler{
-		ctx: ctx,
-		event: event,
+func NewAPIGatewayHandler(
+	server http.Handler,
+) *APIGatewayHandler {
+	return &APIGatewayHandler{
 		server: server,
 	}
 }
 
-func (handler *ApiGatewayHandler) SetLogger() {
+func (handler *APIGatewayHandler) SetLogger(ctx context.Context) {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	lc, ok := lambdacontext.FromContext(handler.ctx)
+	lc, ok := lambdacontext.FromContext(ctx)
 	if ok {
-		logger = logger.With(slog.String("aws_request_id", lc.AwsRequestID))
+		logger.With(slog.String("aws_request_id", lc.AwsRequestID))
 	}
 }
 
-
-func (handler *ApiGatewayHandler) Run() (events.APIGatewayProxyResponse, error){
-	handler.SetLogger()
+func (handler *APIGatewayHandler) Run(
+	ctx context.Context,
+	event events.APIGatewayProxyRequest,
+) (events.APIGatewayProxyResponse, error) {
+	handler.SetLogger(ctx)
 
 	// NOTE: https://github.com/awslabs/aws-lambda-go-api-proxy/blob/master/httpadapter/adapter.go#L16
-	res, err := httpadapter.New(handler.server).ProxyWithContext(handler.ctx, handler.event)
-	if err != nil {
-		return res, err
-	}
-	newHeader := map[string]string{
-		"Access-Control-Allow-Origin": "*",
-		"Access-Control-Allow-Methods": "*",
-		"Access-Control-Allow-Headers": "*",
-	}
-	mergo.Merge(&res.Headers, newHeader)
-	return res, err
+	return httpadapter.New(handler.server).ProxyWithContext(ctx, event) //nolint:wrapcheck
 }

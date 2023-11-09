@@ -24,18 +24,18 @@ type Address2 string
 
 type Address struct {
 	PostalCode PostalCode
-	PrefID PrefID
-	Address1 Address1
-	Address2 Address2
+	PrefID     PrefID
+	Address1   Address1
+	Address2   Address2
 }
 
 type Customer struct {
-	ID      ID
-	Name Name
-	NameKana NameKana
-	Telephone Telephone
-	Email Email
-	PersonInChargeName PersonInChargeName
+	ID                     ID
+	Name                   Name
+	NameKana               NameKana
+	Telephone              Telephone
+	Email                  Email
+	PersonInChargeName     PersonInChargeName
 	PersonInChargeNameKana PersonInChargeNameKana
-	Address Address
+	Address                Address
 }

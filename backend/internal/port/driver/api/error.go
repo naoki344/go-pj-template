@@ -1,17 +1,16 @@
 package apiport
 
-
 import (
 	"errors"
 	"fmt"
 )
 
-type APIErrCustomerNotFound struct {
+type APICustomerNotFoundError struct {
 	customerid CustomerID
 }
 
-func (err *APIErrCustomerNotFound)Error() string {
-	return	fmt.Sprintf("CustomerNotFound [CustomerID=%d]", err.customerid)
+func (err *APICustomerNotFoundError) Error() string {
+	return fmt.Sprintf("CustomerNotFound [CustomerID=%d]", err.customerid)
 }
 
-var UnexpectedError = errors.New("UnexpectedError")
+var ErrUnexpected = errors.New("UnexpectedError")

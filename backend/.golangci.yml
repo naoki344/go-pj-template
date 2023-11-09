@@ -1,0 +1,68 @@
+run:
+  concurrency: 16
+  timeout: 3m
+  allow-parallel-runners: true
+  skip-dirs:
+    - node_modules
+
+linters-settings:
+  tagliatelle:
+    case:
+      use-field-name: true
+      rules:
+        json: snake
+
+skip-files:
+  - cmd/api/wire_gen.go
+  - cdk/**
+
+linters:
+  enable-all: true
+  disable:
+    - depguard # go.mod に記載されていないパッケージを検出してしまう
+    - exhaustivestruct # struct の初期化時に未使用フィールドがあると検出してしまう
+    - exhaustruct # struct の初期化時に未使用フィールドがあると検出してしまう
+    - ireturn # interfaceを返却したい
+    # NOTE: 外部ライブラリのみ無視できるようにしたい
+    - nosnakecase # パッケージ名に snake_case を使っていると検出してしまう
+    # ジェネリクス
+    - scopelint #exportloopref
+    - maligned #fieldalignment
+    - golint
+    - revive
+    - nlreturn
+    - lll
+    # 放棄
+    - structcheck
+    - deadcode
+    - varcheck
+    - wsl
+    # 非推奨
+    - ifshort
+    - interfacer
+
+exclude-rules:
+  - linters:
+      - stylecheck
+    text: "ST1000:"
+
+issues:
+  exclude-use-default: false
+  exclude-rules:
+    - path: test/
+      linters:
+        - funlen
+        - paralleltest
+        - varnamelen
+    # モック作成時は許容する
+    - path: internal/adapter/driver/ogen/
+      linters:
+        - gomnd
+        - gosmopolitan
+    - path: /
+      linters:
+        - stylecheck
+      text: "ST1000:"
+    - path: cdk/
+      linters:
+        - funlen

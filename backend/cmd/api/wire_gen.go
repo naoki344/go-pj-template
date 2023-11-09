@@ -7,11 +7,11 @@
 package main
 
 import (
-	"github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	"github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
-	"github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
-	"github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	"github.com/g-stayfresh/en/backend/internal/usecase/customer"
+	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
+	ogenadapter "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
+	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
+	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
+	customerusecase "github.com/g-stayfresh/en/backend/internal/usecase/customer"
 )
 
 import (

@@ -1,0 +1,58 @@
+version: 3
+workdir: internal
+allow:
+  depOnAnyVendor: true
+
+excludeFiles:
+  - "^.*_test\\.go$"
+  - "^.*\/test\/.*$"
+
+components:
+  main:                           { in: ../cmd/** }
+  driverAdapter:                  { in: adapter/driver/** }
+  apiOgenServer:                  { in: ../api/lib/ogen/** }
+  drivenAdapter:                  { in: adapter/driven/** }
+  driverPort:                     { in: port/driver/** }
+  drivenPort:                     { in: port/driven/** }
+  usecase:                        { in: usecase/** }
+  domain:                         { in: domain/** }
+
+deps:
+  main:
+    anyVendorDeps: true
+    mayDependOn:
+      - driverAdapter
+
+  driverAdapter:
+    anyVendorDeps: true
+    mayDependOn:
+      - driverAdapter
+      - driverPort
+      - apiOgenServer
+
+  driverPort:
+    anyVendorDeps: true
+    mayDependOn:
+      - domain
+      - usecase
+
+  usecase:
+    anyVendorDeps: true
+    mayDependOn:
+      - domain
+      - drivenPort
+
+  drivenPort:
+    anyVendorDeps: true
+    mayDependOn:
+      - domain
+      - drivenAdapter
+
+  drivenAdapter:
+    anyVendorDeps: true
+    mayDependOn:
+      - drivenAdapter
+
+  domain:
+    mayDependOn:
+      - domain

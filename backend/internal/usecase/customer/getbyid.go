@@ -9,11 +9,10 @@ type GetCustomerByIDUsecase struct {
 	port rdbport.GetCustomerByIDPortInterface
 }
 
-func NewGetCustomerByIDUsecase (port rdbport.GetCustomerByIDPortInterface) *GetCustomerByIDUsecase{
+func NewGetCustomerByIDUsecase(port rdbport.GetCustomerByIDPortInterface) *GetCustomerByIDUsecase {
 	return &GetCustomerByIDUsecase{port}
 }
 
-
-func (usecase *GetCustomerByIDUsecase) Run(customerId customermodel.ID) (*customermodel.Customer, error) {
-	return usecase.port.Get(customerId)
+func (usecase *GetCustomerByIDUsecase) Run(customerID customermodel.ID) (*customermodel.Customer, error) {
+	return usecase.port.Get(customerID) //nolint:wrapcheck
 }

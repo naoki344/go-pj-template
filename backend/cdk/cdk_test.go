@@ -2,13 +2,14 @@ package main
 
 import (
 	"testing"
+
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/assertions"
 	"github.com/aws/jsii-runtime-go"
-
 )
 
 func TestCdkLambdaGoStack(t *testing.T) {
+	t.Parallel()
 	// GIVEN
 	app := awscdk.NewApp(nil)
 

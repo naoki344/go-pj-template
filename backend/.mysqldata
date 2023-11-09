@@ -1,0 +1,1 @@
+insert into customers (name,name_kana,telephone,email,person_in_charge_name,person_in_charge_name_kana,postal_code,pref_id,address1,address2) values('三好Test', 'ミヨシ', '09011112222','example@com.com','担当A','エータントウ','0800301',1,'宮 崎市佐土原町上田島', '11-1 102号室');

@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigateway"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awscognito"
@@ -12,16 +13,26 @@ import (
 	"github.com/aws/jsii-runtime-go"
 )
 
+const (
+	lambdaMemorySize      = 512
+	lambdaTimeout         = 28
+	corsDefaultStatusCode = 200
+)
+
 type CdkLambdaGoStackProps struct {
 	awscdk.StackProps
 }
 
-func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambdaGoStackProps) awscdk.Stack {
+func NewCdkLambdaGoStack(
+	scope constructs.Construct,
+	stackName string,
+	props *CdkLambdaGoStackProps,
+) awscdk.Stack {
 	var sprops awscdk.StackProps
 	if props != nil {
 		sprops = props.StackProps
 	}
-	stack := awscdk.NewStack(scope, &id, &sprops)
+	stack := awscdk.NewStack(scope, &stackName, &sprops)
 
 	myRole := awsiam.NewRole(stack, jsii.String("MyLambdaRole"), &awsiam.RoleProps{
 		AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
@@ -30,8 +41,8 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
 		Entry:        jsii.String("cmd/api"),
 		Description:  jsii.String("A function written in Go"),
-		MemorySize:   jsii.Number(512),
-		Timeout:      awscdk.Duration_Seconds(jsii.Number(30)),
+		MemorySize:   jsii.Number(lambdaMemorySize),
+		Timeout:      awscdk.Duration_Seconds(jsii.Number(lambdaTimeout)),
 		Architecture: awslambda.Architecture_ARM_64(),
 		FunctionName: jsii.String("test-todos-handler"),
 		Environment: &map[string]*string{
@@ -57,40 +68,37 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaVPCAccessExecutionRole")))
 	myRole.AddToPolicy(dbPolicy)
 
-
-	restApi := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
+	restAPI := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
 		RestApiName: jsii.String("test-api-gateway"),
 		DefaultCorsPreflightOptions: &awsapigateway.CorsOptions{
 			AllowOrigins: awsapigateway.Cors_ALL_ORIGINS(),
 			AllowMethods: awsapigateway.Cors_ALL_METHODS(),
 			AllowHeaders: awsapigateway.Cors_DEFAULT_HEADERS(),
-			StatusCode:   jsii.Number(200),
+			StatusCode:   jsii.Number(corsDefaultStatusCode),
 		},
 	})
 
-
-
 	cognitoUserPool := awscognito.NewUserPool(stack, jsii.String("en-userpool"), &awscognito.UserPoolProps{
-		UserPoolName: jsii.String("myawesomeapp-userpool"),
+		UserPoolName:        jsii.String("myawesomeapp-userpool"),
 		SignInCaseSensitive: jsii.Bool(false),
 	})
 	userPoolClient := cognitoUserPool.AddClient(jsii.String("en-userpool-client"), &awscognito.UserPoolClientOptions{
 		GenerateSecret: jsii.Bool(false),
 		AuthFlows: &awscognito.AuthFlow{
 			AdminUserPassword: jsii.Bool(true),
-			UserPassword: jsii.Bool(true),
-			UserSrp: jsii.Bool(true),
+			UserPassword:      jsii.Bool(true),
+			UserSrp:           jsii.Bool(true),
 		},
 		SupportedIdentityProviders: &[]awscognito.UserPoolClientIdentityProvider{
 			awscognito.UserPoolClientIdentityProvider_COGNITO(),
 		},
 	})
 	identityPool := awscognito.NewCfnIdentityPool(stack, jsii.String("en-cognito-id-pool"), &awscognito.CfnIdentityPoolProps{
-		IdentityPoolName: jsii.String("en-cognito-id-pool"),
+		IdentityPoolName:               jsii.String("en-cognito-id-pool"),
 		AllowUnauthenticatedIdentities: jsii.Bool(false),
 		CognitoIdentityProviders: &[]*awscognito.CfnIdentityPool_CognitoIdentityProviderProperty{
 			{
-				ClientId: userPoolClient.UserPoolClientId(),
+				ClientId:     userPoolClient.UserPoolClientId(),
 				ProviderName: cognitoUserPool.UserPoolProviderName(),
 			},
 		},
@@ -118,7 +126,7 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 			Roles: &map[string]interface{}{
 				"authenticated": identityPoolRole.RoleArn(),
 			},
-	})
+		})
 
 	// Custom policy statements
 	identityPoolRole.AddToPolicy(awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
@@ -137,7 +145,7 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 			jsii.String("execute-api:Invoke"),
 		},
 		Resources: &[]*string{
-			restApi.ArnForExecuteApi(
+			restAPI.ArnForExecuteApi(
 				jsii.String("*"),
 				jsii.String("/*"),
 				jsii.String("*"),
@@ -145,33 +153,32 @@ func NewCdkLambdaGoStack(scope constructs.Construct, id string, props *CdkLambda
 		},
 	}))
 
-
-	apiResource := restApi.
+	apiResource := restAPI.
 		Root().
 		AddResource(jsii.String("customers"), nil)
 	apiResource.AddMethod(
 		jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil),
 		&awsapigateway.MethodOptions{
 			AuthorizationType: awsapigateway.AuthorizationType_IAM,
-	})
+		})
 	customerSearchResource := apiResource.AddResource(jsii.String("search"), nil)
 	customerSearchResource.AddMethod(
 		jsii.String("POST"), awsapigateway.NewLambdaIntegration(function, nil),
 		&awsapigateway.MethodOptions{
 			AuthorizationType: awsapigateway.AuthorizationType_IAM,
-	})
+		})
 
-	customerIdResource := apiResource.AddResource(jsii.String("{customerID}"), nil)
-	customerIdResource.AddMethod(
+	customerIDResource := apiResource.AddResource(jsii.String("{customerID}"), nil)
+	customerIDResource.AddMethod(
 		jsii.String("GET"), awsapigateway.NewLambdaIntegration(function, nil),
 		&awsapigateway.MethodOptions{
 			AuthorizationType: awsapigateway.AuthorizationType_IAM,
-	})
-	customerIdResource.AddMethod(
+		})
+	customerIDResource.AddMethod(
 		jsii.String("PUT"), awsapigateway.NewLambdaIntegration(function, nil),
 		&awsapigateway.MethodOptions{
 			AuthorizationType: awsapigateway.AuthorizationType_IAM,
-	})
+		})
 
 	return stack
 }

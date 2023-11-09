@@ -3,7 +3,6 @@ module github.com/g-stayfresh/en/backend
 go 1.18
 
 require (
-	dario.cat/mergo v1.0.0
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.103.1
 	github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.103.1-alpha.0
 	github.com/aws/aws-lambda-go v1.41.0
