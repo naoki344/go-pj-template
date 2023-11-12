@@ -26,7 +26,7 @@ deploy-setting:
 
 build-wire:
 	echo "build wire file"
-	wire
+	cd ./cmd/api/ && wire
 
 build-ogen:
 	echo "build ogen file"
@@ -40,7 +40,7 @@ setup-all: setup-install migrate build-openapi build-ogen build-wire
 build-all: build-openapi build-ogen build-wire
 
 deploy: build-all
-	cdk deploy
+	cd ./cdk/ && npx cdk deploy
 
 test:
 	go test

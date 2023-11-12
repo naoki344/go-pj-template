@@ -150,7 +150,7 @@ paths:
                     type: string
                     format: email
                     minLength: 1
-                    maxLength: 300
+                    maxLength: 200
                   person_in_charge_name:
                     title: person_in_charge_name
                     description: 担当者名
@@ -381,7 +381,7 @@ paths:
                           type: string
                           format: email
                           minLength: 1
-                          maxLength: 300
+                          maxLength: 200
                         person_in_charge_name:
                           title: person_in_charge_name
                           description: 担当者名
@@ -594,7 +594,7 @@ paths:
                     type: string
                     format: email
                     minLength: 1
-                    maxLength: 300
+                    maxLength: 200
                   person_in_charge_name:
                     title: person_in_charge_name
                     description: 担当者名
@@ -771,7 +771,7 @@ paths:
                   type: string
                   format: email
                   minLength: 1
-                  maxLength: 300
+                  maxLength: 200
                 person_in_charge_name:
                   title: person_in_charge_name
                   description: 担当者名
@@ -876,7 +876,7 @@ paths:
                     type: string
                     format: email
                     minLength: 1
-                    maxLength: 300
+                    maxLength: 200
                   person_in_charge_name:
                     title: person_in_charge_name
                     description: 担当者名

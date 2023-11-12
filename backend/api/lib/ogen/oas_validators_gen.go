@@ -80,7 +80,7 @@ func (s *GetCustomerByIDOK) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,
@@ -331,7 +331,7 @@ func (s *PostCreateCustomerOK) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,
@@ -582,7 +582,7 @@ func (s *PostCreateCustomerReq) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,
@@ -850,7 +850,7 @@ func (s *PostSearchCustomerOKCustomersItem) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,
@@ -1154,7 +1154,7 @@ func (s *PutModifyCustomerByIDOK) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,
@@ -1405,7 +1405,7 @@ func (s *PutModifyCustomerByIDReq) Validate() error {
 		if err := (validate.String{
 			MinLength:    1,
 			MinLengthSet: true,
-			MaxLength:    300,
+			MaxLength:    200,
 			MaxLengthSet: true,
 			Email:        true,
 			Hostname:     false,

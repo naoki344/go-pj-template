@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log/slog"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -13,6 +14,7 @@ import (
 )
 
 func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	slog.Info("wrapper: context ", "ctx", ctx)
 	dbadapter, _ := rdbadapter.NewMySQL(&rdbadapter.MySQLConfig{
 		USERNAME: os.Getenv("DB_USERNAME"),
 		PASSWORD: os.Getenv("DB_PASSWORD"),

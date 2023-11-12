@@ -14,9 +14,11 @@ import (
 )
 
 const (
-	lambdaMemorySize      = 512
-	lambdaTimeout         = 28
-	corsDefaultStatusCode = 200
+	lambdaMemorySize          = 512
+	lambdaTimeout             = 28
+	corsDefaultStatusCode     = 200
+	paramsAndSecretsCacheSize = 500
+	paramsAndSecretsLayerArn  = "arn:aws:lambda:ap-northeast-1:133490724326:layer:AWS-Parameters-and-Secrets-Lambda-Extension-Arm64:11" //nolint:gosec
 )
 
 type CdkLambdaGoStackProps struct {
@@ -37,9 +39,15 @@ func NewCdkLambdaGoStack(
 	myRole := awsiam.NewRole(stack, jsii.String("MyLambdaRole"), &awsiam.RoleProps{
 		AssumedBy: awsiam.NewServicePrincipal(jsii.String("lambda.amazonaws.com"), nil),
 	})
+	layerArn := paramsAndSecretsLayerArn
+	paramsAndSecrets := awslambda.ParamsAndSecretsLayerVersion_FromVersionArn(
+		&layerArn, &awslambda.ParamsAndSecretsOptions{
+			CacheSize: jsii.Number(paramsAndSecretsCacheSize),
+			LogLevel:  awslambda.ParamsAndSecretsLogLevel(os.Getenv("LOG_LEVEL")),
+		})
 
 	function := awslambdago.NewGoFunction(stack, jsii.String("handler"), &awslambdago.GoFunctionProps{
-		Entry:        jsii.String("cmd/api"),
+		Entry:        jsii.String("../cmd/api"),
 		Description:  jsii.String("A function written in Go"),
 		MemorySize:   jsii.Number(lambdaMemorySize),
 		Timeout:      awscdk.Duration_Seconds(jsii.Number(lambdaTimeout)),
@@ -54,7 +62,8 @@ func NewCdkLambdaGoStack(
 			"DB_PORT":     jsii.String(os.Getenv("DB_PORT")),
 			"DB_NAME":     jsii.String(os.Getenv("DB_NAME")),
 		},
-		Role: myRole,
+		Role:             myRole,
+		ParamsAndSecrets: paramsAndSecrets,
 	})
 	dbPolicy := awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
 		Actions: &[]*string{

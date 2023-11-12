@@ -11,4 +11,5 @@ var (
 
 type RdbInterface interface {
 	GetCustomerByID(customerID int64) (*Customer, error)
+	UpdateCustomerByID(customer *Customer) error
 }

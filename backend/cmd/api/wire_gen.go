@@ -7,11 +7,11 @@
 package main
 
 import (
-	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	ogenadapter "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
-	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
-	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	customerusecase "github.com/g-stayfresh/en/backend/internal/usecase/customer"
+	"github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
+	"github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
+	"github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
+	"github.com/g-stayfresh/en/backend/internal/port/driver/api"
+	"github.com/g-stayfresh/en/backend/internal/usecase/customer"
 )
 
 import (
@@ -21,9 +21,9 @@ import (
 // Injectors from wire.go:
 
 func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
-	getCustomerByIDPort := rdbport.NewGetCustomerByIDPort(db)
-	getCustomerByIDUsecase := customerusecase.NewGetCustomerByIDUsecase(getCustomerByIDPort)
-	getCustomerByIDAPIPort := apiport.NewGetCustomerByIDAPIPort(getCustomerByIDUsecase)
-	enAPIAdapter := ogenadapter.NewEnAPIAdapter(getCustomerByIDAPIPort)
+	customerRdbPort := rdbport.NewCustomerRdbPort(db)
+	customerUsecase := customerusecase.NewCustomerUsecase(customerRdbPort)
+	customerAPIPort := apiport.NewCustomerAPIPort(customerUsecase)
+	enAPIAdapter := ogenadapter.NewEnAPIAdapter(customerAPIPort)
 	return enAPIAdapter
 }

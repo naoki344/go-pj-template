@@ -24,33 +24,52 @@ type Customer struct {
 	Address2               string
 }
 
-type GetCustomerByIDAPIPort struct {
-	usecase customerusecase.GetCustomerByIDInterface
+func toPortCustomer(customer *customermodel.Customer) *Customer {
+	return &Customer{
+		ID:                     int64(customer.ID),
+		Name:                   string(customer.Name),
+		NameKana:               customer.NameKana,
+		Telephone:              string(customer.Telephone),
+		Email:                  string(customer.Email),
+		PersonInChargeName:     string(customer.PersonInChargeName),
+		PersonInChargeNameKana: customer.PersonInChargeNameKana,
+		PostalCode:             string(customer.Address.PostalCode),
+		PrefID:                 int64(customer.Address.PrefID),
+		Address1:               string(customer.Address.Address1),
+		Address2:               string(customer.Address.Address2),
+	}
 }
 
-func NewGetCustomerByIDAPIPort(usecase customerusecase.GetCustomerByIDInterface) *GetCustomerByIDAPIPort {
-	return &GetCustomerByIDAPIPort{usecase}
+func toModelCustomer(customer *Customer) *customermodel.Customer {
+	return &customermodel.Customer{}
 }
 
-func (port *GetCustomerByIDAPIPort) Run(customerID CustomerID) (*Customer, error) {
-	res, err := port.usecase.Run(customermodel.ID(customerID))
+type CustomerAPIPort struct {
+	usecase customerusecase.CustomerUsecaseInterface
+}
+
+func NewCustomerAPIPort(usecase customerusecase.CustomerUsecaseInterface) *CustomerAPIPort {
+	return &CustomerAPIPort{usecase}
+}
+
+func (port *CustomerAPIPort) GetByID(customerID CustomerID) (*Customer, error) {
+	res, err := port.usecase.GetByID(customermodel.ID(customerID))
 	if err != nil {
 		if errors.Is(err, errormodel.ErrCustomerNotFound) {
 			return nil, &APICustomerNotFoundError{customerID}
 		}
 		return nil, ErrUnexpected
 	}
-	return &Customer{
-		ID:                     int64(res.ID),
-		Name:                   string(res.Name),
-		NameKana:               res.NameKana,
-		Telephone:              string(res.Telephone),
-		Email:                  string(res.Email),
-		PersonInChargeName:     string(res.PersonInChargeName),
-		PersonInChargeNameKana: res.PersonInChargeNameKana,
-		PostalCode:             string(res.Address.PostalCode),
-		PrefID:                 int64(res.Address.PrefID),
-		Address1:               string(res.Address.Address1),
-		Address2:               string(res.Address.Address2),
-	}, nil
+	return toPortCustomer(res), nil
+}
+
+func (port *CustomerAPIPort) UpdateByID(customer *Customer) error {
+	err := port.usecase.UpdateByID(toModelCustomer(customer))
+	if err != nil {
+		if errors.Is(err, errormodel.ErrCustomerNotFound) {
+			return &APICustomerNotFoundError{CustomerID(customer.ID)}
+		}
+		return ErrUnexpected
+	}
+	return nil
 }

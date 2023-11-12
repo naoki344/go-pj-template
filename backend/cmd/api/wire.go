@@ -15,11 +15,11 @@ import (
 func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
 	wire.Build(
 		ogenadapter.NewEnAPIAdapter,
-		apiport.NewGetCustomerByIDAPIPort,
-		customerusecase.NewGetCustomerByIDUsecase,
-		wire.Bind(new(customerusecase.GetCustomerByIDInterface), new(*customerusecase.GetCustomerByIDUsecase)),
-		rdbport.NewGetCustomerByIDPort,
-		wire.Bind(new(rdbport.GetCustomerByIDPortInterface), new(*rdbport.GetCustomerByIDPort)),
+		apiport.NewCustomerAPIPort,
+		customerusecase.NewCustomerUsecase,
+		wire.Bind(new(customerusecase.CustomerUsecaseInterface), new(*customerusecase.CustomerUsecase)),
+		rdbport.NewCustomerRdbPort,
+		wire.Bind(new(rdbport.CustomerRdbPortInterface), new(*rdbport.CustomerRdbPort)),
 		// NewMySQLはmain内に実装するため、bindのみ行う
 		wire.Bind(new(rdbadapter.RdbInterface), new(*rdbadapter.MySQL)),
 	)

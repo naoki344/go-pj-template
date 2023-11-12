@@ -3,13 +3,14 @@ package ogenadapter
 import (
 	"context"
 	"errors"
+	"log/slog"
 
 	"github.com/g-stayfresh/en/backend/api/lib/ogen"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
 )
 
 type EnAPIAdapter struct {
-	getCustomerByID *apiport.GetCustomerByIDAPIPort
+	customerAPI *apiport.CustomerAPIPort
 }
 
 func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerReq) (ogen.PostCreateCustomerRes, error) {
@@ -95,6 +96,11 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 }
 
 func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDReq, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
+
+	err := n.customerAPI.UpdateByID()
+	if err != nil {
+		return CreateErrorPutByIDResponse(err), nil
+	}
 	return &ogen.PutModifyCustomerByIDOKHeaders{
 		Response: ogen.PutModifyCustomerByIDOK{
 			ID:   int64(1),
@@ -121,9 +127,9 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 }
 
 func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
-	res, err := n.getCustomerByID.Run(apiport.CustomerID(params.CustomerID))
+	res, err := n.customerAPI.GetByID(apiport.CustomerID(params.CustomerID))
 	if err != nil {
-		return CreateErrorResponse(err), nil
+		return CreateErrorGetByIDResponse(err), nil
 	}
 	return &ogen.GetCustomerByIDOKHeaders{
 		Response: ogen.GetCustomerByIDOK{
@@ -144,7 +150,8 @@ func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCusto
 	}, nil
 }
 
-func CreateErrorResponse(err error) ogen.GetCustomerByIDRes {
+func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
+	slog.Error("get customer error.", "err", err)
 	var customerErr *apiport.APICustomerNotFoundError
 	if errors.As(err, &customerErr) {
 		return &ogen.GetCustomerByIDNotFoundHeaders{
@@ -156,6 +163,25 @@ func CreateErrorResponse(err error) ogen.GetCustomerByIDRes {
 	}
 	return &ogen.GetCustomerByIDInternalServerErrorHeaders{
 		Response: ogen.GetCustomerByIDInternalServerError{
+			Type:    "InternalServerError",
+			Message: "aaaaaaaaaaaaaaa",
+		},
+	}
+}
+
+func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
+	slog.Error("get customer error.", "err", err)
+	var customerErr *apiport.APICustomerNotFoundError
+	if errors.As(err, &customerErr) {
+		return &ogen.PutModifyCustomerByIDBadRequestHeaders{
+			Response: ogen.PutModifyCustomerByIDBadRequest{
+				Type:    "ResourceNotFound",
+				Message: "aaaaaaaaaaaaaaa",
+			},
+		}
+	}
+	return &ogen.PutModifyCustomerByIDInternalServerErrorHeaders{
+		Response: ogen.PutModifyCustomerByIDInternalServerError{
 			Type:    "InternalServerError",
 			Message: "aaaaaaaaaaaaaaa",
 		},
@@ -176,8 +202,8 @@ func CreateOptString(value *string) ogen.OptString {
 	}
 }
 
-func NewEnAPIAdapter(getCustomerByID *apiport.GetCustomerByIDAPIPort) *EnAPIAdapter {
+func NewEnAPIAdapter(customerAPI *apiport.CustomerAPIPort) *EnAPIAdapter {
 	return &EnAPIAdapter{
-		getCustomerByID: getCustomerByID,
+		customerAPI: customerAPI,
 	}
 }
