@@ -3,3 +3,5 @@ size:
   description: ページサイズ
   type: integer
   format: int64
+  minimum: 1
+  maximum: 1000

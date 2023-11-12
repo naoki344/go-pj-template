@@ -14,113 +14,113 @@ type EnAPIAdapter struct {
 }
 
 func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerReq) (ogen.PostCreateCustomerRes, error) {
+	portModel := &apiport.Customer{
+		Name:                   req.Name,
+		NameKana:               getStringFromOptString(req.NameKana),
+		Telephone:              req.Telephone,
+		Email:                  req.Email,
+		PersonInChargeName:     req.PersonInChargeName,
+		PersonInChargeNameKana: getStringFromOptString(req.PersonInChargeNameKana),
+		PostalCode:             req.Address.PostalCode,
+		PrefID:                 req.Address.PrefID,
+		Address1:               req.Address.Address1,
+		Address2:               req.Address.Address2,
+	}
+	res, err := n.customerAPI.CreateCustomer(portModel)
+	if err != nil {
+		return CreateErrorPostCreateCustomerResponse(err), nil
+	}
 	return &ogen.PostCreateCustomerOKHeaders{
 		Response: ogen.PostCreateCustomerOK{
-			ID:   int64(1),
-			Name: string("三好 直紀"),
-			NameKana: ogen.OptString{
-				Value: "ミヨシ ナオキ",
-				Set:   true,
-			},
-			Telephone:          "09011112222",
-			Email:              "example@gmail.com",
-			PersonInChargeName: "テスト名",
-			PersonInChargeNameKana: ogen.OptString{
-				Value: "テストメイ",
-				Set:   true,
-			},
+			ID:                     res.ID,
+			Name:                   res.Name,
+			NameKana:               toOptString(res.NameKana),
+			Telephone:              res.Telephone,
+			Email:                  res.Email,
+			PersonInChargeName:     res.PersonInChargeName,
+			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
 			Address: ogen.PostCreateCustomerOKAddress{
-				PostalCode: "8800301",
-				PrefID:     1,
-				Address1:   "宮崎市佐土原町",
-				Address2:   "1-10-10",
+				PostalCode: res.PostalCode,
+				PrefID:     res.PrefID,
+				Address1:   res.Address1,
+				Address2:   res.Address2,
 			},
 		},
 	}, nil
 }
 
 func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSearchCustomerReq) (ogen.PostSearchCustomerRes, error) {
+	pageNumber := req.Pagination.Number
+	pageSize := req.Pagination.Size
+	res, err := n.customerAPI.SearchCustomer(
+		pageNumber, pageSize, &apiport.SearchConditions{})
+	if err != nil {
+		return CreateErrorPostSearchCustomerResponse(err), nil
+	}
+	customers := make([]ogen.PostSearchCustomerOKCustomersItem, 0)
+	for _, v := range res.CustomerList {
+		item := ogen.PostSearchCustomerOKCustomersItem{
+			ID:                     v.ID,
+			Name:                   v.Name,
+			NameKana:               toOptString(v.NameKana),
+			Telephone:              v.Telephone,
+			Email:                  v.Email,
+			PersonInChargeName:     v.PersonInChargeName,
+			PersonInChargeNameKana: toOptString(v.PersonInChargeNameKana),
+			Address: ogen.PostSearchCustomerOKCustomersItemAddress{
+				PostalCode: v.PostalCode,
+				PrefID:     v.PrefID,
+				Address1:   v.Address1,
+				Address2:   v.Address2,
+			},
+		}
+		customers = append(customers, item)
+	}
 	return &ogen.PostSearchCustomerOKHeaders{
 		Response: ogen.PostSearchCustomerOK{
 			Page: ogen.PostSearchCustomerOKPage{
-				Size:    10,
-				Total:   10021,
-				Current: 2,
+				Size:    res.Page.Size,
+				Total:   res.Page.Total,
+				Current: res.Page.Current,
 			},
-			Customers: []ogen.PostSearchCustomerOKCustomersItem{
-				{
-					ID:   int64(1),
-					Name: string("三好 直紀"),
-					NameKana: ogen.OptString{
-						Value: "ミヨシ ナオキ",
-						Set:   true,
-					},
-					Telephone:          "09011112222",
-					Email:              "example@gmail.com",
-					PersonInChargeName: "テスト名",
-					PersonInChargeNameKana: ogen.OptString{
-						Value: "テストメイ",
-						Set:   true,
-					},
-					Address: ogen.PostSearchCustomerOKCustomersItemAddress{
-						PostalCode: "8800301",
-						PrefID:     1,
-						Address1:   "宮崎市佐土原町",
-						Address2:   "1-10-10",
-					},
-				},
-				{
-					ID:   int64(2),
-					Name: string("大輝証券"),
-					NameKana: ogen.OptString{
-						Value: "ダイキショウケン",
-						Set:   true,
-					},
-					Telephone:          "09011112222",
-					Email:              "example@gmail.com",
-					PersonInChargeName: "テスト名",
-					PersonInChargeNameKana: ogen.OptString{
-						Value: "テストメイ",
-						Set:   true,
-					},
-					Address: ogen.PostSearchCustomerOKCustomersItemAddress{
-						PostalCode: "8800301",
-						PrefID:     1,
-						Address1:   "宮崎市佐土原町",
-						Address2:   "1-10-10",
-					},
-				},
-			},
+			Customers: customers,
 		},
 	}, nil
 }
 
 func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDReq, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
+	portModel := &apiport.Customer{
+		ID:                     req.ID,
+		Name:                   req.Name,
+		NameKana:               getStringFromOptString(req.NameKana),
+		Telephone:              req.Telephone,
+		Email:                  req.Email,
+		PersonInChargeName:     req.PersonInChargeName,
+		PersonInChargeNameKana: getStringFromOptString(req.PersonInChargeNameKana),
+		PostalCode:             req.Address.PostalCode,
+		PrefID:                 req.Address.PrefID,
+		Address1:               req.Address.Address1,
+		Address2:               req.Address.Address2,
+	}
 
-	err := n.customerAPI.UpdateByID()
+	res, err := n.customerAPI.UpdateByID(portModel)
 	if err != nil {
 		return CreateErrorPutByIDResponse(err), nil
 	}
 	return &ogen.PutModifyCustomerByIDOKHeaders{
 		Response: ogen.PutModifyCustomerByIDOK{
-			ID:   int64(1),
-			Name: string("三好 直紀"),
-			NameKana: ogen.OptString{
-				Value: "ミヨシ ナオキ",
-				Set:   true,
-			},
-			Telephone:          "09011112222",
-			Email:              "example@gmail.com",
-			PersonInChargeName: "テスト名",
-			PersonInChargeNameKana: ogen.OptString{
-				Value: "テストメイ",
-				Set:   true,
-			},
+			ID:                     res.ID,
+			Name:                   res.Name,
+			NameKana:               toOptString(res.NameKana),
+			Telephone:              res.Telephone,
+			Email:                  res.Email,
+			PersonInChargeName:     res.PersonInChargeName,
+			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
 			Address: ogen.PutModifyCustomerByIDOKAddress{
-				PostalCode: "8800301",
-				PrefID:     1,
-				Address1:   "宮崎市佐土原町",
-				Address2:   "1-10-10",
+				PostalCode: res.PostalCode,
+				PrefID:     res.PrefID,
+				Address1:   res.Address1,
+				Address2:   res.Address2,
 			},
 		},
 	}, nil
@@ -135,13 +135,13 @@ func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCusto
 		Response: ogen.GetCustomerByIDOK{
 			ID:                     res.ID,
 			Name:                   res.Name,
-			NameKana:               CreateOptString(res.NameKana),
+			NameKana:               toOptString(res.NameKana),
 			Telephone:              res.Telephone,
 			Email:                  res.Email,
 			PersonInChargeName:     res.PersonInChargeName,
-			PersonInChargeNameKana: CreateOptString(res.PersonInChargeNameKana),
+			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
 			Address: ogen.GetCustomerByIDOKAddress{
-				PostalCode: res.Address1,
+				PostalCode: res.PostalCode,
 				PrefID:     res.PrefID,
 				Address1:   res.Address1,
 				Address2:   res.Address2,
@@ -188,7 +188,36 @@ func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
 	}
 }
 
-func CreateOptString(value *string) ogen.OptString {
+func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes {
+	slog.Error("get customer error.", "err", err)
+	var customerErr *apiport.APICustomerNotFoundError
+	if errors.As(err, &customerErr) {
+		return &ogen.PostCreateCustomerNotFoundHeaders{
+			Response: ogen.PostCreateCustomerNotFound{
+				Type:    "ResourceNotFound",
+				Message: "aaaaaaaaaaaaaaa",
+			},
+		}
+	}
+	return &ogen.PostCreateCustomerInternalServerErrorHeaders{
+		Response: ogen.PostCreateCustomerInternalServerError{
+			Type:    "InternalServerError",
+			Message: "aaaaaaaaaaaaaaa",
+		},
+	}
+}
+
+func CreateErrorPostSearchCustomerResponse(err error) ogen.PostSearchCustomerRes {
+	slog.Error("get customer error.", "err", err)
+	return &ogen.PostSearchCustomerInternalServerErrorHeaders{
+		Response: ogen.PostSearchCustomerInternalServerError{
+			Type:    "InternalServerError",
+			Message: "aaaaaaaaaaaaaaa",
+		},
+	}
+}
+
+func toOptString(value *string) ogen.OptString {
 	if value != nil {
 		return ogen.OptString{
 			Value: *value,
@@ -200,6 +229,13 @@ func CreateOptString(value *string) ogen.OptString {
 		Value: v,
 		Set:   false,
 	}
+}
+
+func getStringFromOptString(optString ogen.OptString) *string {
+	if optString.Set {
+		return &optString.Value
+	}
+	return nil
 }
 
 func NewEnAPIAdapter(customerAPI *apiport.CustomerAPIPort) *EnAPIAdapter {

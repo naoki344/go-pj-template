@@ -39,3 +39,5 @@ type Customer struct {
 	PersonInChargeNameKana PersonInChargeNameKana
 	Address                Address
 }
+
+type SearchConditions struct{}

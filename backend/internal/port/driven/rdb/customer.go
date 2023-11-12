@@ -6,6 +6,7 @@ import (
 	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
 	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
+	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
 )
 
 type CustomerRdbPort struct {
@@ -35,6 +36,14 @@ func toModelCustomer(customer *rdbadapter.Customer) *customermodel.Customer {
 	}
 }
 
+func toModelCustomerList(customers []rdbadapter.Customer) *[]*customermodel.Customer {
+	models := make([]*customermodel.Customer, 0)
+	for i := range customers {
+		models = append(models, toModelCustomer(&customers[i]))
+	}
+	return &models
+}
+
 func toAdapterCustomer(customer *customermodel.Customer) *rdbadapter.Customer {
 	return &rdbadapter.Customer{
 		ID:                     int64(customer.ID),
@@ -49,6 +58,18 @@ func toAdapterCustomer(customer *customermodel.Customer) *rdbadapter.Customer {
 		Address1:               string(customer.Address.Address1),
 		Address2:               string(customer.Address.Address2),
 	}
+}
+
+func (port *CustomerRdbPort) Create(customer *customermodel.Customer) (*customermodel.Customer, error) {
+	ogenCustomer := toAdapterCustomer(customer)
+	res, err := port.rdb.InsertCustomer(ogenCustomer)
+	if err != nil {
+		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
+			return nil, errormodel.ErrCustomerNotFound
+		}
+		return nil, errormodel.ErrUnexpectedError
+	}
+	return toModelCustomer(res), nil
 }
 
 func (port *CustomerRdbPort) Get(customerID customermodel.ID) (*customermodel.Customer, error) {
@@ -72,4 +93,19 @@ func (port *CustomerRdbPort) Update(customer *customermodel.Customer) error {
 		return errormodel.ErrUnexpectedError
 	}
 	return nil
+}
+
+func (port *CustomerRdbPort) Search(pageNumber int64, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
+	res, err := port.rdb.SearchCustomer(pageNumber, pageSize, &rdbadapter.SearchConditions{})
+	if err != nil {
+		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
+			return nil, nil, errormodel.ErrCustomerNotFound
+		}
+		return nil, nil, errormodel.ErrUnexpectedError
+	}
+	return toModelCustomerList(res.CustomerList), &pagemodel.PageResult{
+		Size:    pagemodel.Size(res.PageInfo.Size),
+		Total:   pagemodel.Total(res.PageInfo.Total),
+		Current: pagemodel.Current(res.PageInfo.Current),
+	}, nil
 }

@@ -12,6 +12,8 @@ import (
 	"github.com/uptrace/bun/extra/bundebug"
 )
 
+const CustomersTableName = "customers"
+
 func (rdb *MySQL) GetCustomerByID(customerID int64) (*Customer, error) {
 	db := bun.NewDB(rdb.Conn, mysqldialect.New())
 	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
@@ -41,4 +43,52 @@ func (rdb *MySQL) UpdateCustomerByID(customer *Customer) error {
 	}
 	slog.Info("customer update success.", slog.Any("result", &res))
 	return nil
+}
+
+func (rdb *MySQL) InsertCustomer(customer *Customer) (*Customer, error) {
+	db := bun.NewDB(rdb.Conn, mysqldialect.New())
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+	res, err := db.NewInsert().Model(customer).Exec(context.Background())
+	if err != nil {
+		slog.Error("db error log.", "error", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrRdbCustomerNotFound
+		}
+		return nil, ErrRdbUnexpected
+	}
+	slog.Info("customer update success.", slog.Any("result", &res))
+	return customer, nil
+}
+
+func (rdb *MySQL) SearchCustomer(pageNumber int64, pageSize int64, conditions *SearchConditions) (*CustomerSearchResult, error) {
+	db := bun.NewDB(rdb.Conn, mysqldialect.New())
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+	customers := CustomerList{}
+	start, end := calcPaging(pageNumber, pageSize)
+	getErr := db.NewSelect().Model(&customers).Where(
+		"? between ? and ?", bun.Ident("id"), start, end).Scan(context.Background())
+	if getErr != nil {
+		slog.Error("db error log.", "error", getErr)
+		return nil, ErrRdbUnexpected
+	}
+
+	var total int64
+	totalCountErr := db.NewSelect().
+		ColumnExpr("COUNT(id) AS Total").
+		TableExpr(CustomersTableName).
+		Scan(context.Background(), &total)
+	if totalCountErr != nil {
+		slog.Error("db error log.", "error", totalCountErr)
+		return nil, ErrRdbUnexpected
+	}
+	slog.Info("customer search success.")
+	result := &CustomerSearchResult{
+		CustomerList: customers,
+		PageInfo: PageInfo{
+			Size:    pageSize,
+			Total:   total,
+			Current: pageNumber,
+		},
+	}
+	return result, nil
 }

@@ -309,6 +309,8 @@ paths:
                       description: ページサイズ
                       type: integer
                       format: int64
+                      minimum: 1
+                      maximum: 1000
                     number:
                       title: number
                       description: ページ番号
@@ -442,6 +444,8 @@ paths:
                         description: ページサイズ
                         type: integer
                         format: int64
+                        minimum: 1
+                        maximum: 1000
                       total:
                         title: total
                         description: 合計件数
