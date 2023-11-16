@@ -50,7 +50,7 @@ func (handler *APIGatewayHandler) SetLogger(ctx context.Context) {
 		}),
 	)
 	slog.SetDefault(slogger)
-	slog.Error("log settings success.", slog.Any("context", lc))
+	slog.Info("log settings success.", slog.Any("context", lc))
 }
 
 func (handler *APIGatewayHandler) Run(

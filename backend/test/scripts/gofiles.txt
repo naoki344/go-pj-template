@@ -1,2 +1,1 @@
 adapter/driven/rdb/interface.go
-port/driven/rdb/get_customer_by_id.go

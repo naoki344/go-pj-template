@@ -54,13 +54,13 @@ func NewCdkLambdaGoStack(
 		Architecture: awslambda.Architecture_ARM_64(),
 		FunctionName: jsii.String("test-todos-handler"),
 		Environment: &map[string]*string{
-			"LOG_LEVEL":   jsii.String(os.Getenv("LOG_LEVEL")),
-			"ENV":         jsii.String(os.Getenv("ENV")),
-			"DB_USERNAME": jsii.String(os.Getenv("DB_USERNAME")),
-			"DB_PASSWORD": jsii.String(os.Getenv("DB_PASSWORD")),
-			"DB_HOST":     jsii.String(os.Getenv("DB_HOST")),
-			"DB_PORT":     jsii.String(os.Getenv("DB_PORT")),
-			"DB_NAME":     jsii.String(os.Getenv("DB_NAME")),
+			"LOG_LEVEL":         jsii.String(os.Getenv("LOG_LEVEL")),
+			"ENV":               jsii.String(os.Getenv("ENV")),
+			"EN_DB_HOST":        jsii.String(os.Getenv("EN_DB_HOST")),
+			"EN_DB_PORT":        jsii.String(os.Getenv("EN_DB_PORT")),
+			"EN_DB_NAME":        jsii.String(os.Getenv("EN_DB_NAME")),
+			"EN_DB_SECRET_NAME": jsii.String(os.Getenv("EN_DB_SECRET_NAME")),
+			"EN_AWS_REGION":     jsii.String(os.Getenv("EN_AWS_REGION")),
 		},
 		Role:             myRole,
 		ParamsAndSecrets: paramsAndSecrets,
@@ -73,9 +73,18 @@ func NewCdkLambdaGoStack(
 			jsii.String("*"),
 		},
 	})
+	secretsManagerPolicy := awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
+		Actions: &[]*string{
+			jsii.String("secretsmanager:GetSecretValue"),
+		},
+		Resources: &[]*string{
+			jsii.String("*"),
+		},
+	})
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaBasicExecutionRole")))
 	myRole.AddManagedPolicy(awsiam.ManagedPolicy_FromAwsManagedPolicyName(jsii.String("service-role/AWSLambdaVPCAccessExecutionRole")))
 	myRole.AddToPolicy(dbPolicy)
+	myRole.AddToPolicy(secretsManagerPolicy)
 
 	restAPI := awsapigateway.NewRestApi(stack, jsii.String("TestAPI"), &awsapigateway.RestApiProps{
 		RestApiName: jsii.String("test-api-gateway"),

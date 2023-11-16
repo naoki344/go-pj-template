@@ -30,3 +30,5 @@ cdk.out
 node_modules/
 
 backend/openapi/openapi.yaml
+
+.aws-sam

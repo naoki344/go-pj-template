@@ -89,6 +89,9 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 }
 
 func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDReq, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
+	if params.CustomerID != req.ID {
+		return CreateErrorPutByIDResponseUnmatchID(), nil
+	}
 	portModel := &apiport.Customer{
 		ID:                     req.ID,
 		Name:                   req.Name,
@@ -157,14 +160,14 @@ func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
 		return &ogen.GetCustomerByIDNotFoundHeaders{
 			Response: ogen.GetCustomerByIDNotFound{
 				Type:    "ResourceNotFound",
-				Message: "aaaaaaaaaaaaaaa",
+				Message: "customer not found.",
 			},
 		}
 	}
 	return &ogen.GetCustomerByIDInternalServerErrorHeaders{
 		Response: ogen.GetCustomerByIDInternalServerError{
 			Type:    "InternalServerError",
-			Message: "aaaaaaaaaaaaaaa",
+			Message: "unexpected error has occurred.",
 		},
 	}
 }
@@ -176,14 +179,23 @@ func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
 		return &ogen.PutModifyCustomerByIDBadRequestHeaders{
 			Response: ogen.PutModifyCustomerByIDBadRequest{
 				Type:    "ResourceNotFound",
-				Message: "aaaaaaaaaaaaaaa",
+				Message: "customer not found.",
 			},
 		}
 	}
 	return &ogen.PutModifyCustomerByIDInternalServerErrorHeaders{
 		Response: ogen.PutModifyCustomerByIDInternalServerError{
 			Type:    "InternalServerError",
-			Message: "aaaaaaaaaaaaaaa",
+			Message: "unexpected error has occurred.",
+		},
+	}
+}
+
+func CreateErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
+	return &ogen.PutModifyCustomerByIDBadRequestHeaders{
+		Response: ogen.PutModifyCustomerByIDBadRequest{
+			Type:    "ResourceNotFound",
+			Message: "customer id unmatch.",
 		},
 	}
 }
@@ -195,14 +207,14 @@ func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes
 		return &ogen.PostCreateCustomerNotFoundHeaders{
 			Response: ogen.PostCreateCustomerNotFound{
 				Type:    "ResourceNotFound",
-				Message: "aaaaaaaaaaaaaaa",
+				Message: "customer not found.",
 			},
 		}
 	}
 	return &ogen.PostCreateCustomerInternalServerErrorHeaders{
 		Response: ogen.PostCreateCustomerInternalServerError{
 			Type:    "InternalServerError",
-			Message: "aaaaaaaaaaaaaaa",
+			Message: "unexpected error has occurred.",
 		},
 	}
 }
@@ -212,7 +224,7 @@ func CreateErrorPostSearchCustomerResponse(err error) ogen.PostSearchCustomerRes
 	return &ogen.PostSearchCustomerInternalServerErrorHeaders{
 		Response: ogen.PostSearchCustomerInternalServerError{
 			Type:    "InternalServerError",
-			Message: "aaaaaaaaaaaaaaa",
+			Message: "unexpected error has occurred.",
 		},
 	}
 }

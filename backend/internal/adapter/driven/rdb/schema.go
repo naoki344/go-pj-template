@@ -13,3 +13,15 @@ type Customer struct {
 	Address1               string  `bun:"address1"`
 	Address2               string  `bun:"address2"`
 }
+
+type Buildings struct {
+	ID         int64   `bun:"id,pk,autoincrement"`
+	Name       string  `bun:"name"`
+	Telephone  *string `bun:"telephone"`
+	Email      *string `bun:"email"`
+	PostalCode *string `bun:"postal_code"`
+	PrefID     *int64  `bun:"pref_id"`
+	Address1   *string `bun:"address1"`
+	Address2   *string `bun:"address2"`
+	CsutomerID *int64  `bun:"customers_id"`
+}

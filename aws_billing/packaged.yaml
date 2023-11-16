@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'AWS_Billing
+
+  Sample SAM Template for AWS_Billing
+
+  '
+Globals:
+  Function:
+    Timeout: 10
+Parameters:
+  SlackWebhookUrl:
+    Type: String
+    Default: hoge
+Resources:
+  BillingIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: NotifySlackToBillingLambdaPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - ce:GetCostAndUsage
+            Resource: '*'
+    Metadata:
+      SamResourceId: BillingIamRole
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stayfresh-dev-cost-management/99e0f0431908b64bf52d2df58a9b6186
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL:
+            Ref: SlackWebhookUrl
+      Role:
+        Fn::GetAtt:
+        - BillingIamRole
+        - Arn
+      Events:
+        NotifySlack:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0 * * ? *)
+    Metadata:
+      SamResourceId: HelloWorldFunction
+Outputs:
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - BillingIamRole
+      - Arn

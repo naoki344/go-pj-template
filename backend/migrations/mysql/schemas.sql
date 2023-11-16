@@ -13,3 +13,17 @@ CREATE TABLE `customers`
     `address2` VARCHAR(255) NOT NULL COMMENT '番地・建物名・部屋',
     PRIMARY KEY (`id`)
 ) Engine=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='顧客';
+
+CREATE TABLE `buildings`
+(
+    `id`       BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'buildingsの識別子',
+    `name`    VARCHAR(255) NOT NULL COMMENT '建物名',
+    `telephone` VARCHAR(255) COMMENT '電話番号',
+    `email` VARCHAR(255) COMMENT 'メールアドレス',
+    `postal_code` VARCHAR(255) COMMENT '郵便番号',
+    `pref_id` INT UNSIGNED COMMENT '都道府県ID',
+    `address1` VARCHAR(255) COMMENT '市区町村',
+    `address2` VARCHAR(255) COMMENT '番地・建物名・部屋',
+    `customers_id` INT UNSIGNED COMMENT '顧客ID',
+    PRIMARY KEY (`id`)
+) Engine=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='建物';
