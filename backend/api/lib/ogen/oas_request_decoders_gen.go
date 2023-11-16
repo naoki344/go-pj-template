@@ -16,7 +16,7 @@ import (
 )
 
 func (s *Server) decodePostCreateCustomerRequest(r *http.Request) (
-	req *PostCreateCustomerReq,
+	req *PostCreateCustomerRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -55,7 +55,7 @@ func (s *Server) decodePostCreateCustomerRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request PostCreateCustomerReq
+		var request PostCreateCustomerRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err
@@ -87,7 +87,7 @@ func (s *Server) decodePostCreateCustomerRequest(r *http.Request) (
 }
 
 func (s *Server) decodePostSearchCustomerRequest(r *http.Request) (
-	req *PostSearchCustomerReq,
+	req *PostSearchCustomerRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -126,7 +126,7 @@ func (s *Server) decodePostSearchCustomerRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request PostSearchCustomerReq
+		var request PostSearchCustomerRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err
@@ -158,7 +158,7 @@ func (s *Server) decodePostSearchCustomerRequest(r *http.Request) (
 }
 
 func (s *Server) decodePutModifyCustomerByIDRequest(r *http.Request) (
-	req *PutModifyCustomerByIDReq,
+	req *PutModifyCustomerByIDRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -197,7 +197,7 @@ func (s *Server) decodePutModifyCustomerByIDRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request PutModifyCustomerByIDReq
+		var request PutModifyCustomerByIDRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err

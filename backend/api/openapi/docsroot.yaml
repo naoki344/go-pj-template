@@ -5,12 +5,60 @@ info:
 paths:
   /customers:
     post:
-      $ref: "./components/paths/customers/postCreateCustomer.yaml#/postCreateCustomer"
+      summary: 顧客情報登録
+      operationId: postCreateCustomer
+      requestBody:
+        $ref: "./components/requests/body/createCustomerRequest.yaml"
+      responses:
+        200:
+          $ref: "./components/responses/createCustomerResponse.yaml"
+        400:
+          $ref: "./components/responses/errorClient.yaml"
+        500:
+          $ref: "./components/responses/errorServer.yaml"
   /customers/search:
     post:
-      $ref: "./components/paths/customers/postSearchCustomer.yaml#/postSearchCustomer"
+      summary: 顧客情報検索
+      operationId: postSearchCustomer
+      requestBody:
+        $ref: "./components/requests/body/searchCustomerRequest.yaml"
+      responses:
+        200:
+          $ref: "./components/responses/searchCustomerResponse.yaml"
+        400:
+          $ref: "./components/responses/errorClient.yaml"
+        404:
+          $ref: "./components/responses/errorResourceNotFound.yaml"
+        500:
+          $ref: "./components/responses/errorServer.yaml"
   /customers/{customerID}:
     get:
-      $ref: "./components/paths/customers/getCustomerByID.yaml#/getCustomerByID"
+      summary: 顧客情報参照
+      operationId: getCustomerByID
+      parameters:
+        - $ref: "./components/requests/params/path/customerID.yaml"
+      responses:
+        200:
+          $ref: "./components/responses/getCustomerByIDResponse.yaml"
+        400:
+          $ref: "./components/responses/errorClient.yaml"
+        404:
+          $ref: "./components/responses/errorResourceNotFound.yaml"
+        500:
+          $ref: "./components/responses/errorServer.yaml"
     put:
-      $ref: "./components/paths/customers/putModifyCustomerByID.yaml#/putModifyCustomerByID"
+      summary: 顧客情報更新
+      operationId: putModifyCustomerByID
+      parameters:
+        - $ref: "./components/requests/params/path/customerID.yaml"
+      requestBody:
+        $ref: "./components/requests/body/modifyCustomerRequest.yaml"
+      responses:
+        200:
+          $ref: "./components/responses/modifyCustomerResponse.yaml"
+        400:
+          $ref: "./components/responses/errorClient.yaml"
+        404:
+          $ref: "./components/responses/errorResourceNotFound.yaml"
+        500:
+          $ref: "./components/responses/errorServer.yaml"

@@ -1,20 +1,27 @@
-searchCustomerResponse:
-  description: 成功
-  headers:
-    $ref: "./headers.yaml#/headers"
-  content:
-    application/json:
-      schema:
-        type: object
-        additionalProperties: false
-        required:
-          - customers
-          - page
-        properties:
-          customers:
-            type: array
-            description: 検索結果
-            items:
-              $ref: "./model/customerResponseModel.yaml#/customer"
-          page:
-            $ref: "./page/page.yaml#/page"
+description: 成功
+headers:
+  Access-Control-Allow-Origin:
+    schema:
+      type: "string"
+  Access-Control-Allow-Methods:
+    schema:
+      type: "string"
+  Access-Control-Allow-Headers:
+    schema:
+      type: "string"
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - customers
+        - page
+      properties:
+        customers:
+          type: array
+          description: 検索結果
+          items:
+            $ref: "./model/customerResponseModel.yaml#/customer"
+        page:
+          $ref: "./page/page.yaml#/page"

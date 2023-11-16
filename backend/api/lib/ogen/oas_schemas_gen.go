@@ -2,232 +2,60 @@
 
 package ogen
 
-type GetCustomerByIDBadRequest struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+// Ref: #/components/schemas/address
+type Address struct {
+	// 郵便番号.
+	PostalCode string `json:"postal_code"`
+	// 都道府県ID.
+	PrefID int64 `json:"pref_id"`
+	// 市区町村.
+	Address1 string `json:"address1"`
+	// 番地・建物名・部屋.
+	Address2 string `json:"address2"`
 }
 
-// GetType returns the value of Type.
-func (s *GetCustomerByIDBadRequest) GetType() string {
-	return s.Type
+// GetPostalCode returns the value of PostalCode.
+func (s *Address) GetPostalCode() string {
+	return s.PostalCode
 }
 
-// GetMessage returns the value of Message.
-func (s *GetCustomerByIDBadRequest) GetMessage() string {
-	return s.Message
+// GetPrefID returns the value of PrefID.
+func (s *Address) GetPrefID() int64 {
+	return s.PrefID
 }
 
-// SetType sets the value of Type.
-func (s *GetCustomerByIDBadRequest) SetType(val string) {
-	s.Type = val
+// GetAddress1 returns the value of Address1.
+func (s *Address) GetAddress1() string {
+	return s.Address1
 }
 
-// SetMessage sets the value of Message.
-func (s *GetCustomerByIDBadRequest) SetMessage(val string) {
-	s.Message = val
+// GetAddress2 returns the value of Address2.
+func (s *Address) GetAddress2() string {
+	return s.Address2
 }
 
-// GetCustomerByIDBadRequestHeaders wraps GetCustomerByIDBadRequest with response headers.
-type GetCustomerByIDBadRequestHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  GetCustomerByIDBadRequest
+// SetPostalCode sets the value of PostalCode.
+func (s *Address) SetPostalCode(val string) {
+	s.PostalCode = val
 }
 
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDBadRequestHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
+// SetPrefID sets the value of PrefID.
+func (s *Address) SetPrefID(val int64) {
+	s.PrefID = val
 }
 
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDBadRequestHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
+// SetAddress1 sets the value of Address1.
+func (s *Address) SetAddress1(val string) {
+	s.Address1 = val
 }
 
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDBadRequestHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
+// SetAddress2 sets the value of Address2.
+func (s *Address) SetAddress2(val string) {
+	s.Address2 = val
 }
 
-// GetResponse returns the value of Response.
-func (s *GetCustomerByIDBadRequestHeaders) GetResponse() GetCustomerByIDBadRequest {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDBadRequestHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDBadRequestHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDBadRequestHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *GetCustomerByIDBadRequestHeaders) SetResponse(val GetCustomerByIDBadRequest) {
-	s.Response = val
-}
-
-func (*GetCustomerByIDBadRequestHeaders) getCustomerByIDRes() {}
-
-type GetCustomerByIDInternalServerError struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *GetCustomerByIDInternalServerError) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *GetCustomerByIDInternalServerError) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *GetCustomerByIDInternalServerError) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *GetCustomerByIDInternalServerError) SetMessage(val string) {
-	s.Message = val
-}
-
-// GetCustomerByIDInternalServerErrorHeaders wraps GetCustomerByIDInternalServerError with response headers.
-type GetCustomerByIDInternalServerErrorHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  GetCustomerByIDInternalServerError
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *GetCustomerByIDInternalServerErrorHeaders) GetResponse() GetCustomerByIDInternalServerError {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *GetCustomerByIDInternalServerErrorHeaders) SetResponse(val GetCustomerByIDInternalServerError) {
-	s.Response = val
-}
-
-func (*GetCustomerByIDInternalServerErrorHeaders) getCustomerByIDRes() {}
-
-type GetCustomerByIDNotFound struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *GetCustomerByIDNotFound) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *GetCustomerByIDNotFound) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *GetCustomerByIDNotFound) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *GetCustomerByIDNotFound) SetMessage(val string) {
-	s.Message = val
-}
-
-// GetCustomerByIDNotFoundHeaders wraps GetCustomerByIDNotFound with response headers.
-type GetCustomerByIDNotFoundHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  GetCustomerByIDNotFound
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDNotFoundHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDNotFoundHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDNotFoundHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *GetCustomerByIDNotFoundHeaders) GetResponse() GetCustomerByIDNotFound {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDNotFoundHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDNotFoundHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDNotFoundHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *GetCustomerByIDNotFoundHeaders) SetResponse(val GetCustomerByIDNotFound) {
-	s.Response = val
-}
-
-func (*GetCustomerByIDNotFoundHeaders) getCustomerByIDRes() {}
-
-type GetCustomerByIDOK struct {
+// Ref: #/components/schemas/customer
+type Customer struct {
 	// 顧客ID.
 	ID int64 `json:"id"`
 	// 顧客名称.
@@ -241,190 +69,227 @@ type GetCustomerByIDOK struct {
 	// 担当者名.
 	PersonInChargeName string `json:"person_in_charge_name"`
 	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                `json:"person_in_charge_name_kana"`
-	Address                GetCustomerByIDOKAddress `json:"address"`
+	PersonInChargeNameKana OptString `json:"person_in_charge_name_kana"`
+	Address                Address   `json:"address"`
 }
 
 // GetID returns the value of ID.
-func (s *GetCustomerByIDOK) GetID() int64 {
+func (s *Customer) GetID() int64 {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *GetCustomerByIDOK) GetName() string {
+func (s *Customer) GetName() string {
 	return s.Name
 }
 
 // GetNameKana returns the value of NameKana.
-func (s *GetCustomerByIDOK) GetNameKana() OptString {
+func (s *Customer) GetNameKana() OptString {
 	return s.NameKana
 }
 
 // GetTelephone returns the value of Telephone.
-func (s *GetCustomerByIDOK) GetTelephone() string {
+func (s *Customer) GetTelephone() string {
 	return s.Telephone
 }
 
 // GetEmail returns the value of Email.
-func (s *GetCustomerByIDOK) GetEmail() string {
+func (s *Customer) GetEmail() string {
 	return s.Email
 }
 
 // GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *GetCustomerByIDOK) GetPersonInChargeName() string {
+func (s *Customer) GetPersonInChargeName() string {
 	return s.PersonInChargeName
 }
 
 // GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *GetCustomerByIDOK) GetPersonInChargeNameKana() OptString {
+func (s *Customer) GetPersonInChargeNameKana() OptString {
 	return s.PersonInChargeNameKana
 }
 
 // GetAddress returns the value of Address.
-func (s *GetCustomerByIDOK) GetAddress() GetCustomerByIDOKAddress {
+func (s *Customer) GetAddress() Address {
 	return s.Address
 }
 
 // SetID sets the value of ID.
-func (s *GetCustomerByIDOK) SetID(val int64) {
+func (s *Customer) SetID(val int64) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *GetCustomerByIDOK) SetName(val string) {
+func (s *Customer) SetName(val string) {
 	s.Name = val
 }
 
 // SetNameKana sets the value of NameKana.
-func (s *GetCustomerByIDOK) SetNameKana(val OptString) {
+func (s *Customer) SetNameKana(val OptString) {
 	s.NameKana = val
 }
 
 // SetTelephone sets the value of Telephone.
-func (s *GetCustomerByIDOK) SetTelephone(val string) {
+func (s *Customer) SetTelephone(val string) {
 	s.Telephone = val
 }
 
 // SetEmail sets the value of Email.
-func (s *GetCustomerByIDOK) SetEmail(val string) {
+func (s *Customer) SetEmail(val string) {
 	s.Email = val
 }
 
 // SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *GetCustomerByIDOK) SetPersonInChargeName(val string) {
+func (s *Customer) SetPersonInChargeName(val string) {
 	s.PersonInChargeName = val
 }
 
 // SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *GetCustomerByIDOK) SetPersonInChargeNameKana(val OptString) {
+func (s *Customer) SetPersonInChargeNameKana(val OptString) {
 	s.PersonInChargeNameKana = val
 }
 
 // SetAddress sets the value of Address.
-func (s *GetCustomerByIDOK) SetAddress(val GetCustomerByIDOKAddress) {
+func (s *Customer) SetAddress(val Address) {
 	s.Address = val
 }
 
-type GetCustomerByIDOKAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *GetCustomerByIDOKAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *GetCustomerByIDOKAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *GetCustomerByIDOKAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *GetCustomerByIDOKAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *GetCustomerByIDOKAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *GetCustomerByIDOKAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *GetCustomerByIDOKAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *GetCustomerByIDOKAddress) SetAddress2(val string) {
-	s.Address2 = val
-}
-
-// GetCustomerByIDOKHeaders wraps GetCustomerByIDOK with response headers.
-type GetCustomerByIDOKHeaders struct {
+// CustomerHeaders wraps Customer with response headers.
+type CustomerHeaders struct {
 	AccessControlAllowHeaders OptString
 	AccessControlAllowMethods OptString
 	AccessControlAllowOrigin  OptString
-	Response                  GetCustomerByIDOK
+	Response                  Customer
 }
 
 // GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDOKHeaders) GetAccessControlAllowHeaders() OptString {
+func (s *CustomerHeaders) GetAccessControlAllowHeaders() OptString {
 	return s.AccessControlAllowHeaders
 }
 
 // GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDOKHeaders) GetAccessControlAllowMethods() OptString {
+func (s *CustomerHeaders) GetAccessControlAllowMethods() OptString {
 	return s.AccessControlAllowMethods
 }
 
 // GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDOKHeaders) GetAccessControlAllowOrigin() OptString {
+func (s *CustomerHeaders) GetAccessControlAllowOrigin() OptString {
 	return s.AccessControlAllowOrigin
 }
 
 // GetResponse returns the value of Response.
-func (s *GetCustomerByIDOKHeaders) GetResponse() GetCustomerByIDOK {
+func (s *CustomerHeaders) GetResponse() Customer {
 	return s.Response
 }
 
 // SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *GetCustomerByIDOKHeaders) SetAccessControlAllowHeaders(val OptString) {
+func (s *CustomerHeaders) SetAccessControlAllowHeaders(val OptString) {
 	s.AccessControlAllowHeaders = val
 }
 
 // SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *GetCustomerByIDOKHeaders) SetAccessControlAllowMethods(val OptString) {
+func (s *CustomerHeaders) SetAccessControlAllowMethods(val OptString) {
 	s.AccessControlAllowMethods = val
 }
 
 // SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *GetCustomerByIDOKHeaders) SetAccessControlAllowOrigin(val OptString) {
+func (s *CustomerHeaders) SetAccessControlAllowOrigin(val OptString) {
 	s.AccessControlAllowOrigin = val
 }
 
 // SetResponse sets the value of Response.
-func (s *GetCustomerByIDOKHeaders) SetResponse(val GetCustomerByIDOK) {
+func (s *CustomerHeaders) SetResponse(val Customer) {
 	s.Response = val
 }
 
-func (*GetCustomerByIDOKHeaders) getCustomerByIDRes() {}
+func (*CustomerHeaders) getCustomerByIDRes()       {}
+func (*CustomerHeaders) postCreateCustomerRes()    {}
+func (*CustomerHeaders) putModifyCustomerByIDRes() {}
+
+// Ref: #/components/schemas/errorModel
+type ErrorModel struct {
+	Type    string `json:"type"`
+	Message string `json:"message"`
+}
+
+// GetType returns the value of Type.
+func (s *ErrorModel) GetType() string {
+	return s.Type
+}
+
+// GetMessage returns the value of Message.
+func (s *ErrorModel) GetMessage() string {
+	return s.Message
+}
+
+// SetType sets the value of Type.
+func (s *ErrorModel) SetType(val string) {
+	s.Type = val
+}
+
+// SetMessage sets the value of Message.
+func (s *ErrorModel) SetMessage(val string) {
+	s.Message = val
+}
+
+// ErrorModelHeaders wraps ErrorModel with response headers.
+type ErrorModelHeaders struct {
+	AccessControlAllowHeaders OptString
+	AccessControlAllowMethods OptString
+	AccessControlAllowOrigin  OptString
+	Response                  ErrorModel
+}
+
+// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
+func (s *ErrorModelHeaders) GetAccessControlAllowHeaders() OptString {
+	return s.AccessControlAllowHeaders
+}
+
+// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
+func (s *ErrorModelHeaders) GetAccessControlAllowMethods() OptString {
+	return s.AccessControlAllowMethods
+}
+
+// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
+func (s *ErrorModelHeaders) GetAccessControlAllowOrigin() OptString {
+	return s.AccessControlAllowOrigin
+}
+
+// GetResponse returns the value of Response.
+func (s *ErrorModelHeaders) GetResponse() ErrorModel {
+	return s.Response
+}
+
+// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
+func (s *ErrorModelHeaders) SetAccessControlAllowHeaders(val OptString) {
+	s.AccessControlAllowHeaders = val
+}
+
+// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
+func (s *ErrorModelHeaders) SetAccessControlAllowMethods(val OptString) {
+	s.AccessControlAllowMethods = val
+}
+
+// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
+func (s *ErrorModelHeaders) SetAccessControlAllowOrigin(val OptString) {
+	s.AccessControlAllowOrigin = val
+}
+
+// SetResponse sets the value of Response.
+func (s *ErrorModelHeaders) SetResponse(val ErrorModel) {
+	s.Response = val
+}
+
+type GetCustomerByIDBadRequest ErrorModelHeaders
+
+func (*GetCustomerByIDBadRequest) getCustomerByIDRes() {}
+
+type GetCustomerByIDInternalServerError ErrorModelHeaders
+
+func (*GetCustomerByIDInternalServerError) getCustomerByIDRes() {}
+
+type GetCustomerByIDNotFound ErrorModelHeaders
+
+func (*GetCustomerByIDNotFound) getCustomerByIDRes() {}
 
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
@@ -472,1018 +337,8 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-type PostCreateCustomerBadRequest struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostCreateCustomerBadRequest) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostCreateCustomerBadRequest) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostCreateCustomerBadRequest) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostCreateCustomerBadRequest) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostCreateCustomerBadRequestHeaders wraps PostCreateCustomerBadRequest with response headers.
-type PostCreateCustomerBadRequestHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostCreateCustomerBadRequest
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerBadRequestHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerBadRequestHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerBadRequestHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostCreateCustomerBadRequestHeaders) GetResponse() PostCreateCustomerBadRequest {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerBadRequestHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerBadRequestHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerBadRequestHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostCreateCustomerBadRequestHeaders) SetResponse(val PostCreateCustomerBadRequest) {
-	s.Response = val
-}
-
-func (*PostCreateCustomerBadRequestHeaders) postCreateCustomerRes() {}
-
-type PostCreateCustomerInternalServerError struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostCreateCustomerInternalServerError) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostCreateCustomerInternalServerError) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostCreateCustomerInternalServerError) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostCreateCustomerInternalServerError) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostCreateCustomerInternalServerErrorHeaders wraps PostCreateCustomerInternalServerError with response headers.
-type PostCreateCustomerInternalServerErrorHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostCreateCustomerInternalServerError
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerInternalServerErrorHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerInternalServerErrorHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerInternalServerErrorHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostCreateCustomerInternalServerErrorHeaders) GetResponse() PostCreateCustomerInternalServerError {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerInternalServerErrorHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerInternalServerErrorHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerInternalServerErrorHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostCreateCustomerInternalServerErrorHeaders) SetResponse(val PostCreateCustomerInternalServerError) {
-	s.Response = val
-}
-
-func (*PostCreateCustomerInternalServerErrorHeaders) postCreateCustomerRes() {}
-
-type PostCreateCustomerNotFound struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostCreateCustomerNotFound) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostCreateCustomerNotFound) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostCreateCustomerNotFound) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostCreateCustomerNotFound) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostCreateCustomerNotFoundHeaders wraps PostCreateCustomerNotFound with response headers.
-type PostCreateCustomerNotFoundHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostCreateCustomerNotFound
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerNotFoundHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerNotFoundHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerNotFoundHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostCreateCustomerNotFoundHeaders) GetResponse() PostCreateCustomerNotFound {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerNotFoundHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerNotFoundHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerNotFoundHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostCreateCustomerNotFoundHeaders) SetResponse(val PostCreateCustomerNotFound) {
-	s.Response = val
-}
-
-func (*PostCreateCustomerNotFoundHeaders) postCreateCustomerRes() {}
-
-type PostCreateCustomerOK struct {
-	// 顧客ID.
-	ID int64 `json:"id"`
-	// 顧客名称.
-	Name string `json:"name"`
-	// 名称(カナ).
-	NameKana OptString `json:"name_kana"`
-	// 電話番号.
-	Telephone string `json:"telephone"`
-	// メールアドレス.
-	Email string `json:"email"`
-	// 担当者名.
-	PersonInChargeName string `json:"person_in_charge_name"`
-	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                   `json:"person_in_charge_name_kana"`
-	Address                PostCreateCustomerOKAddress `json:"address"`
-}
-
-// GetID returns the value of ID.
-func (s *PostCreateCustomerOK) GetID() int64 {
-	return s.ID
-}
-
-// GetName returns the value of Name.
-func (s *PostCreateCustomerOK) GetName() string {
-	return s.Name
-}
-
-// GetNameKana returns the value of NameKana.
-func (s *PostCreateCustomerOK) GetNameKana() OptString {
-	return s.NameKana
-}
-
-// GetTelephone returns the value of Telephone.
-func (s *PostCreateCustomerOK) GetTelephone() string {
-	return s.Telephone
-}
-
-// GetEmail returns the value of Email.
-func (s *PostCreateCustomerOK) GetEmail() string {
-	return s.Email
-}
-
-// GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *PostCreateCustomerOK) GetPersonInChargeName() string {
-	return s.PersonInChargeName
-}
-
-// GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *PostCreateCustomerOK) GetPersonInChargeNameKana() OptString {
-	return s.PersonInChargeNameKana
-}
-
-// GetAddress returns the value of Address.
-func (s *PostCreateCustomerOK) GetAddress() PostCreateCustomerOKAddress {
-	return s.Address
-}
-
-// SetID sets the value of ID.
-func (s *PostCreateCustomerOK) SetID(val int64) {
-	s.ID = val
-}
-
-// SetName sets the value of Name.
-func (s *PostCreateCustomerOK) SetName(val string) {
-	s.Name = val
-}
-
-// SetNameKana sets the value of NameKana.
-func (s *PostCreateCustomerOK) SetNameKana(val OptString) {
-	s.NameKana = val
-}
-
-// SetTelephone sets the value of Telephone.
-func (s *PostCreateCustomerOK) SetTelephone(val string) {
-	s.Telephone = val
-}
-
-// SetEmail sets the value of Email.
-func (s *PostCreateCustomerOK) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *PostCreateCustomerOK) SetPersonInChargeName(val string) {
-	s.PersonInChargeName = val
-}
-
-// SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *PostCreateCustomerOK) SetPersonInChargeNameKana(val OptString) {
-	s.PersonInChargeNameKana = val
-}
-
-// SetAddress sets the value of Address.
-func (s *PostCreateCustomerOK) SetAddress(val PostCreateCustomerOKAddress) {
-	s.Address = val
-}
-
-type PostCreateCustomerOKAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *PostCreateCustomerOKAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *PostCreateCustomerOKAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *PostCreateCustomerOKAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *PostCreateCustomerOKAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *PostCreateCustomerOKAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *PostCreateCustomerOKAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *PostCreateCustomerOKAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *PostCreateCustomerOKAddress) SetAddress2(val string) {
-	s.Address2 = val
-}
-
-// PostCreateCustomerOKHeaders wraps PostCreateCustomerOK with response headers.
-type PostCreateCustomerOKHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostCreateCustomerOK
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerOKHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerOKHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerOKHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostCreateCustomerOKHeaders) GetResponse() PostCreateCustomerOK {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostCreateCustomerOKHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostCreateCustomerOKHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostCreateCustomerOKHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostCreateCustomerOKHeaders) SetResponse(val PostCreateCustomerOK) {
-	s.Response = val
-}
-
-func (*PostCreateCustomerOKHeaders) postCreateCustomerRes() {}
-
-type PostCreateCustomerReq struct {
-	// 顧客名称.
-	Name string `json:"name"`
-	// 名称(カナ).
-	NameKana OptString `json:"name_kana"`
-	// 電話番号.
-	Telephone string `json:"telephone"`
-	// メールアドレス.
-	Email string `json:"email"`
-	// 担当者名.
-	PersonInChargeName string `json:"person_in_charge_name"`
-	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                    `json:"person_in_charge_name_kana"`
-	Address                PostCreateCustomerReqAddress `json:"address"`
-}
-
-// GetName returns the value of Name.
-func (s *PostCreateCustomerReq) GetName() string {
-	return s.Name
-}
-
-// GetNameKana returns the value of NameKana.
-func (s *PostCreateCustomerReq) GetNameKana() OptString {
-	return s.NameKana
-}
-
-// GetTelephone returns the value of Telephone.
-func (s *PostCreateCustomerReq) GetTelephone() string {
-	return s.Telephone
-}
-
-// GetEmail returns the value of Email.
-func (s *PostCreateCustomerReq) GetEmail() string {
-	return s.Email
-}
-
-// GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *PostCreateCustomerReq) GetPersonInChargeName() string {
-	return s.PersonInChargeName
-}
-
-// GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *PostCreateCustomerReq) GetPersonInChargeNameKana() OptString {
-	return s.PersonInChargeNameKana
-}
-
-// GetAddress returns the value of Address.
-func (s *PostCreateCustomerReq) GetAddress() PostCreateCustomerReqAddress {
-	return s.Address
-}
-
-// SetName sets the value of Name.
-func (s *PostCreateCustomerReq) SetName(val string) {
-	s.Name = val
-}
-
-// SetNameKana sets the value of NameKana.
-func (s *PostCreateCustomerReq) SetNameKana(val OptString) {
-	s.NameKana = val
-}
-
-// SetTelephone sets the value of Telephone.
-func (s *PostCreateCustomerReq) SetTelephone(val string) {
-	s.Telephone = val
-}
-
-// SetEmail sets the value of Email.
-func (s *PostCreateCustomerReq) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *PostCreateCustomerReq) SetPersonInChargeName(val string) {
-	s.PersonInChargeName = val
-}
-
-// SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *PostCreateCustomerReq) SetPersonInChargeNameKana(val OptString) {
-	s.PersonInChargeNameKana = val
-}
-
-// SetAddress sets the value of Address.
-func (s *PostCreateCustomerReq) SetAddress(val PostCreateCustomerReqAddress) {
-	s.Address = val
-}
-
-type PostCreateCustomerReqAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *PostCreateCustomerReqAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *PostCreateCustomerReqAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *PostCreateCustomerReqAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *PostCreateCustomerReqAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *PostCreateCustomerReqAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *PostCreateCustomerReqAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *PostCreateCustomerReqAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *PostCreateCustomerReqAddress) SetAddress2(val string) {
-	s.Address2 = val
-}
-
-type PostSearchCustomerBadRequest struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostSearchCustomerBadRequest) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostSearchCustomerBadRequest) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostSearchCustomerBadRequest) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostSearchCustomerBadRequest) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostSearchCustomerBadRequestHeaders wraps PostSearchCustomerBadRequest with response headers.
-type PostSearchCustomerBadRequestHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostSearchCustomerBadRequest
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerBadRequestHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerBadRequestHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerBadRequestHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostSearchCustomerBadRequestHeaders) GetResponse() PostSearchCustomerBadRequest {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerBadRequestHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerBadRequestHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerBadRequestHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostSearchCustomerBadRequestHeaders) SetResponse(val PostSearchCustomerBadRequest) {
-	s.Response = val
-}
-
-func (*PostSearchCustomerBadRequestHeaders) postSearchCustomerRes() {}
-
-type PostSearchCustomerInternalServerError struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostSearchCustomerInternalServerError) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostSearchCustomerInternalServerError) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostSearchCustomerInternalServerError) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostSearchCustomerInternalServerError) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostSearchCustomerInternalServerErrorHeaders wraps PostSearchCustomerInternalServerError with response headers.
-type PostSearchCustomerInternalServerErrorHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostSearchCustomerInternalServerError
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerInternalServerErrorHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerInternalServerErrorHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerInternalServerErrorHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostSearchCustomerInternalServerErrorHeaders) GetResponse() PostSearchCustomerInternalServerError {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerInternalServerErrorHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerInternalServerErrorHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerInternalServerErrorHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostSearchCustomerInternalServerErrorHeaders) SetResponse(val PostSearchCustomerInternalServerError) {
-	s.Response = val
-}
-
-func (*PostSearchCustomerInternalServerErrorHeaders) postSearchCustomerRes() {}
-
-type PostSearchCustomerNotFound struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PostSearchCustomerNotFound) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PostSearchCustomerNotFound) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PostSearchCustomerNotFound) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PostSearchCustomerNotFound) SetMessage(val string) {
-	s.Message = val
-}
-
-// PostSearchCustomerNotFoundHeaders wraps PostSearchCustomerNotFound with response headers.
-type PostSearchCustomerNotFoundHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostSearchCustomerNotFound
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerNotFoundHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerNotFoundHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerNotFoundHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostSearchCustomerNotFoundHeaders) GetResponse() PostSearchCustomerNotFound {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerNotFoundHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerNotFoundHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerNotFoundHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostSearchCustomerNotFoundHeaders) SetResponse(val PostSearchCustomerNotFound) {
-	s.Response = val
-}
-
-func (*PostSearchCustomerNotFoundHeaders) postSearchCustomerRes() {}
-
-type PostSearchCustomerOK struct {
-	// 検索結果.
-	Customers []PostSearchCustomerOKCustomersItem `json:"customers"`
-	Page      PostSearchCustomerOKPage            `json:"page"`
-}
-
-// GetCustomers returns the value of Customers.
-func (s *PostSearchCustomerOK) GetCustomers() []PostSearchCustomerOKCustomersItem {
-	return s.Customers
-}
-
-// GetPage returns the value of Page.
-func (s *PostSearchCustomerOK) GetPage() PostSearchCustomerOKPage {
-	return s.Page
-}
-
-// SetCustomers sets the value of Customers.
-func (s *PostSearchCustomerOK) SetCustomers(val []PostSearchCustomerOKCustomersItem) {
-	s.Customers = val
-}
-
-// SetPage sets the value of Page.
-func (s *PostSearchCustomerOK) SetPage(val PostSearchCustomerOKPage) {
-	s.Page = val
-}
-
-type PostSearchCustomerOKCustomersItem struct {
-	// 顧客ID.
-	ID int64 `json:"id"`
-	// 顧客名称.
-	Name string `json:"name"`
-	// 名称(カナ).
-	NameKana OptString `json:"name_kana"`
-	// 電話番号.
-	Telephone string `json:"telephone"`
-	// メールアドレス.
-	Email string `json:"email"`
-	// 担当者名.
-	PersonInChargeName string `json:"person_in_charge_name"`
-	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                                `json:"person_in_charge_name_kana"`
-	Address                PostSearchCustomerOKCustomersItemAddress `json:"address"`
-}
-
-// GetID returns the value of ID.
-func (s *PostSearchCustomerOKCustomersItem) GetID() int64 {
-	return s.ID
-}
-
-// GetName returns the value of Name.
-func (s *PostSearchCustomerOKCustomersItem) GetName() string {
-	return s.Name
-}
-
-// GetNameKana returns the value of NameKana.
-func (s *PostSearchCustomerOKCustomersItem) GetNameKana() OptString {
-	return s.NameKana
-}
-
-// GetTelephone returns the value of Telephone.
-func (s *PostSearchCustomerOKCustomersItem) GetTelephone() string {
-	return s.Telephone
-}
-
-// GetEmail returns the value of Email.
-func (s *PostSearchCustomerOKCustomersItem) GetEmail() string {
-	return s.Email
-}
-
-// GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *PostSearchCustomerOKCustomersItem) GetPersonInChargeName() string {
-	return s.PersonInChargeName
-}
-
-// GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *PostSearchCustomerOKCustomersItem) GetPersonInChargeNameKana() OptString {
-	return s.PersonInChargeNameKana
-}
-
-// GetAddress returns the value of Address.
-func (s *PostSearchCustomerOKCustomersItem) GetAddress() PostSearchCustomerOKCustomersItemAddress {
-	return s.Address
-}
-
-// SetID sets the value of ID.
-func (s *PostSearchCustomerOKCustomersItem) SetID(val int64) {
-	s.ID = val
-}
-
-// SetName sets the value of Name.
-func (s *PostSearchCustomerOKCustomersItem) SetName(val string) {
-	s.Name = val
-}
-
-// SetNameKana sets the value of NameKana.
-func (s *PostSearchCustomerOKCustomersItem) SetNameKana(val OptString) {
-	s.NameKana = val
-}
-
-// SetTelephone sets the value of Telephone.
-func (s *PostSearchCustomerOKCustomersItem) SetTelephone(val string) {
-	s.Telephone = val
-}
-
-// SetEmail sets the value of Email.
-func (s *PostSearchCustomerOKCustomersItem) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *PostSearchCustomerOKCustomersItem) SetPersonInChargeName(val string) {
-	s.PersonInChargeName = val
-}
-
-// SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *PostSearchCustomerOKCustomersItem) SetPersonInChargeNameKana(val OptString) {
-	s.PersonInChargeNameKana = val
-}
-
-// SetAddress sets the value of Address.
-func (s *PostSearchCustomerOKCustomersItem) SetAddress(val PostSearchCustomerOKCustomersItemAddress) {
-	s.Address = val
-}
-
-type PostSearchCustomerOKCustomersItemAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *PostSearchCustomerOKCustomersItemAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *PostSearchCustomerOKCustomersItemAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *PostSearchCustomerOKCustomersItemAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *PostSearchCustomerOKCustomersItemAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *PostSearchCustomerOKCustomersItemAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *PostSearchCustomerOKCustomersItemAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *PostSearchCustomerOKCustomersItemAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *PostSearchCustomerOKCustomersItemAddress) SetAddress2(val string) {
-	s.Address2 = val
-}
-
-// PostSearchCustomerOKHeaders wraps PostSearchCustomerOK with response headers.
-type PostSearchCustomerOKHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PostSearchCustomerOK
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerOKHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerOKHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerOKHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PostSearchCustomerOKHeaders) GetResponse() PostSearchCustomerOK {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PostSearchCustomerOKHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PostSearchCustomerOKHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PostSearchCustomerOKHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PostSearchCustomerOKHeaders) SetResponse(val PostSearchCustomerOK) {
-	s.Response = val
-}
-
-func (*PostSearchCustomerOKHeaders) postSearchCustomerRes() {}
-
-type PostSearchCustomerOKPage struct {
+// Ref: #/components/schemas/page
+type Page struct {
 	// ページサイズ.
 	Size int64 `json:"size"`
 	// 合計件数.
@@ -1493,76 +348,37 @@ type PostSearchCustomerOKPage struct {
 }
 
 // GetSize returns the value of Size.
-func (s *PostSearchCustomerOKPage) GetSize() int64 {
+func (s *Page) GetSize() int64 {
 	return s.Size
 }
 
 // GetTotal returns the value of Total.
-func (s *PostSearchCustomerOKPage) GetTotal() int64 {
+func (s *Page) GetTotal() int64 {
 	return s.Total
 }
 
 // GetCurrent returns the value of Current.
-func (s *PostSearchCustomerOKPage) GetCurrent() int64 {
+func (s *Page) GetCurrent() int64 {
 	return s.Current
 }
 
 // SetSize sets the value of Size.
-func (s *PostSearchCustomerOKPage) SetSize(val int64) {
+func (s *Page) SetSize(val int64) {
 	s.Size = val
 }
 
 // SetTotal sets the value of Total.
-func (s *PostSearchCustomerOKPage) SetTotal(val int64) {
+func (s *Page) SetTotal(val int64) {
 	s.Total = val
 }
 
 // SetCurrent sets the value of Current.
-func (s *PostSearchCustomerOKPage) SetCurrent(val int64) {
+func (s *Page) SetCurrent(val int64) {
 	s.Current = val
 }
 
-type PostSearchCustomerReq struct {
-	Conditions PostSearchCustomerReqConditions `json:"conditions"`
-	Pagination PostSearchCustomerReqPagination `json:"pagination"`
-}
-
-// GetConditions returns the value of Conditions.
-func (s *PostSearchCustomerReq) GetConditions() PostSearchCustomerReqConditions {
-	return s.Conditions
-}
-
-// GetPagination returns the value of Pagination.
-func (s *PostSearchCustomerReq) GetPagination() PostSearchCustomerReqPagination {
-	return s.Pagination
-}
-
-// SetConditions sets the value of Conditions.
-func (s *PostSearchCustomerReq) SetConditions(val PostSearchCustomerReqConditions) {
-	s.Conditions = val
-}
-
-// SetPagination sets the value of Pagination.
-func (s *PostSearchCustomerReq) SetPagination(val PostSearchCustomerReqPagination) {
-	s.Pagination = val
-}
-
-type PostSearchCustomerReqConditions struct {
-	// 顧客名称.
-	Name OptString `json:"name"`
-}
-
-// GetName returns the value of Name.
-func (s *PostSearchCustomerReqConditions) GetName() OptString {
-	return s.Name
-}
-
-// SetName sets the value of Name.
-func (s *PostSearchCustomerReqConditions) SetName(val OptString) {
-	s.Name = val
-}
-
-type PostSearchCustomerReqPagination struct {
+// Ref: #/components/schemas/pagination
+type Pagination struct {
 	// ページサイズ.
 	Size int64 `json:"size"`
 	// ページ番号.
@@ -1570,251 +386,265 @@ type PostSearchCustomerReqPagination struct {
 }
 
 // GetSize returns the value of Size.
-func (s *PostSearchCustomerReqPagination) GetSize() int64 {
+func (s *Pagination) GetSize() int64 {
 	return s.Size
 }
 
 // GetNumber returns the value of Number.
-func (s *PostSearchCustomerReqPagination) GetNumber() int64 {
+func (s *Pagination) GetNumber() int64 {
 	return s.Number
 }
 
 // SetSize sets the value of Size.
-func (s *PostSearchCustomerReqPagination) SetSize(val int64) {
+func (s *Pagination) SetSize(val int64) {
 	s.Size = val
 }
 
 // SetNumber sets the value of Number.
-func (s *PostSearchCustomerReqPagination) SetNumber(val int64) {
+func (s *Pagination) SetNumber(val int64) {
 	s.Number = val
 }
 
-type PutModifyCustomerByIDBadRequest struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+type PostCreateCustomerBadRequest ErrorModelHeaders
+
+func (*PostCreateCustomerBadRequest) postCreateCustomerRes() {}
+
+type PostCreateCustomerInternalServerError ErrorModelHeaders
+
+func (*PostCreateCustomerInternalServerError) postCreateCustomerRes() {}
+
+// Ref: #/components/schemas/postCreateCustomer_request
+type PostCreateCustomerRequest struct {
+	// 顧客名称.
+	Name string `json:"name"`
+	// 名称(カナ).
+	NameKana OptString `json:"name_kana"`
+	// 電話番号.
+	Telephone string `json:"telephone"`
+	// メールアドレス.
+	Email string `json:"email"`
+	// 担当者名.
+	PersonInChargeName string `json:"person_in_charge_name"`
+	// 担当者名(カナ).
+	PersonInChargeNameKana OptString `json:"person_in_charge_name_kana"`
+	Address                Address   `json:"address"`
 }
 
-// GetType returns the value of Type.
-func (s *PutModifyCustomerByIDBadRequest) GetType() string {
-	return s.Type
+// GetName returns the value of Name.
+func (s *PostCreateCustomerRequest) GetName() string {
+	return s.Name
 }
 
-// GetMessage returns the value of Message.
-func (s *PutModifyCustomerByIDBadRequest) GetMessage() string {
-	return s.Message
+// GetNameKana returns the value of NameKana.
+func (s *PostCreateCustomerRequest) GetNameKana() OptString {
+	return s.NameKana
 }
 
-// SetType sets the value of Type.
-func (s *PutModifyCustomerByIDBadRequest) SetType(val string) {
-	s.Type = val
+// GetTelephone returns the value of Telephone.
+func (s *PostCreateCustomerRequest) GetTelephone() string {
+	return s.Telephone
 }
 
-// SetMessage sets the value of Message.
-func (s *PutModifyCustomerByIDBadRequest) SetMessage(val string) {
-	s.Message = val
+// GetEmail returns the value of Email.
+func (s *PostCreateCustomerRequest) GetEmail() string {
+	return s.Email
 }
 
-// PutModifyCustomerByIDBadRequestHeaders wraps PutModifyCustomerByIDBadRequest with response headers.
-type PutModifyCustomerByIDBadRequestHeaders struct {
+// GetPersonInChargeName returns the value of PersonInChargeName.
+func (s *PostCreateCustomerRequest) GetPersonInChargeName() string {
+	return s.PersonInChargeName
+}
+
+// GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
+func (s *PostCreateCustomerRequest) GetPersonInChargeNameKana() OptString {
+	return s.PersonInChargeNameKana
+}
+
+// GetAddress returns the value of Address.
+func (s *PostCreateCustomerRequest) GetAddress() Address {
+	return s.Address
+}
+
+// SetName sets the value of Name.
+func (s *PostCreateCustomerRequest) SetName(val string) {
+	s.Name = val
+}
+
+// SetNameKana sets the value of NameKana.
+func (s *PostCreateCustomerRequest) SetNameKana(val OptString) {
+	s.NameKana = val
+}
+
+// SetTelephone sets the value of Telephone.
+func (s *PostCreateCustomerRequest) SetTelephone(val string) {
+	s.Telephone = val
+}
+
+// SetEmail sets the value of Email.
+func (s *PostCreateCustomerRequest) SetEmail(val string) {
+	s.Email = val
+}
+
+// SetPersonInChargeName sets the value of PersonInChargeName.
+func (s *PostCreateCustomerRequest) SetPersonInChargeName(val string) {
+	s.PersonInChargeName = val
+}
+
+// SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
+func (s *PostCreateCustomerRequest) SetPersonInChargeNameKana(val OptString) {
+	s.PersonInChargeNameKana = val
+}
+
+// SetAddress sets the value of Address.
+func (s *PostCreateCustomerRequest) SetAddress(val Address) {
+	s.Address = val
+}
+
+// Ref: #/components/schemas/postSearchCustomer_200_response
+type PostSearchCustomer200Response struct {
+	// 検索結果.
+	Customers []Customer `json:"customers"`
+	Page      Page       `json:"page"`
+}
+
+// GetCustomers returns the value of Customers.
+func (s *PostSearchCustomer200Response) GetCustomers() []Customer {
+	return s.Customers
+}
+
+// GetPage returns the value of Page.
+func (s *PostSearchCustomer200Response) GetPage() Page {
+	return s.Page
+}
+
+// SetCustomers sets the value of Customers.
+func (s *PostSearchCustomer200Response) SetCustomers(val []Customer) {
+	s.Customers = val
+}
+
+// SetPage sets the value of Page.
+func (s *PostSearchCustomer200Response) SetPage(val Page) {
+	s.Page = val
+}
+
+// PostSearchCustomer200ResponseHeaders wraps PostSearchCustomer200Response with response headers.
+type PostSearchCustomer200ResponseHeaders struct {
 	AccessControlAllowHeaders OptString
 	AccessControlAllowMethods OptString
 	AccessControlAllowOrigin  OptString
-	Response                  PutModifyCustomerByIDBadRequest
+	Response                  PostSearchCustomer200Response
 }
 
 // GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDBadRequestHeaders) GetAccessControlAllowHeaders() OptString {
+func (s *PostSearchCustomer200ResponseHeaders) GetAccessControlAllowHeaders() OptString {
 	return s.AccessControlAllowHeaders
 }
 
 // GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDBadRequestHeaders) GetAccessControlAllowMethods() OptString {
+func (s *PostSearchCustomer200ResponseHeaders) GetAccessControlAllowMethods() OptString {
 	return s.AccessControlAllowMethods
 }
 
 // GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDBadRequestHeaders) GetAccessControlAllowOrigin() OptString {
+func (s *PostSearchCustomer200ResponseHeaders) GetAccessControlAllowOrigin() OptString {
 	return s.AccessControlAllowOrigin
 }
 
 // GetResponse returns the value of Response.
-func (s *PutModifyCustomerByIDBadRequestHeaders) GetResponse() PutModifyCustomerByIDBadRequest {
+func (s *PostSearchCustomer200ResponseHeaders) GetResponse() PostSearchCustomer200Response {
 	return s.Response
 }
 
 // SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDBadRequestHeaders) SetAccessControlAllowHeaders(val OptString) {
+func (s *PostSearchCustomer200ResponseHeaders) SetAccessControlAllowHeaders(val OptString) {
 	s.AccessControlAllowHeaders = val
 }
 
 // SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDBadRequestHeaders) SetAccessControlAllowMethods(val OptString) {
+func (s *PostSearchCustomer200ResponseHeaders) SetAccessControlAllowMethods(val OptString) {
 	s.AccessControlAllowMethods = val
 }
 
 // SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDBadRequestHeaders) SetAccessControlAllowOrigin(val OptString) {
+func (s *PostSearchCustomer200ResponseHeaders) SetAccessControlAllowOrigin(val OptString) {
 	s.AccessControlAllowOrigin = val
 }
 
 // SetResponse sets the value of Response.
-func (s *PutModifyCustomerByIDBadRequestHeaders) SetResponse(val PutModifyCustomerByIDBadRequest) {
+func (s *PostSearchCustomer200ResponseHeaders) SetResponse(val PostSearchCustomer200Response) {
 	s.Response = val
 }
 
-func (*PutModifyCustomerByIDBadRequestHeaders) putModifyCustomerByIDRes() {}
+func (*PostSearchCustomer200ResponseHeaders) postSearchCustomerRes() {}
 
-type PutModifyCustomerByIDInternalServerError struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+type PostSearchCustomerBadRequest ErrorModelHeaders
+
+func (*PostSearchCustomerBadRequest) postSearchCustomerRes() {}
+
+type PostSearchCustomerInternalServerError ErrorModelHeaders
+
+func (*PostSearchCustomerInternalServerError) postSearchCustomerRes() {}
+
+type PostSearchCustomerNotFound ErrorModelHeaders
+
+func (*PostSearchCustomerNotFound) postSearchCustomerRes() {}
+
+// Ref: #/components/schemas/postSearchCustomer_request
+type PostSearchCustomerRequest struct {
+	Conditions PostSearchCustomerRequestConditions `json:"conditions"`
+	Pagination Pagination                          `json:"pagination"`
 }
 
-// GetType returns the value of Type.
-func (s *PutModifyCustomerByIDInternalServerError) GetType() string {
-	return s.Type
+// GetConditions returns the value of Conditions.
+func (s *PostSearchCustomerRequest) GetConditions() PostSearchCustomerRequestConditions {
+	return s.Conditions
 }
 
-// GetMessage returns the value of Message.
-func (s *PutModifyCustomerByIDInternalServerError) GetMessage() string {
-	return s.Message
+// GetPagination returns the value of Pagination.
+func (s *PostSearchCustomerRequest) GetPagination() Pagination {
+	return s.Pagination
 }
 
-// SetType sets the value of Type.
-func (s *PutModifyCustomerByIDInternalServerError) SetType(val string) {
-	s.Type = val
+// SetConditions sets the value of Conditions.
+func (s *PostSearchCustomerRequest) SetConditions(val PostSearchCustomerRequestConditions) {
+	s.Conditions = val
 }
 
-// SetMessage sets the value of Message.
-func (s *PutModifyCustomerByIDInternalServerError) SetMessage(val string) {
-	s.Message = val
+// SetPagination sets the value of Pagination.
+func (s *PostSearchCustomerRequest) SetPagination(val Pagination) {
+	s.Pagination = val
 }
 
-// PutModifyCustomerByIDInternalServerErrorHeaders wraps PutModifyCustomerByIDInternalServerError with response headers.
-type PutModifyCustomerByIDInternalServerErrorHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PutModifyCustomerByIDInternalServerError
+// Ref: #/components/schemas/postSearchCustomer_request_conditions
+type PostSearchCustomerRequestConditions struct {
+	// 顧客名称.
+	Name OptString `json:"name"`
 }
 
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
+// GetName returns the value of Name.
+func (s *PostSearchCustomerRequestConditions) GetName() OptString {
+	return s.Name
 }
 
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
+// SetName sets the value of Name.
+func (s *PostSearchCustomerRequestConditions) SetName(val OptString) {
+	s.Name = val
 }
 
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
+type PutModifyCustomerByIDBadRequest ErrorModelHeaders
 
-// GetResponse returns the value of Response.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) GetResponse() PutModifyCustomerByIDInternalServerError {
-	return s.Response
-}
+func (*PutModifyCustomerByIDBadRequest) putModifyCustomerByIDRes() {}
 
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
+type PutModifyCustomerByIDInternalServerError ErrorModelHeaders
 
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
+func (*PutModifyCustomerByIDInternalServerError) putModifyCustomerByIDRes() {}
 
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
+type PutModifyCustomerByIDNotFound ErrorModelHeaders
 
-// SetResponse sets the value of Response.
-func (s *PutModifyCustomerByIDInternalServerErrorHeaders) SetResponse(val PutModifyCustomerByIDInternalServerError) {
-	s.Response = val
-}
+func (*PutModifyCustomerByIDNotFound) putModifyCustomerByIDRes() {}
 
-func (*PutModifyCustomerByIDInternalServerErrorHeaders) putModifyCustomerByIDRes() {}
-
-type PutModifyCustomerByIDNotFound struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-}
-
-// GetType returns the value of Type.
-func (s *PutModifyCustomerByIDNotFound) GetType() string {
-	return s.Type
-}
-
-// GetMessage returns the value of Message.
-func (s *PutModifyCustomerByIDNotFound) GetMessage() string {
-	return s.Message
-}
-
-// SetType sets the value of Type.
-func (s *PutModifyCustomerByIDNotFound) SetType(val string) {
-	s.Type = val
-}
-
-// SetMessage sets the value of Message.
-func (s *PutModifyCustomerByIDNotFound) SetMessage(val string) {
-	s.Message = val
-}
-
-// PutModifyCustomerByIDNotFoundHeaders wraps PutModifyCustomerByIDNotFound with response headers.
-type PutModifyCustomerByIDNotFoundHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PutModifyCustomerByIDNotFound
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDNotFoundHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDNotFoundHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDNotFoundHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PutModifyCustomerByIDNotFoundHeaders) GetResponse() PutModifyCustomerByIDNotFound {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDNotFoundHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDNotFoundHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDNotFoundHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PutModifyCustomerByIDNotFoundHeaders) SetResponse(val PutModifyCustomerByIDNotFound) {
-	s.Response = val
-}
-
-func (*PutModifyCustomerByIDNotFoundHeaders) putModifyCustomerByIDRes() {}
-
-type PutModifyCustomerByIDOK struct {
+// Ref: #/components/schemas/putModifyCustomerByID_request
+type PutModifyCustomerByIDRequest struct {
 	// 顧客ID.
 	ID int64 `json:"id"`
 	// 顧客名称.
@@ -1828,336 +658,86 @@ type PutModifyCustomerByIDOK struct {
 	// 担当者名.
 	PersonInChargeName string `json:"person_in_charge_name"`
 	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                      `json:"person_in_charge_name_kana"`
-	Address                PutModifyCustomerByIDOKAddress `json:"address"`
+	PersonInChargeNameKana OptString `json:"person_in_charge_name_kana"`
+	Address                Address   `json:"address"`
 }
 
 // GetID returns the value of ID.
-func (s *PutModifyCustomerByIDOK) GetID() int64 {
+func (s *PutModifyCustomerByIDRequest) GetID() int64 {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *PutModifyCustomerByIDOK) GetName() string {
+func (s *PutModifyCustomerByIDRequest) GetName() string {
 	return s.Name
 }
 
 // GetNameKana returns the value of NameKana.
-func (s *PutModifyCustomerByIDOK) GetNameKana() OptString {
+func (s *PutModifyCustomerByIDRequest) GetNameKana() OptString {
 	return s.NameKana
 }
 
 // GetTelephone returns the value of Telephone.
-func (s *PutModifyCustomerByIDOK) GetTelephone() string {
+func (s *PutModifyCustomerByIDRequest) GetTelephone() string {
 	return s.Telephone
 }
 
 // GetEmail returns the value of Email.
-func (s *PutModifyCustomerByIDOK) GetEmail() string {
+func (s *PutModifyCustomerByIDRequest) GetEmail() string {
 	return s.Email
 }
 
 // GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *PutModifyCustomerByIDOK) GetPersonInChargeName() string {
+func (s *PutModifyCustomerByIDRequest) GetPersonInChargeName() string {
 	return s.PersonInChargeName
 }
 
 // GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *PutModifyCustomerByIDOK) GetPersonInChargeNameKana() OptString {
+func (s *PutModifyCustomerByIDRequest) GetPersonInChargeNameKana() OptString {
 	return s.PersonInChargeNameKana
 }
 
 // GetAddress returns the value of Address.
-func (s *PutModifyCustomerByIDOK) GetAddress() PutModifyCustomerByIDOKAddress {
+func (s *PutModifyCustomerByIDRequest) GetAddress() Address {
 	return s.Address
 }
 
 // SetID sets the value of ID.
-func (s *PutModifyCustomerByIDOK) SetID(val int64) {
+func (s *PutModifyCustomerByIDRequest) SetID(val int64) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *PutModifyCustomerByIDOK) SetName(val string) {
+func (s *PutModifyCustomerByIDRequest) SetName(val string) {
 	s.Name = val
 }
 
 // SetNameKana sets the value of NameKana.
-func (s *PutModifyCustomerByIDOK) SetNameKana(val OptString) {
+func (s *PutModifyCustomerByIDRequest) SetNameKana(val OptString) {
 	s.NameKana = val
 }
 
 // SetTelephone sets the value of Telephone.
-func (s *PutModifyCustomerByIDOK) SetTelephone(val string) {
+func (s *PutModifyCustomerByIDRequest) SetTelephone(val string) {
 	s.Telephone = val
 }
 
 // SetEmail sets the value of Email.
-func (s *PutModifyCustomerByIDOK) SetEmail(val string) {
+func (s *PutModifyCustomerByIDRequest) SetEmail(val string) {
 	s.Email = val
 }
 
 // SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *PutModifyCustomerByIDOK) SetPersonInChargeName(val string) {
+func (s *PutModifyCustomerByIDRequest) SetPersonInChargeName(val string) {
 	s.PersonInChargeName = val
 }
 
 // SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *PutModifyCustomerByIDOK) SetPersonInChargeNameKana(val OptString) {
+func (s *PutModifyCustomerByIDRequest) SetPersonInChargeNameKana(val OptString) {
 	s.PersonInChargeNameKana = val
 }
 
 // SetAddress sets the value of Address.
-func (s *PutModifyCustomerByIDOK) SetAddress(val PutModifyCustomerByIDOKAddress) {
+func (s *PutModifyCustomerByIDRequest) SetAddress(val Address) {
 	s.Address = val
-}
-
-type PutModifyCustomerByIDOKAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *PutModifyCustomerByIDOKAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *PutModifyCustomerByIDOKAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *PutModifyCustomerByIDOKAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *PutModifyCustomerByIDOKAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *PutModifyCustomerByIDOKAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *PutModifyCustomerByIDOKAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *PutModifyCustomerByIDOKAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *PutModifyCustomerByIDOKAddress) SetAddress2(val string) {
-	s.Address2 = val
-}
-
-// PutModifyCustomerByIDOKHeaders wraps PutModifyCustomerByIDOK with response headers.
-type PutModifyCustomerByIDOKHeaders struct {
-	AccessControlAllowHeaders OptString
-	AccessControlAllowMethods OptString
-	AccessControlAllowOrigin  OptString
-	Response                  PutModifyCustomerByIDOK
-}
-
-// GetAccessControlAllowHeaders returns the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDOKHeaders) GetAccessControlAllowHeaders() OptString {
-	return s.AccessControlAllowHeaders
-}
-
-// GetAccessControlAllowMethods returns the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDOKHeaders) GetAccessControlAllowMethods() OptString {
-	return s.AccessControlAllowMethods
-}
-
-// GetAccessControlAllowOrigin returns the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDOKHeaders) GetAccessControlAllowOrigin() OptString {
-	return s.AccessControlAllowOrigin
-}
-
-// GetResponse returns the value of Response.
-func (s *PutModifyCustomerByIDOKHeaders) GetResponse() PutModifyCustomerByIDOK {
-	return s.Response
-}
-
-// SetAccessControlAllowHeaders sets the value of AccessControlAllowHeaders.
-func (s *PutModifyCustomerByIDOKHeaders) SetAccessControlAllowHeaders(val OptString) {
-	s.AccessControlAllowHeaders = val
-}
-
-// SetAccessControlAllowMethods sets the value of AccessControlAllowMethods.
-func (s *PutModifyCustomerByIDOKHeaders) SetAccessControlAllowMethods(val OptString) {
-	s.AccessControlAllowMethods = val
-}
-
-// SetAccessControlAllowOrigin sets the value of AccessControlAllowOrigin.
-func (s *PutModifyCustomerByIDOKHeaders) SetAccessControlAllowOrigin(val OptString) {
-	s.AccessControlAllowOrigin = val
-}
-
-// SetResponse sets the value of Response.
-func (s *PutModifyCustomerByIDOKHeaders) SetResponse(val PutModifyCustomerByIDOK) {
-	s.Response = val
-}
-
-func (*PutModifyCustomerByIDOKHeaders) putModifyCustomerByIDRes() {}
-
-type PutModifyCustomerByIDReq struct {
-	// 顧客ID.
-	ID int64 `json:"id"`
-	// 顧客名称.
-	Name string `json:"name"`
-	// 名称(カナ).
-	NameKana OptString `json:"name_kana"`
-	// 電話番号.
-	Telephone string `json:"telephone"`
-	// メールアドレス.
-	Email string `json:"email"`
-	// 担当者名.
-	PersonInChargeName string `json:"person_in_charge_name"`
-	// 担当者名(カナ).
-	PersonInChargeNameKana OptString                       `json:"person_in_charge_name_kana"`
-	Address                PutModifyCustomerByIDReqAddress `json:"address"`
-}
-
-// GetID returns the value of ID.
-func (s *PutModifyCustomerByIDReq) GetID() int64 {
-	return s.ID
-}
-
-// GetName returns the value of Name.
-func (s *PutModifyCustomerByIDReq) GetName() string {
-	return s.Name
-}
-
-// GetNameKana returns the value of NameKana.
-func (s *PutModifyCustomerByIDReq) GetNameKana() OptString {
-	return s.NameKana
-}
-
-// GetTelephone returns the value of Telephone.
-func (s *PutModifyCustomerByIDReq) GetTelephone() string {
-	return s.Telephone
-}
-
-// GetEmail returns the value of Email.
-func (s *PutModifyCustomerByIDReq) GetEmail() string {
-	return s.Email
-}
-
-// GetPersonInChargeName returns the value of PersonInChargeName.
-func (s *PutModifyCustomerByIDReq) GetPersonInChargeName() string {
-	return s.PersonInChargeName
-}
-
-// GetPersonInChargeNameKana returns the value of PersonInChargeNameKana.
-func (s *PutModifyCustomerByIDReq) GetPersonInChargeNameKana() OptString {
-	return s.PersonInChargeNameKana
-}
-
-// GetAddress returns the value of Address.
-func (s *PutModifyCustomerByIDReq) GetAddress() PutModifyCustomerByIDReqAddress {
-	return s.Address
-}
-
-// SetID sets the value of ID.
-func (s *PutModifyCustomerByIDReq) SetID(val int64) {
-	s.ID = val
-}
-
-// SetName sets the value of Name.
-func (s *PutModifyCustomerByIDReq) SetName(val string) {
-	s.Name = val
-}
-
-// SetNameKana sets the value of NameKana.
-func (s *PutModifyCustomerByIDReq) SetNameKana(val OptString) {
-	s.NameKana = val
-}
-
-// SetTelephone sets the value of Telephone.
-func (s *PutModifyCustomerByIDReq) SetTelephone(val string) {
-	s.Telephone = val
-}
-
-// SetEmail sets the value of Email.
-func (s *PutModifyCustomerByIDReq) SetEmail(val string) {
-	s.Email = val
-}
-
-// SetPersonInChargeName sets the value of PersonInChargeName.
-func (s *PutModifyCustomerByIDReq) SetPersonInChargeName(val string) {
-	s.PersonInChargeName = val
-}
-
-// SetPersonInChargeNameKana sets the value of PersonInChargeNameKana.
-func (s *PutModifyCustomerByIDReq) SetPersonInChargeNameKana(val OptString) {
-	s.PersonInChargeNameKana = val
-}
-
-// SetAddress sets the value of Address.
-func (s *PutModifyCustomerByIDReq) SetAddress(val PutModifyCustomerByIDReqAddress) {
-	s.Address = val
-}
-
-type PutModifyCustomerByIDReqAddress struct {
-	// 郵便番号.
-	PostalCode string `json:"postal_code"`
-	// 都道府県ID.
-	PrefID int64 `json:"pref_id"`
-	// 市区町村.
-	Address1 string `json:"address1"`
-	// 番地・建物名・部屋.
-	Address2 string `json:"address2"`
-}
-
-// GetPostalCode returns the value of PostalCode.
-func (s *PutModifyCustomerByIDReqAddress) GetPostalCode() string {
-	return s.PostalCode
-}
-
-// GetPrefID returns the value of PrefID.
-func (s *PutModifyCustomerByIDReqAddress) GetPrefID() int64 {
-	return s.PrefID
-}
-
-// GetAddress1 returns the value of Address1.
-func (s *PutModifyCustomerByIDReqAddress) GetAddress1() string {
-	return s.Address1
-}
-
-// GetAddress2 returns the value of Address2.
-func (s *PutModifyCustomerByIDReqAddress) GetAddress2() string {
-	return s.Address2
-}
-
-// SetPostalCode sets the value of PostalCode.
-func (s *PutModifyCustomerByIDReqAddress) SetPostalCode(val string) {
-	s.PostalCode = val
-}
-
-// SetPrefID sets the value of PrefID.
-func (s *PutModifyCustomerByIDReqAddress) SetPrefID(val int64) {
-	s.PrefID = val
-}
-
-// SetAddress1 sets the value of Address1.
-func (s *PutModifyCustomerByIDReqAddress) SetAddress1(val string) {
-	s.Address1 = val
-}
-
-// SetAddress2 sets the value of Address2.
-func (s *PutModifyCustomerByIDReqAddress) SetAddress2(val string) {
-	s.Address2 = val
 }

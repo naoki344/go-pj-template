@@ -197,7 +197,7 @@ func (s *Server) handlePostCreateCustomerRequest(args [0]string, argsEscaped boo
 		}
 
 		type (
-			Request  = *PostCreateCustomerReq
+			Request  = *PostCreateCustomerRequest
 			Params   = struct{}
 			Response = PostCreateCustomerRes
 		)
@@ -303,7 +303,7 @@ func (s *Server) handlePostSearchCustomerRequest(args [0]string, argsEscaped boo
 		}
 
 		type (
-			Request  = *PostSearchCustomerReq
+			Request  = *PostSearchCustomerRequest
 			Params   = struct{}
 			Response = PostSearchCustomerRes
 		)
@@ -424,7 +424,7 @@ func (s *Server) handlePutModifyCustomerByIDRequest(args [1]string, argsEscaped 
 		}
 
 		type (
-			Request  = *PutModifyCustomerByIDReq
+			Request  = *PutModifyCustomerByIDRequest
 			Params   = PutModifyCustomerByIDParams
 			Response = PutModifyCustomerByIDRes
 		)

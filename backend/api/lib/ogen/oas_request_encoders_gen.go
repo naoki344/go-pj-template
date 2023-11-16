@@ -12,7 +12,7 @@ import (
 )
 
 func encodePostCreateCustomerRequest(
-	req *PostCreateCustomerReq,
+	req *PostCreateCustomerRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -26,7 +26,7 @@ func encodePostCreateCustomerRequest(
 }
 
 func encodePostSearchCustomerRequest(
-	req *PostSearchCustomerReq,
+	req *PostSearchCustomerRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -40,7 +40,7 @@ func encodePostSearchCustomerRequest(
 }
 
 func encodePutModifyCustomerByIDRequest(
-	req *PutModifyCustomerByIDReq,
+	req *PutModifyCustomerByIDRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

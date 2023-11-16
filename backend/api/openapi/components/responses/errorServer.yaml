@@ -1,8 +1,15 @@
-serverError:
-  description: システムエラー
-  headers:
-    $ref: "./headers.yaml#/headers"
-  content:
-    application/json:
-      schema:
-        $ref: "./model/errorModel.yaml#/error"
+description: システムエラー
+headers:
+  Access-Control-Allow-Origin:
+    schema:
+      type: "string"
+  Access-Control-Allow-Methods:
+    schema:
+      type: "string"
+  Access-Control-Allow-Headers:
+    schema:
+      type: "string"
+content:
+  application/json:
+    schema:
+      $ref: "./model/errorModel.yaml"

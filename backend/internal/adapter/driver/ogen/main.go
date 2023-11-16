@@ -9,11 +9,18 @@ import (
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
 )
 
+type ErrorType string
+
+const (
+	ResourceNotFound    = ErrorType("ResourceNotFound")
+	InternalServerError = ErrorType("InternalServerError")
+)
+
 type EnAPIAdapter struct {
 	customerAPI *apiport.CustomerAPIPort
 }
 
-func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerReq) (ogen.PostCreateCustomerRes, error) {
+func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerRequest) (ogen.PostCreateCustomerRes, error) {
 	portModel := &apiport.Customer{
 		Name:                   req.Name,
 		NameKana:               getStringFromOptString(req.NameKana),
@@ -30,26 +37,10 @@ func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCre
 	if err != nil {
 		return CreateErrorPostCreateCustomerResponse(err), nil
 	}
-	return &ogen.PostCreateCustomerOKHeaders{
-		Response: ogen.PostCreateCustomerOK{
-			ID:                     res.ID,
-			Name:                   res.Name,
-			NameKana:               toOptString(res.NameKana),
-			Telephone:              res.Telephone,
-			Email:                  res.Email,
-			PersonInChargeName:     res.PersonInChargeName,
-			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
-			Address: ogen.PostCreateCustomerOKAddress{
-				PostalCode: res.PostalCode,
-				PrefID:     res.PrefID,
-				Address1:   res.Address1,
-				Address2:   res.Address2,
-			},
-		},
-	}, nil
+	return createCustomerResponse(res), nil
 }
 
-func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSearchCustomerReq) (ogen.PostSearchCustomerRes, error) {
+func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSearchCustomerRequest) (ogen.PostSearchCustomerRes, error) {
 	pageNumber := req.Pagination.Number
 	pageSize := req.Pagination.Size
 	res, err := n.customerAPI.SearchCustomer(
@@ -57,38 +48,10 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 	if err != nil {
 		return CreateErrorPostSearchCustomerResponse(err), nil
 	}
-	customers := make([]ogen.PostSearchCustomerOKCustomersItem, 0)
-	for _, v := range res.CustomerList {
-		item := ogen.PostSearchCustomerOKCustomersItem{
-			ID:                     v.ID,
-			Name:                   v.Name,
-			NameKana:               toOptString(v.NameKana),
-			Telephone:              v.Telephone,
-			Email:                  v.Email,
-			PersonInChargeName:     v.PersonInChargeName,
-			PersonInChargeNameKana: toOptString(v.PersonInChargeNameKana),
-			Address: ogen.PostSearchCustomerOKCustomersItemAddress{
-				PostalCode: v.PostalCode,
-				PrefID:     v.PrefID,
-				Address1:   v.Address1,
-				Address2:   v.Address2,
-			},
-		}
-		customers = append(customers, item)
-	}
-	return &ogen.PostSearchCustomerOKHeaders{
-		Response: ogen.PostSearchCustomerOK{
-			Page: ogen.PostSearchCustomerOKPage{
-				Size:    res.Page.Size,
-				Total:   res.Page.Total,
-				Current: res.Page.Current,
-			},
-			Customers: customers,
-		},
-	}, nil
+	return createCustomerSearchResponse(res.Page, res.CustomerList), nil
 }
 
-func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDReq, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
+func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDRequest, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
 	if params.CustomerID != req.ID {
 		return CreateErrorPutByIDResponseUnmatchID(), nil
 	}
@@ -110,23 +73,7 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 	if err != nil {
 		return CreateErrorPutByIDResponse(err), nil
 	}
-	return &ogen.PutModifyCustomerByIDOKHeaders{
-		Response: ogen.PutModifyCustomerByIDOK{
-			ID:                     res.ID,
-			Name:                   res.Name,
-			NameKana:               toOptString(res.NameKana),
-			Telephone:              res.Telephone,
-			Email:                  res.Email,
-			PersonInChargeName:     res.PersonInChargeName,
-			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
-			Address: ogen.PutModifyCustomerByIDOKAddress{
-				PostalCode: res.PostalCode,
-				PrefID:     res.PrefID,
-				Address1:   res.Address1,
-				Address2:   res.Address2,
-			},
-		},
-	}, nil
+	return createCustomerResponse(res), nil
 }
 
 func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
@@ -134,39 +81,81 @@ func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCusto
 	if err != nil {
 		return CreateErrorGetByIDResponse(err), nil
 	}
-	return &ogen.GetCustomerByIDOKHeaders{
-		Response: ogen.GetCustomerByIDOK{
-			ID:                     res.ID,
-			Name:                   res.Name,
-			NameKana:               toOptString(res.NameKana),
-			Telephone:              res.Telephone,
-			Email:                  res.Email,
-			PersonInChargeName:     res.PersonInChargeName,
-			PersonInChargeNameKana: toOptString(res.PersonInChargeNameKana),
-			Address: ogen.GetCustomerByIDOKAddress{
-				PostalCode: res.PostalCode,
-				PrefID:     res.PrefID,
-				Address1:   res.Address1,
-				Address2:   res.Address2,
-			},
+	return createCustomerResponse(res), nil
+}
+
+func toCustomer(customer *apiport.Customer) ogen.Customer {
+	return ogen.Customer{
+		ID:                     customer.ID,
+		Name:                   customer.Name,
+		NameKana:               toOptString(customer.NameKana),
+		Telephone:              customer.Telephone,
+		Email:                  customer.Email,
+		PersonInChargeName:     customer.PersonInChargeName,
+		PersonInChargeNameKana: toOptString(customer.PersonInChargeNameKana),
+		Address: ogen.Address{
+			PostalCode: customer.PostalCode,
+			PrefID:     customer.PrefID,
+			Address1:   customer.Address1,
+			Address2:   customer.Address2,
 		},
-	}, nil
+	}
+
+}
+
+func createCustomerSearchResponse(page apiport.PageResult, customers []*apiport.Customer) *ogen.PostSearchCustomer200ResponseHeaders {
+	customersRes := make([]ogen.Customer, 0)
+	for _, v := range customers {
+		customersRes = append(customersRes, toCustomer(v))
+	}
+	as := string('*')
+	return &ogen.PostSearchCustomer200ResponseHeaders{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.PostSearchCustomer200Response{
+			Page: ogen.Page{
+				Size:    page.Size,
+				Total:   page.Total,
+				Current: page.Current,
+			},
+			Customers: customersRes,
+		},
+	}
+}
+
+func createCustomerResponse(customer *apiport.Customer) *ogen.CustomerHeaders {
+	as := string('*')
+	return &ogen.CustomerHeaders{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response:                  toCustomer(customer),
+	}
+
 }
 
 func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
 	slog.Error("get customer error.", "err", err)
+	as := string('*')
 	var customerErr *apiport.APICustomerNotFoundError
 	if errors.As(err, &customerErr) {
-		return &ogen.GetCustomerByIDNotFoundHeaders{
-			Response: ogen.GetCustomerByIDNotFound{
-				Type:    "ResourceNotFound",
+		return &ogen.GetCustomerByIDNotFound{
+			AccessControlAllowHeaders: toOptString(&as),
+			AccessControlAllowMethods: toOptString(&as),
+			AccessControlAllowOrigin:  toOptString(&as),
+			Response: ogen.ErrorModel{
+				Type:    string(ResourceNotFound),
 				Message: "customer not found.",
 			},
 		}
 	}
-	return &ogen.GetCustomerByIDInternalServerErrorHeaders{
-		Response: ogen.GetCustomerByIDInternalServerError{
-			Type:    "InternalServerError",
+	return &ogen.GetCustomerByIDInternalServerError{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.ErrorModel{
+			Type:    string(InternalServerError),
 			Message: "unexpected error has occurred.",
 		},
 	}
@@ -174,27 +163,38 @@ func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
 
 func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
 	slog.Error("get customer error.", "err", err)
+	as := string('*')
 	var customerErr *apiport.APICustomerNotFoundError
 	if errors.As(err, &customerErr) {
-		return &ogen.PutModifyCustomerByIDBadRequestHeaders{
-			Response: ogen.PutModifyCustomerByIDBadRequest{
-				Type:    "ResourceNotFound",
+		return &ogen.PutModifyCustomerByIDNotFound{
+			AccessControlAllowHeaders: toOptString(&as),
+			AccessControlAllowMethods: toOptString(&as),
+			AccessControlAllowOrigin:  toOptString(&as),
+			Response: ogen.ErrorModel{
+				Type:    string(ResourceNotFound),
 				Message: "customer not found.",
 			},
 		}
 	}
-	return &ogen.PutModifyCustomerByIDInternalServerErrorHeaders{
-		Response: ogen.PutModifyCustomerByIDInternalServerError{
-			Type:    "InternalServerError",
+	return &ogen.PutModifyCustomerByIDInternalServerError{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.ErrorModel{
+			Type:    string(InternalServerError),
 			Message: "unexpected error has occurred.",
 		},
 	}
 }
 
 func CreateErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
-	return &ogen.PutModifyCustomerByIDBadRequestHeaders{
-		Response: ogen.PutModifyCustomerByIDBadRequest{
-			Type:    "ResourceNotFound",
+	as := string('*')
+	return &ogen.PutModifyCustomerByIDNotFound{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.ErrorModel{
+			Type:    string(ResourceNotFound),
 			Message: "customer id unmatch.",
 		},
 	}
@@ -202,18 +202,13 @@ func CreateErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
 
 func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes {
 	slog.Error("get customer error.", "err", err)
-	var customerErr *apiport.APICustomerNotFoundError
-	if errors.As(err, &customerErr) {
-		return &ogen.PostCreateCustomerNotFoundHeaders{
-			Response: ogen.PostCreateCustomerNotFound{
-				Type:    "ResourceNotFound",
-				Message: "customer not found.",
-			},
-		}
-	}
-	return &ogen.PostCreateCustomerInternalServerErrorHeaders{
-		Response: ogen.PostCreateCustomerInternalServerError{
-			Type:    "InternalServerError",
+	as := string('*')
+	return &ogen.PostCreateCustomerInternalServerError{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.ErrorModel{
+			Type:    string(InternalServerError),
 			Message: "unexpected error has occurred.",
 		},
 	}
@@ -221,9 +216,13 @@ func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes
 
 func CreateErrorPostSearchCustomerResponse(err error) ogen.PostSearchCustomerRes {
 	slog.Error("get customer error.", "err", err)
-	return &ogen.PostSearchCustomerInternalServerErrorHeaders{
-		Response: ogen.PostSearchCustomerInternalServerError{
-			Type:    "InternalServerError",
+	as := string('*')
+	return &ogen.PostSearchCustomerInternalServerError{
+		AccessControlAllowHeaders: toOptString(&as),
+		AccessControlAllowMethods: toOptString(&as),
+		AccessControlAllowOrigin:  toOptString(&as),
+		Response: ogen.ErrorModel{
+			Type:    string(InternalServerError),
 			Message: "unexpected error has occurred.",
 		},
 	}

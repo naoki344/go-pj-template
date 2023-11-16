@@ -1,31 +1,30 @@
-modifyCustomerRequest:
-  content:
-    application/json:
-      schema:
-        type: object
-        additionalProperties: false
-        required:
-          - id
-          - name
-          - person_in_charge_name
-          - telephone
-          - email
-          - address
-        properties:
-          id:
-            $ref: "../../models/customer/id.yaml#/id"
-          name:
-            $ref: "../../models/customer/name.yaml#/name"
-          name_kana:
-            $ref: "../../models/customer/nameKana.yaml#/nameKana"
-          telephone:
-            $ref: "../../models/common/telephone.yaml#/telephone"
-          email:
-            $ref: "../../models/common/email.yaml#/email"
-          person_in_charge_name:
-            $ref: "../../models/customer/personInChargeName.yaml#/personInChargeName"
-          person_in_charge_name_kana:
-            $ref: "../../models/customer/personInChargeNameKana.yaml#/personInChargeNameKana"
-          address:
-            $ref: "../../models/common/address.yaml#/address"
-  required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - person_in_charge_name
+        - telephone
+        - email
+        - address
+      properties:
+        id:
+          $ref: "../../models/customer/id.yaml#/id"
+        name:
+          $ref: "../../models/customer/name.yaml#/name"
+        name_kana:
+          $ref: "../../models/customer/nameKana.yaml#/nameKana"
+        telephone:
+          $ref: "../../models/common/telephone.yaml#/telephone"
+        email:
+          $ref: "../../models/common/email.yaml#/email"
+        person_in_charge_name:
+          $ref: "../../models/customer/personInChargeName.yaml#/personInChargeName"
+        person_in_charge_name_kana:
+          $ref: "../../models/customer/personInChargeNameKana.yaml#/personInChargeNameKana"
+        address:
+          $ref: "../../models/common/address.yaml#/address"
+required: true

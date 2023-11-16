@@ -16,7 +16,7 @@ import (
 
 func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *GetCustomerByIDOKHeaders:
+	case *CustomerHeaders:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -78,7 +78,7 @@ func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseW
 
 		return nil
 
-	case *GetCustomerByIDBadRequestHeaders:
+	case *GetCustomerByIDBadRequest:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -140,7 +140,7 @@ func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseW
 
 		return nil
 
-	case *GetCustomerByIDNotFoundHeaders:
+	case *GetCustomerByIDNotFound:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -202,7 +202,7 @@ func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseW
 
 		return nil
 
-	case *GetCustomerByIDInternalServerErrorHeaders:
+	case *GetCustomerByIDInternalServerError:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -271,7 +271,7 @@ func encodeGetCustomerByIDResponse(response GetCustomerByIDRes, w http.ResponseW
 
 func encodePostCreateCustomerResponse(response PostCreateCustomerRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PostCreateCustomerOKHeaders:
+	case *CustomerHeaders:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -333,7 +333,7 @@ func encodePostCreateCustomerResponse(response PostCreateCustomerRes, w http.Res
 
 		return nil
 
-	case *PostCreateCustomerBadRequestHeaders:
+	case *PostCreateCustomerBadRequest:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -395,69 +395,7 @@ func encodePostCreateCustomerResponse(response PostCreateCustomerRes, w http.Res
 
 		return nil
 
-	case *PostCreateCustomerNotFoundHeaders:
-		w.Header().Set("Content-Type", "application/json")
-		// Encoding response headers.
-		{
-			h := uri.NewHeaderEncoder(w.Header())
-			// Encode "Access-Control-Allow-Headers" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Headers",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					if val, ok := response.AccessControlAllowHeaders.Get(); ok {
-						return e.EncodeValue(conv.StringToString(val))
-					}
-					return nil
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Headers header")
-				}
-			}
-			// Encode "Access-Control-Allow-Methods" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Methods",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					if val, ok := response.AccessControlAllowMethods.Get(); ok {
-						return e.EncodeValue(conv.StringToString(val))
-					}
-					return nil
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Methods header")
-				}
-			}
-			// Encode "Access-Control-Allow-Origin" header.
-			{
-				cfg := uri.HeaderParameterEncodingConfig{
-					Name:    "Access-Control-Allow-Origin",
-					Explode: false,
-				}
-				if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-					if val, ok := response.AccessControlAllowOrigin.Get(); ok {
-						return e.EncodeValue(conv.StringToString(val))
-					}
-					return nil
-				}); err != nil {
-					return errors.Wrap(err, "encode Access-Control-Allow-Origin header")
-				}
-			}
-		}
-		w.WriteHeader(404)
-		span.SetStatus(codes.Error, http.StatusText(404))
-
-		e := new(jx.Encoder)
-		response.Response.Encode(e)
-		if _, err := e.WriteTo(w); err != nil {
-			return errors.Wrap(err, "write")
-		}
-
-		return nil
-
-	case *PostCreateCustomerInternalServerErrorHeaders:
+	case *PostCreateCustomerInternalServerError:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -526,7 +464,7 @@ func encodePostCreateCustomerResponse(response PostCreateCustomerRes, w http.Res
 
 func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PostSearchCustomerOKHeaders:
+	case *PostSearchCustomer200ResponseHeaders:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -588,7 +526,7 @@ func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.Res
 
 		return nil
 
-	case *PostSearchCustomerBadRequestHeaders:
+	case *PostSearchCustomerBadRequest:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -650,7 +588,7 @@ func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.Res
 
 		return nil
 
-	case *PostSearchCustomerNotFoundHeaders:
+	case *PostSearchCustomerNotFound:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -712,7 +650,7 @@ func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.Res
 
 		return nil
 
-	case *PostSearchCustomerInternalServerErrorHeaders:
+	case *PostSearchCustomerInternalServerError:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -781,7 +719,7 @@ func encodePostSearchCustomerResponse(response PostSearchCustomerRes, w http.Res
 
 func encodePutModifyCustomerByIDResponse(response PutModifyCustomerByIDRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PutModifyCustomerByIDOKHeaders:
+	case *CustomerHeaders:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -843,7 +781,7 @@ func encodePutModifyCustomerByIDResponse(response PutModifyCustomerByIDRes, w ht
 
 		return nil
 
-	case *PutModifyCustomerByIDBadRequestHeaders:
+	case *PutModifyCustomerByIDBadRequest:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -905,7 +843,7 @@ func encodePutModifyCustomerByIDResponse(response PutModifyCustomerByIDRes, w ht
 
 		return nil
 
-	case *PutModifyCustomerByIDNotFoundHeaders:
+	case *PutModifyCustomerByIDNotFound:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{
@@ -967,7 +905,7 @@ func encodePutModifyCustomerByIDResponse(response PutModifyCustomerByIDRes, w ht
 
 		return nil
 
-	case *PutModifyCustomerByIDInternalServerErrorHeaders:
+	case *PutModifyCustomerByIDInternalServerError:
 		w.Header().Set("Content-Type", "application/json")
 		// Encoding response headers.
 		{

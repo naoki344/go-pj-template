@@ -34,19 +34,19 @@ type Invoker interface {
 	// 顧客情報登録.
 	//
 	// POST /customers
-	PostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (PostCreateCustomerRes, error)
+	PostCreateCustomer(ctx context.Context, request *PostCreateCustomerRequest) (PostCreateCustomerRes, error)
 	// PostSearchCustomer invokes postSearchCustomer operation.
 	//
 	// 顧客情報検索.
 	//
 	// POST /customers/search
-	PostSearchCustomer(ctx context.Context, request *PostSearchCustomerReq) (PostSearchCustomerRes, error)
+	PostSearchCustomer(ctx context.Context, request *PostSearchCustomerRequest) (PostSearchCustomerRes, error)
 	// PutModifyCustomerByID invokes putModifyCustomerByID operation.
 	//
 	// 顧客情報更新.
 	//
 	// PUT /customers/{customerID}
-	PutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (PutModifyCustomerByIDRes, error)
+	PutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDRequest, params PutModifyCustomerByIDParams) (PutModifyCustomerByIDRes, error)
 }
 
 // Client implements OAS client.
@@ -192,12 +192,12 @@ func (c *Client) sendGetCustomerByID(ctx context.Context, params GetCustomerByID
 // 顧客情報登録.
 //
 // POST /customers
-func (c *Client) PostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (PostCreateCustomerRes, error) {
+func (c *Client) PostCreateCustomer(ctx context.Context, request *PostCreateCustomerRequest) (PostCreateCustomerRes, error) {
 	res, err := c.sendPostCreateCustomer(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostCreateCustomer(ctx context.Context, request *PostCreateCustomerReq) (res PostCreateCustomerRes, err error) {
+func (c *Client) sendPostCreateCustomer(ctx context.Context, request *PostCreateCustomerRequest) (res PostCreateCustomerRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("postCreateCustomer"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -276,12 +276,12 @@ func (c *Client) sendPostCreateCustomer(ctx context.Context, request *PostCreate
 // 顧客情報検索.
 //
 // POST /customers/search
-func (c *Client) PostSearchCustomer(ctx context.Context, request *PostSearchCustomerReq) (PostSearchCustomerRes, error) {
+func (c *Client) PostSearchCustomer(ctx context.Context, request *PostSearchCustomerRequest) (PostSearchCustomerRes, error) {
 	res, err := c.sendPostSearchCustomer(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendPostSearchCustomer(ctx context.Context, request *PostSearchCustomerReq) (res PostSearchCustomerRes, err error) {
+func (c *Client) sendPostSearchCustomer(ctx context.Context, request *PostSearchCustomerRequest) (res PostSearchCustomerRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("postSearchCustomer"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -360,12 +360,12 @@ func (c *Client) sendPostSearchCustomer(ctx context.Context, request *PostSearch
 // 顧客情報更新.
 //
 // PUT /customers/{customerID}
-func (c *Client) PutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (PutModifyCustomerByIDRes, error) {
+func (c *Client) PutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDRequest, params PutModifyCustomerByIDParams) (PutModifyCustomerByIDRes, error) {
 	res, err := c.sendPutModifyCustomerByID(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (res PutModifyCustomerByIDRes, err error) {
+func (c *Client) sendPutModifyCustomerByID(ctx context.Context, request *PutModifyCustomerByIDRequest, params PutModifyCustomerByIDParams) (res PutModifyCustomerByIDRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("putModifyCustomerByID"),
 		semconv.HTTPMethodKey.String("PUT"),

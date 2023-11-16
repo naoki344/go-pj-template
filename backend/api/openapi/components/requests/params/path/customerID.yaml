@@ -1,7 +1,6 @@
-customerID:
-  name: customerID
-  in: path
-  required: true
-  schema:
-    type: integer
-    format: int64
+name: customerID
+in: path
+required: true
+schema:
+  type: integer
+  format: int64

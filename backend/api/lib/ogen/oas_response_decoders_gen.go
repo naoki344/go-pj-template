@@ -32,7 +32,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetCustomerByIDOK
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -49,7 +49,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			var wrapper GetCustomerByIDOKHeaders
+			var wrapper CustomerHeaders
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -181,7 +181,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetCustomerByIDBadRequest
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -198,7 +198,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			var wrapper GetCustomerByIDBadRequestHeaders
+			var wrapper GetCustomerByIDBadRequest
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -330,7 +330,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetCustomerByIDNotFound
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -347,7 +347,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			var wrapper GetCustomerByIDNotFoundHeaders
+			var wrapper GetCustomerByIDNotFound
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -479,7 +479,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GetCustomerByIDInternalServerError
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -496,7 +496,7 @@ func decodeGetCustomerByIDResponse(resp *http.Response) (res GetCustomerByIDRes,
 				}
 				return res, err
 			}
-			var wrapper GetCustomerByIDInternalServerErrorHeaders
+			var wrapper GetCustomerByIDInternalServerError
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -634,7 +634,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostCreateCustomerOK
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -651,7 +651,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 				}
 				return res, err
 			}
-			var wrapper PostCreateCustomerOKHeaders
+			var wrapper CustomerHeaders
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -783,7 +783,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostCreateCustomerBadRequest
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -800,156 +800,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 				}
 				return res, err
 			}
-			var wrapper PostCreateCustomerBadRequestHeaders
-			wrapper.Response = response
-			h := uri.NewHeaderDecoder(resp.Header)
-			// Parse "Access-Control-Allow-Headers" header.
-			{
-				cfg := uri.HeaderParameterDecodingConfig{
-					Name:    "Access-Control-Allow-Headers",
-					Explode: false,
-				}
-				if err := func() error {
-					if err := h.HasParam(cfg); err == nil {
-						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-							var wrapperDotAccessControlAllowHeadersVal string
-							if err := func() error {
-								val, err := d.DecodeValue()
-								if err != nil {
-									return err
-								}
-
-								c, err := conv.ToString(val)
-								if err != nil {
-									return err
-								}
-
-								wrapperDotAccessControlAllowHeadersVal = c
-								return nil
-							}(); err != nil {
-								return err
-							}
-							wrapper.AccessControlAllowHeaders.SetTo(wrapperDotAccessControlAllowHeadersVal)
-							return nil
-						}); err != nil {
-							return err
-						}
-					}
-					return nil
-				}(); err != nil {
-					return res, errors.Wrap(err, "parse Access-Control-Allow-Headers header")
-				}
-			}
-			// Parse "Access-Control-Allow-Methods" header.
-			{
-				cfg := uri.HeaderParameterDecodingConfig{
-					Name:    "Access-Control-Allow-Methods",
-					Explode: false,
-				}
-				if err := func() error {
-					if err := h.HasParam(cfg); err == nil {
-						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-							var wrapperDotAccessControlAllowMethodsVal string
-							if err := func() error {
-								val, err := d.DecodeValue()
-								if err != nil {
-									return err
-								}
-
-								c, err := conv.ToString(val)
-								if err != nil {
-									return err
-								}
-
-								wrapperDotAccessControlAllowMethodsVal = c
-								return nil
-							}(); err != nil {
-								return err
-							}
-							wrapper.AccessControlAllowMethods.SetTo(wrapperDotAccessControlAllowMethodsVal)
-							return nil
-						}); err != nil {
-							return err
-						}
-					}
-					return nil
-				}(); err != nil {
-					return res, errors.Wrap(err, "parse Access-Control-Allow-Methods header")
-				}
-			}
-			// Parse "Access-Control-Allow-Origin" header.
-			{
-				cfg := uri.HeaderParameterDecodingConfig{
-					Name:    "Access-Control-Allow-Origin",
-					Explode: false,
-				}
-				if err := func() error {
-					if err := h.HasParam(cfg); err == nil {
-						if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-							var wrapperDotAccessControlAllowOriginVal string
-							if err := func() error {
-								val, err := d.DecodeValue()
-								if err != nil {
-									return err
-								}
-
-								c, err := conv.ToString(val)
-								if err != nil {
-									return err
-								}
-
-								wrapperDotAccessControlAllowOriginVal = c
-								return nil
-							}(); err != nil {
-								return err
-							}
-							wrapper.AccessControlAllowOrigin.SetTo(wrapperDotAccessControlAllowOriginVal)
-							return nil
-						}); err != nil {
-							return err
-						}
-					}
-					return nil
-				}(); err != nil {
-					return res, errors.Wrap(err, "parse Access-Control-Allow-Origin header")
-				}
-			}
-			return &wrapper, nil
-		default:
-			return res, validate.InvalidContentType(ct)
-		}
-	case 404:
-		// Code 404.
-		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-		if err != nil {
-			return res, errors.Wrap(err, "parse media type")
-		}
-		switch {
-		case ct == "application/json":
-			buf, err := io.ReadAll(resp.Body)
-			if err != nil {
-				return res, err
-			}
-			d := jx.DecodeBytes(buf)
-
-			var response PostCreateCustomerNotFound
-			if err := func() error {
-				if err := response.Decode(d); err != nil {
-					return err
-				}
-				if err := d.Skip(); err != io.EOF {
-					return errors.New("unexpected trailing data")
-				}
-				return nil
-			}(); err != nil {
-				err = &ogenerrors.DecodeBodyError{
-					ContentType: ct,
-					Body:        buf,
-					Err:         err,
-				}
-				return res, err
-			}
-			var wrapper PostCreateCustomerNotFoundHeaders
+			var wrapper PostCreateCustomerBadRequest
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1081,7 +932,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostCreateCustomerInternalServerError
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1098,7 +949,7 @@ func decodePostCreateCustomerResponse(resp *http.Response) (res PostCreateCustom
 				}
 				return res, err
 			}
-			var wrapper PostCreateCustomerInternalServerErrorHeaders
+			var wrapper PostCreateCustomerInternalServerError
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1236,7 +1087,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostSearchCustomerOK
+			var response PostSearchCustomer200Response
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1253,7 +1104,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 				}
 				return res, err
 			}
-			var wrapper PostSearchCustomerOKHeaders
+			var wrapper PostSearchCustomer200ResponseHeaders
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1385,7 +1236,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostSearchCustomerBadRequest
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1402,7 +1253,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 				}
 				return res, err
 			}
-			var wrapper PostSearchCustomerBadRequestHeaders
+			var wrapper PostSearchCustomerBadRequest
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1534,7 +1385,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostSearchCustomerNotFound
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1551,7 +1402,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 				}
 				return res, err
 			}
-			var wrapper PostSearchCustomerNotFoundHeaders
+			var wrapper PostSearchCustomerNotFound
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1683,7 +1534,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PostSearchCustomerInternalServerError
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1700,7 +1551,7 @@ func decodePostSearchCustomerResponse(resp *http.Response) (res PostSearchCustom
 				}
 				return res, err
 			}
-			var wrapper PostSearchCustomerInternalServerErrorHeaders
+			var wrapper PostSearchCustomerInternalServerError
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1838,7 +1689,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PutModifyCustomerByIDOK
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1855,7 +1706,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 				}
 				return res, err
 			}
-			var wrapper PutModifyCustomerByIDOKHeaders
+			var wrapper CustomerHeaders
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -1987,7 +1838,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PutModifyCustomerByIDBadRequest
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2004,7 +1855,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 				}
 				return res, err
 			}
-			var wrapper PutModifyCustomerByIDBadRequestHeaders
+			var wrapper PutModifyCustomerByIDBadRequest
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -2136,7 +1987,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PutModifyCustomerByIDNotFound
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2153,7 +2004,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 				}
 				return res, err
 			}
-			var wrapper PutModifyCustomerByIDNotFoundHeaders
+			var wrapper PutModifyCustomerByIDNotFound
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.
@@ -2285,7 +2136,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PutModifyCustomerByIDInternalServerError
+			var response ErrorModel
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2302,7 +2153,7 @@ func decodePutModifyCustomerByIDResponse(resp *http.Response) (res PutModifyCust
 				}
 				return res, err
 			}
-			var wrapper PutModifyCustomerByIDInternalServerErrorHeaders
+			var wrapper PutModifyCustomerByIDInternalServerError
 			wrapper.Response = response
 			h := uri.NewHeaderDecoder(resp.Header)
 			// Parse "Access-Control-Allow-Headers" header.

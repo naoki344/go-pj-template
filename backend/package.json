@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@apidevtools/swagger-cli": "^4.0.4",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "aws-cdk": "^2.103.1"
   }
 }

@@ -1,19 +1,18 @@
-searchCustomerRequest:
-  content:
-    application/json:
-      schema:
-        type: object
-        additionalProperties: false
-        required:
-          - conditions
-          - pagination
-        properties:
-          conditions:
-            type: object
-            additionalProperties: false
-            properties:
-              name:
-                $ref: "../../models/customer/name.yaml#/name"
-          pagination:
-            $ref: "./pagination/pagination.yaml#/pagination"
-  required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - conditions
+        - pagination
+      properties:
+        conditions:
+          type: object
+          additionalProperties: false
+          properties:
+            name:
+              $ref: "../../models/customer/name.yaml#/name"
+        pagination:
+          $ref: "./pagination/pagination.yaml#/pagination"
+required: true

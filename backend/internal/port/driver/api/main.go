@@ -121,9 +121,6 @@ func (port *CustomerAPIPort) UpdateByID(customer *Customer) (*Customer, error) {
 func (port *CustomerAPIPort) CreateCustomer(customer *Customer) (*Customer, error) {
 	res, err := port.usecase.Create(toModelCustomer(customer))
 	if err != nil {
-		if errors.Is(err, errormodel.ErrCustomerNotFound) {
-			return nil, &APICustomerNotFoundError{CustomerID(customer.ID)}
-		}
 		return nil, ErrUnexpected
 	}
 	return toPortCustomer(res), nil

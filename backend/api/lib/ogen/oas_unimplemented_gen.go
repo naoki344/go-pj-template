@@ -27,7 +27,7 @@ func (UnimplementedHandler) GetCustomerByID(ctx context.Context, params GetCusto
 // 顧客情報登録.
 //
 // POST /customers
-func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCreateCustomerReq) (r PostCreateCustomerRes, _ error) {
+func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCreateCustomerRequest) (r PostCreateCustomerRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -36,7 +36,7 @@ func (UnimplementedHandler) PostCreateCustomer(ctx context.Context, req *PostCre
 // 顧客情報検索.
 //
 // POST /customers/search
-func (UnimplementedHandler) PostSearchCustomer(ctx context.Context, req *PostSearchCustomerReq) (r PostSearchCustomerRes, _ error) {
+func (UnimplementedHandler) PostSearchCustomer(ctx context.Context, req *PostSearchCustomerRequest) (r PostSearchCustomerRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -45,6 +45,6 @@ func (UnimplementedHandler) PostSearchCustomer(ctx context.Context, req *PostSea
 // 顧客情報更新.
 //
 // PUT /customers/{customerID}
-func (UnimplementedHandler) PutModifyCustomerByID(ctx context.Context, req *PutModifyCustomerByIDReq, params PutModifyCustomerByIDParams) (r PutModifyCustomerByIDRes, _ error) {
+func (UnimplementedHandler) PutModifyCustomerByID(ctx context.Context, req *PutModifyCustomerByIDRequest, params PutModifyCustomerByIDParams) (r PutModifyCustomerByIDRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

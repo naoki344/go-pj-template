@@ -30,10 +30,10 @@ build-wire:
 
 build-ogen:
 	echo "build ogen file"
-	ogen -package ogen -target api/lib/ogen -clean ./api/openapi/openapi.yaml
+	ogen -package ogen -target api/lib/ogen -clean ./api/openapi/dist/openapi/openapi.yaml
 
 build-openapi:
-	swagger-cli bundle -o ./api/openapi/openapi.yaml -t yaml api/openapi/docsroot.yaml -r
+	./node_modules/.bin/openapi-generator-cli generate -i ./api/openapi/docsroot.yaml -g openapi-yaml -o api/openapi/dist --generate-alias-as-model
 
 setup-all: setup-install migrate build-openapi build-ogen build-wire
 
