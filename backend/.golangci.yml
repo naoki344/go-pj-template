@@ -55,6 +55,7 @@ issues:
         - funlen
         - paralleltest
         - varnamelen
+        - goerr113
     # モック作成時は許容する
     - path: internal/adapter/driver/ogen/
       linters:

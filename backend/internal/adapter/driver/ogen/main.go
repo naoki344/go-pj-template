@@ -100,7 +100,6 @@ func toCustomer(customer *apiport.Customer) ogen.Customer {
 			Address2:   customer.Address2,
 		},
 	}
-
 }
 
 func createCustomerSearchResponse(page apiport.PageResult, customers []*apiport.Customer) *ogen.PostSearchCustomer200ResponseHeaders {
@@ -132,7 +131,6 @@ func createCustomerResponse(customer *apiport.Customer) *ogen.CustomerHeaders {
 		AccessControlAllowOrigin:  toOptString(&as),
 		Response:                  toCustomer(customer),
 	}
-
 }
 
 func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {

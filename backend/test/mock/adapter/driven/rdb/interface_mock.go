@@ -7,7 +7,7 @@ package mock_rdbadapter
 import (
 	reflect "reflect"
 
-	rdb "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
+	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +35,10 @@ func (m *MockRdbInterface) EXPECT() *MockRdbInterfaceMockRecorder {
 }
 
 // GetCustomerByID mocks base method.
-func (m *MockRdbInterface) GetCustomerByID(customerID int64) (*rdb.Customer, error) {
+func (m *MockRdbInterface) GetCustomerByID(customerID int64) (*rdbadapter.Customer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetCustomerByID", customerID)
-	ret0, _ := ret[0].(*rdb.Customer)
+	ret0, _ := ret[0].(*rdbadapter.Customer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -47,4 +47,48 @@ func (m *MockRdbInterface) GetCustomerByID(customerID int64) (*rdb.Customer, err
 func (mr *MockRdbInterfaceMockRecorder) GetCustomerByID(customerID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomerByID", reflect.TypeOf((*MockRdbInterface)(nil).GetCustomerByID), customerID)
+}
+
+// InsertCustomer mocks base method.
+func (m *MockRdbInterface) InsertCustomer(customer *rdbadapter.Customer) (*rdbadapter.Customer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InsertCustomer", customer)
+	ret0, _ := ret[0].(*rdbadapter.Customer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InsertCustomer indicates an expected call of InsertCustomer.
+func (mr *MockRdbInterfaceMockRecorder) InsertCustomer(customer interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertCustomer", reflect.TypeOf((*MockRdbInterface)(nil).InsertCustomer), customer)
+}
+
+// SearchCustomer mocks base method.
+func (m *MockRdbInterface) SearchCustomer(pageNumber, pageSize int64, conditions *rdbadapter.SearchConditions) (*rdbadapter.CustomerSearchResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SearchCustomer", pageNumber, pageSize, conditions)
+	ret0, _ := ret[0].(*rdbadapter.CustomerSearchResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SearchCustomer indicates an expected call of SearchCustomer.
+func (mr *MockRdbInterfaceMockRecorder) SearchCustomer(pageNumber, pageSize, conditions interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchCustomer", reflect.TypeOf((*MockRdbInterface)(nil).SearchCustomer), pageNumber, pageSize, conditions)
+}
+
+// UpdateCustomerByID mocks base method.
+func (m *MockRdbInterface) UpdateCustomerByID(customer *rdbadapter.Customer) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateCustomerByID", customer)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateCustomerByID indicates an expected call of UpdateCustomerByID.
+func (mr *MockRdbInterfaceMockRecorder) UpdateCustomerByID(customer interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCustomerByID", reflect.TypeOf((*MockRdbInterface)(nil).UpdateCustomerByID), customer)
 }

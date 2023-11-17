@@ -43,7 +43,11 @@ deploy: build-all
 	cd ./cdk/ && npx cdk deploy
 
 test:
-	go test
+	go test ./test/...
+
+build-mock:
+	./test/scripts/genmock.sh
+
 
 help:
 	cat README.md

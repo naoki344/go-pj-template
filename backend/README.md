@@ -51,3 +51,9 @@ brew install pre-commit
 
 pre-commit install
 ```
+
+
+## テストファイルのテンプレート生成
+```
+gotests -w -all -template testify internal/usecase/customer/customer.go
+```
