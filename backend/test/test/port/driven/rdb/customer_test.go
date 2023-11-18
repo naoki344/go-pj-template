@@ -136,6 +136,39 @@ func TestRdbPort_CustomerCreate(t *testing.T) {
 }
 
 func TestRdbPort_CustomerGet(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	optString := "テスト名"
+	customerResModel := &customermodel.Customer{
+		ID:                     customermodel.ID(111),
+		Name:                   customermodel.Name("testname"),
+		NameKana:               customermodel.NameKana(&optString),
+		Telephone:              customermodel.Telephone("09100001111"),
+		Email:                  customermodel.Email("example.com"),
+		PersonInChargeName:     customermodel.PersonInChargeName("person"),
+		PersonInChargeNameKana: customermodel.PersonInChargeNameKana(&optString),
+		Address: customermodel.Address{
+			PostalCode: customermodel.PostalCode("8891111"),
+			PrefID:     customermodel.PrefID(1),
+			Address1:   customermodel.Address1("宮崎市"),
+			Address2:   customermodel.Address2("佐土原"),
+		},
+	}
+	customerData := &rdbadapter.Customer{
+		ID:                     111,
+		Name:                   "testname",
+		NameKana:               &optString,
+		Telephone:              "09100001111",
+		Email:                  "example.com",
+		PersonInChargeName:     "person",
+		PersonInChargeNameKana: &optString,
+		PostalCode:             "8891111",
+		PrefID:                 1,
+		Address1:               "宮崎市",
+		Address2:               "佐土原",
+	}
+	mock := adaptermock.NewMockRdbInterface(ctrl)
+	mock.EXPECT().GetCustomerByID(int64(111)).Return(customerData, nil)
 	type fields struct {
 		rdb rdbadapter.RdbInterface
 	}
@@ -149,7 +182,17 @@ func TestRdbPort_CustomerGet(t *testing.T) {
 		want      *customermodel.Customer
 		assertion assert.ErrorAssertionFunc
 	}{
-		// TODO: Add test cases.
+		{
+			name: "port/rdb - CustomerGet - success",
+			fields: fields{
+				rdb: mock,
+			},
+			args: args{
+				customerID: customermodel.ID(111),
+			},
+			want:      customerResModel,
+			assertion: assert.NoError,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -162,6 +205,39 @@ func TestRdbPort_CustomerGet(t *testing.T) {
 }
 
 func TestRdbPort_CustomerUpdate(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	optString := "テスト名"
+	customerModel := &customermodel.Customer{
+		ID:                     customermodel.ID(111),
+		Name:                   customermodel.Name("testname"),
+		NameKana:               customermodel.NameKana(&optString),
+		Telephone:              customermodel.Telephone("09100001111"),
+		Email:                  customermodel.Email("example.com"),
+		PersonInChargeName:     customermodel.PersonInChargeName("person"),
+		PersonInChargeNameKana: customermodel.PersonInChargeNameKana(&optString),
+		Address: customermodel.Address{
+			PostalCode: customermodel.PostalCode("8891111"),
+			PrefID:     customermodel.PrefID(1),
+			Address1:   customermodel.Address1("宮崎市"),
+			Address2:   customermodel.Address2("佐土原aaaaaaaaaaa"),
+		},
+	}
+	newCustomerData := &rdbadapter.Customer{
+		ID:                     111,
+		Name:                   "testname",
+		NameKana:               &optString,
+		Telephone:              "09100001111",
+		Email:                  "example.com",
+		PersonInChargeName:     "person",
+		PersonInChargeNameKana: &optString,
+		PostalCode:             "8891111",
+		PrefID:                 1,
+		Address1:               "宮崎市",
+		Address2:               "佐土原aaaaaaaaaaa",
+	}
+	mock := adaptermock.NewMockRdbInterface(ctrl)
+	mock.EXPECT().UpdateCustomerByID(newCustomerData).Return(nil)
 	type fields struct {
 		rdb rdbadapter.RdbInterface
 	}
@@ -174,7 +250,16 @@ func TestRdbPort_CustomerUpdate(t *testing.T) {
 		args      args
 		assertion assert.ErrorAssertionFunc
 	}{
-		// TODO: Add test cases.
+		{
+			name: "port/rdb - CustomerGet - success",
+			fields: fields{
+				rdb: mock,
+			},
+			args: args{
+				customer: customerModel,
+			},
+			assertion: assert.NoError,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -185,6 +270,51 @@ func TestRdbPort_CustomerUpdate(t *testing.T) {
 }
 
 func TestRdbPort_CustomerSearch(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	optString := "テスト名"
+	customerModel := &customermodel.Customer{
+		ID:                     customermodel.ID(111),
+		Name:                   customermodel.Name("testname"),
+		NameKana:               customermodel.NameKana(&optString),
+		Telephone:              customermodel.Telephone("09100001111"),
+		Email:                  customermodel.Email("example.com"),
+		PersonInChargeName:     customermodel.PersonInChargeName("person"),
+		PersonInChargeNameKana: customermodel.PersonInChargeNameKana(&optString),
+		Address: customermodel.Address{
+			PostalCode: customermodel.PostalCode("8891111"),
+			PrefID:     customermodel.PrefID(1),
+			Address1:   customermodel.Address1("宮崎市"),
+			Address2:   customermodel.Address2("佐土原aaaaaaaaaaa"),
+		},
+	}
+	customerData := &rdbadapter.Customer{
+		ID:                     111,
+		Name:                   "testname",
+		NameKana:               &optString,
+		Telephone:              "09100001111",
+		Email:                  "example.com",
+		PersonInChargeName:     "person",
+		PersonInChargeNameKana: &optString,
+		PostalCode:             "8891111",
+		PrefID:                 1,
+		Address1:               "宮崎市",
+		Address2:               "佐土原aaaaaaaaaaa",
+	}
+	mock := adaptermock.NewMockRdbInterface(ctrl)
+	adapterResult := &rdbadapter.CustomerSearchResult{
+		PageInfo: rdbadapter.PageInfo{
+			Size:    int64(100),
+			Current: int64(11),
+			Total:   int64(11110),
+		},
+		CustomerList: []rdbadapter.Customer{
+			*customerData,
+		},
+	}
+
+	mock.EXPECT().SearchCustomer(int64(11), int64(100), &rdbadapter.SearchConditions{}).Return(
+		adapterResult, nil)
 	type fields struct {
 		rdb rdbadapter.RdbInterface
 	}
@@ -192,6 +322,14 @@ func TestRdbPort_CustomerSearch(t *testing.T) {
 		pageNumber int64
 		pageSize   int64
 		conditions *customermodel.SearchConditions
+	}
+	result := &[]*customermodel.Customer{
+		customerModel,
+	}
+	result1 := &pagemodel.PageResult{
+		Size:    pagemodel.Size(100),
+		Current: pagemodel.Current(11),
+		Total:   pagemodel.Total(11110),
 	}
 	tests := []struct {
 		name      string
@@ -201,7 +339,20 @@ func TestRdbPort_CustomerSearch(t *testing.T) {
 		want1     *pagemodel.PageResult
 		assertion assert.ErrorAssertionFunc
 	}{
-		// TODO: Add test cases.
+		{
+			name: "port/rdb - CustomerGet - success",
+			fields: fields{
+				rdb: mock,
+			},
+			args: args{
+				pageNumber: int64(11),
+				pageSize:   int64(100),
+				conditions: &customermodel.SearchConditions{},
+			},
+			want:      result,
+			want1:     result1,
+			assertion: assert.NoError,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
