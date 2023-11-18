@@ -35,7 +35,7 @@ func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCre
 	}
 	res, err := n.customerAPI.CreateCustomer(portModel)
 	if err != nil {
-		return CreateErrorPostCreateCustomerResponse(err), nil
+		return createErrorPostCreateCustomerResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
 }
@@ -46,14 +46,14 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 	res, err := n.customerAPI.SearchCustomer(
 		pageNumber, pageSize, &apiport.SearchConditions{})
 	if err != nil {
-		return CreateErrorPostSearchCustomerResponse(err), nil
+		return createErrorPostSearchCustomerResponse(err), nil
 	}
 	return createCustomerSearchResponse(res.Page, res.CustomerList), nil
 }
 
 func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDRequest, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
 	if params.CustomerID != req.ID {
-		return CreateErrorPutByIDResponseUnmatchID(), nil
+		return createErrorPutByIDResponseUnmatchID(), nil
 	}
 	portModel := &apiport.Customer{
 		ID:                     req.ID,
@@ -71,7 +71,7 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 
 	res, err := n.customerAPI.UpdateByID(portModel)
 	if err != nil {
-		return CreateErrorPutByIDResponse(err), nil
+		return createErrorPutByIDResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
 }
@@ -79,7 +79,7 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
 	res, err := n.customerAPI.GetByID(apiport.CustomerID(params.CustomerID))
 	if err != nil {
-		return CreateErrorGetByIDResponse(err), nil
+		return createErrorGetByIDResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
 }
@@ -133,7 +133,7 @@ func createCustomerResponse(customer *apiport.Customer) *ogen.CustomerHeaders {
 	}
 }
 
-func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
+func createErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
 	slog.Error("get customer error.", "err", err)
 	as := string('*')
 	var customerErr *apiport.APICustomerNotFoundError
@@ -159,7 +159,7 @@ func CreateErrorGetByIDResponse(err error) ogen.GetCustomerByIDRes {
 	}
 }
 
-func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
+func createErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
 	slog.Error("get customer error.", "err", err)
 	as := string('*')
 	var customerErr *apiport.APICustomerNotFoundError
@@ -185,7 +185,7 @@ func CreateErrorPutByIDResponse(err error) ogen.PutModifyCustomerByIDRes {
 	}
 }
 
-func CreateErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
+func createErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
 	as := string('*')
 	return &ogen.PutModifyCustomerByIDNotFound{
 		AccessControlAllowHeaders: toOptString(&as),
@@ -198,7 +198,7 @@ func CreateErrorPutByIDResponseUnmatchID() ogen.PutModifyCustomerByIDRes {
 	}
 }
 
-func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes {
+func createErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes {
 	slog.Error("get customer error.", "err", err)
 	as := string('*')
 	return &ogen.PostCreateCustomerInternalServerError{
@@ -212,7 +212,7 @@ func CreateErrorPostCreateCustomerResponse(err error) ogen.PostCreateCustomerRes
 	}
 }
 
-func CreateErrorPostSearchCustomerResponse(err error) ogen.PostSearchCustomerRes {
+func createErrorPostSearchCustomerResponse(err error) ogen.PostSearchCustomerRes {
 	slog.Error("get customer error.", "err", err)
 	as := string('*')
 	return &ogen.PostSearchCustomerInternalServerError{

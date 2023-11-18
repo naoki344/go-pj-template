@@ -89,6 +89,7 @@ func TestCustomerUsecase_GetByID(t *testing.T) {
 func TestCustomerUsecase_UpdateByID(t *testing.T) {
 	customer := customermodel.Customer{ID: 1}
 	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
 	mock.EXPECT().Update(&customer).Return(nil)
 	mock.EXPECT().Get(customer.ID).Return(&customer, nil)
@@ -147,6 +148,7 @@ func TestCustomerUsecase_Create(t *testing.T) {
 	customer := customermodel.Customer{}
 	createdCustomer := customermodel.Customer{ID: 11}
 	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
 	mock.EXPECT().Create(&customer).Return(&createdCustomer, nil)
 	type fields struct {
@@ -190,6 +192,7 @@ func TestCustomerUsecase_Search(t *testing.T) {
 	searchCustomers := []*customermodel.Customer{&customer}
 	searchConditions := &customermodel.SearchConditions{}
 	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
 	pageNumber := int64(1)
 	pageSize := int64(100)

@@ -6,11 +6,11 @@ import (
 )
 
 type APICustomerNotFoundError struct {
-	customerid CustomerID
+	CustomerID CustomerID
 }
 
 func (err *APICustomerNotFoundError) Error() string {
-	return fmt.Sprintf("CustomerNotFound [CustomerID=%d]", err.customerid)
+	return fmt.Sprintf("CustomerNotFound [CustomerID=%d]", err.CustomerID)
 }
 
 var ErrUnexpected = errors.New("UnexpectedError")

@@ -17,9 +17,16 @@ DIR_PATH="$(dirname "$FILE")"
 FILE_NAME="${BASE_NAME%.*}"  # 拡張子を取り除いたファイル名
 EXTENSION="${BASE_NAME##*.}"  # 拡張子
 
-# コマンドの実行
+
+OUTPUT_DIR=${TEST_FILE_DIR}${DIR_PATH}/
 OUTPUT_FILE=${TEST_FILE_DIR}${DIR_PATH}/${FILE_NAME}_test.${EXTENSION}
+
+# フォルダが存在しない場合は作成
+if [ ! -d "$OUTPUT_DIR" ]; then
+    mkdir -p "$OUTPUT_DIR"
+fi
 echo "出力先: ${OUTPUT_FILE}"
+# コマンドの実行
 gotests -exported -template testify "${SOURCE_DIR}${FILE}" > ${OUTPUT_FILE}
 
 # 終了ステータスの確認

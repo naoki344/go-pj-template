@@ -59,6 +59,7 @@ issues:
         - errcheck
         - containedctx
         - testifylint
+        - goconst
     - path: /
       linters:
         - stylecheck
