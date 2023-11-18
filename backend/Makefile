@@ -33,7 +33,7 @@ build-ogen:
 	ogen -package ogen -target internal/adapter/driver/ogenlib -clean ./apidocs/openapi/dist/openapi/openapi.yaml
 
 build-openapi:
-	./node_modules/.bin/openapi-generator-cli generate -i ./apidocs/openapi/docsroot.yaml -g openapi-yaml -o openapi/openapi/dist --generate-alias-as-model
+	./node_modules/.bin/openapi-generator-cli generate -i ./apidocs/openapi/docsroot.yaml -g openapi-yaml -o apidocs/openapi/dist --generate-alias-as-model
 
 setup-all: setup-install migrate build-openapi build-ogen build-wire
 
