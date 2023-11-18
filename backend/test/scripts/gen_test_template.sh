@@ -18,7 +18,9 @@ FILE_NAME="${BASE_NAME%.*}"  # 拡張子を取り除いたファイル名
 EXTENSION="${BASE_NAME##*.}"  # 拡張子
 
 # コマンドの実行
-gotests -exported -template testify "${SOURCE_DIR}${FILE}" > "${TEST_FILE_DIR}/${DIR_PATH}/${FILE_NAME}_test.${EXTENSION}"
+OUTPUT_FILE=${TEST_FILE_DIR}${DIR_PATH}/${FILE_NAME}_test.${EXTENSION}
+echo "出力先: ${OUTPUT_FILE}"
+gotests -exported -template testify "${SOURCE_DIR}${FILE}" > ${OUTPUT_FILE}
 
 # 終了ステータスの確認
 if [ $? -eq 0 ]; then
@@ -26,5 +28,3 @@ if [ $? -eq 0 ]; then
 else
     echo "エラーが発生しました。"
 fi
-
-#gotests -exported -template testify internal/adapter/driver/ogen/main.go > test/test/adapter/driver/ogen/main_test.go

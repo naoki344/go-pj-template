@@ -14,8 +14,9 @@ while IFS= read -r FILE; do
   FILE_NAME="${BASE_NAME%.*}"  # 拡張子を取り除いたファイル名
   EXTENSION="${BASE_NAME##*.}"  # 拡張子
   if [ -f "$FULL_PATH" ]; then
-    echo "Processing $FULL_PATH..."
-    mockgen --source $FULL_PATH -destination "${MOCK_RELATIVE_DIR}/${DIR_PATH}/${FILE_NAME}_mock.${EXTENSION}"
+	OUTPUT_FILE="${MOCK_RELATIVE_DIR}${DIR_PATH}/${FILE_NAME}_mock.${EXTENSION}"
+    echo "Processing $FULL_PATH... export to ${OUTPUT_FILE}"
+    mockgen --source $FULL_PATH -destination ${OUTPUT_FILE}
   else
     echo "Dir not found: $FULL_PATH"
     echo "モック生成が失敗しました。"
