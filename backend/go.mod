@@ -3,6 +3,7 @@ module github.com/g-stayfresh/en/backend
 go 1.18
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.103.1
 	github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.103.1-alpha.0
 	github.com/aws/aws-lambda-go v1.41.0
@@ -14,6 +15,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.5.0
+	github.com/jarcoal/httpmock v1.3.1
 	github.com/ogen-go/ogen v0.77.0
 	github.com/stretchr/testify v1.8.4
 	github.com/uptrace/bun v1.1.16

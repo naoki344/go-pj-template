@@ -1,3 +1,4 @@
+adapter/driven/secretsmanager/interface.go
 adapter/driven/rdb/interface.go
 adapter/driver/lambda/interface.go
 port/driven/rdb/interface.go

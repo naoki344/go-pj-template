@@ -5,6 +5,8 @@ SOURCE_DIR="${SCRIPT_DIR}/../../internal/"
 MOCK_RELATIVE_DIR="${SCRIPT_DIR}/../mock/"
 FILELIST="$SCRIPT_DIR/gofiles.txt"
 
+rm -rf ${MOCK_RELATIVE_DIR}*
+
 while IFS= read -r FILE; do
   FULL_PATH="$SOURCE_DIR${FILE}"
   BASE_NAME="$(basename "$FILE")"

@@ -45,7 +45,7 @@ deploy: build-all
 test:
 	go test ./test/...
 
-build-mock:
+genmock:
 	./test/scripts/genmock.sh
 
 

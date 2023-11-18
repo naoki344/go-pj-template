@@ -13,14 +13,14 @@ import (
 )
 
 type APIGatewayHandler struct {
-	server http.Handler
+	Server http.Handler
 }
 
 func NewAPIGatewayHandler(
 	server http.Handler,
 ) *APIGatewayHandler {
 	return &APIGatewayHandler{
-		server: server,
+		Server: server,
 	}
 }
 
@@ -60,5 +60,5 @@ func (handler *APIGatewayHandler) Run(
 	handler.SetLogger(ctx)
 
 	// NOTE: https://github.com/awslabs/aws-lambda-go-api-proxy/blob/master/httpadapter/adapter.go#L16
-	return httpadapter.New(handler.server).ProxyWithContext(ctx, event) //nolint:wrapcheck
+	return httpadapter.New(handler.Server).ProxyWithContext(ctx, event) //nolint:wrapcheck
 }

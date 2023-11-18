@@ -30,7 +30,9 @@ func createErrorRes(err error) events.APIGatewayProxyResponse {
 }
 
 func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	account, err := secretsadapter.FetchDBAccount(ctx)
+	client := &secretsadapter.SecretsManagerClient{}
+	secretsAdapter := secretsadapter.NewSecretsManagerAdapter(client)
+	account, err := secretsAdapter.GetDBAccount(ctx)
 	if err != nil {
 		return createErrorRes(err), nil
 	}
