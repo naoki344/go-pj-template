@@ -1,10 +1,11 @@
-package ogenadapter
+package ogenadapter_test
 
 import (
 	"context"
 	"testing"
 
-	"github.com/g-stayfresh/en/backend/api/lib/ogen"
+	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
+	ogenlib "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,22 +16,20 @@ func TestEnAPIAdapter_PostCreateCustomer(t *testing.T) {
 	}
 	type args struct {
 		ctx context.Context
-		req *ogen.PostCreateCustomerRequest
+		req *ogenlib.PostCreateCustomerRequest
 	}
 	tests := []struct {
 		name      string
 		fields    fields
 		args      args
-		want      ogen.PostCreateCustomerRes
+		want      ogenlib.PostCreateCustomerRes
 		assertion assert.ErrorAssertionFunc
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := &EnAPIAdapter{
-				customerAPI: tt.fields.customerAPI,
-			}
+			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PostCreateCustomer(tt.args.ctx, tt.args.req)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -44,22 +43,20 @@ func TestEnAPIAdapter_PostSearchCustomer(t *testing.T) {
 	}
 	type args struct {
 		ctx context.Context
-		req *ogen.PostSearchCustomerRequest
+		req *ogenlib.PostSearchCustomerRequest
 	}
 	tests := []struct {
 		name      string
 		fields    fields
 		args      args
-		want      ogen.PostSearchCustomerRes
+		want      ogenlib.PostSearchCustomerRes
 		assertion assert.ErrorAssertionFunc
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := &EnAPIAdapter{
-				customerAPI: tt.fields.customerAPI,
-			}
+			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PostSearchCustomer(tt.args.ctx, tt.args.req)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -73,23 +70,21 @@ func TestEnAPIAdapter_PutModifyCustomerByID(t *testing.T) {
 	}
 	type args struct {
 		ctx    context.Context
-		req    *ogen.PutModifyCustomerByIDRequest
-		params ogen.PutModifyCustomerByIDParams
+		req    *ogenlib.PutModifyCustomerByIDRequest
+		params ogenlib.PutModifyCustomerByIDParams
 	}
 	tests := []struct {
 		name      string
 		fields    fields
 		args      args
-		want      ogen.PutModifyCustomerByIDRes
+		want      ogenlib.PutModifyCustomerByIDRes
 		assertion assert.ErrorAssertionFunc
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := &EnAPIAdapter{
-				customerAPI: tt.fields.customerAPI,
-			}
+			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PutModifyCustomerByID(tt.args.ctx, tt.args.req, tt.args.params)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -103,80 +98,23 @@ func TestEnAPIAdapter_GetCustomerByID(t *testing.T) {
 	}
 	type args struct {
 		ctx    context.Context
-		params ogen.GetCustomerByIDParams
+		params ogenlib.GetCustomerByIDParams
 	}
 	tests := []struct {
 		name      string
 		fields    fields
 		args      args
-		want      ogen.GetCustomerByIDRes
+		want      ogenlib.GetCustomerByIDRes
 		assertion assert.ErrorAssertionFunc
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := &EnAPIAdapter{
-				customerAPI: tt.fields.customerAPI,
-			}
+			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
 			got, err := n.GetCustomerByID(tt.args.ctx, tt.args.params)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
-		})
-	}
-}
-
-func Test_toCustomer(t *testing.T) {
-	type args struct {
-		customer *apiport.Customer
-	}
-	tests := []struct {
-		name string
-		args args
-		want ogen.Customer
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, toCustomer(tt.args.customer))
-		})
-	}
-}
-
-func Test_createCustomerSearchResponse(t *testing.T) {
-	type args struct {
-		page      apiport.PageResult
-		customers []*apiport.Customer
-	}
-	tests := []struct {
-		name string
-		args args
-		want *ogen.PostSearchCustomer200ResponseHeaders
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, createCustomerSearchResponse(tt.args.page, tt.args.customers))
-		})
-	}
-}
-
-func Test_createCustomerResponse(t *testing.T) {
-	type args struct {
-		customer *apiport.Customer
-	}
-	tests := []struct {
-		name string
-		args args
-		want *ogen.CustomerHeaders
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, createCustomerResponse(tt.args.customer))
 		})
 	}
 }
@@ -188,13 +126,13 @@ func TestCreateErrorGetByIDResponse(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ogen.GetCustomerByIDRes
+		want ogenlib.GetCustomerByIDRes
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CreateErrorGetByIDResponse(tt.args.err))
+			assert.Equal(t, tt.want, ogen.CreateErrorGetByIDResponse(tt.args.err))
 		})
 	}
 }
@@ -206,13 +144,13 @@ func TestCreateErrorPutByIDResponse(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ogen.PutModifyCustomerByIDRes
+		want ogenlib.PutModifyCustomerByIDRes
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CreateErrorPutByIDResponse(tt.args.err))
+			assert.Equal(t, tt.want, ogen.CreateErrorPutByIDResponse(tt.args.err))
 		})
 	}
 }
@@ -220,13 +158,13 @@ func TestCreateErrorPutByIDResponse(t *testing.T) {
 func TestCreateErrorPutByIDResponseUnmatchID(t *testing.T) {
 	tests := []struct {
 		name string
-		want ogen.PutModifyCustomerByIDRes
+		want ogenlib.PutModifyCustomerByIDRes
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CreateErrorPutByIDResponseUnmatchID())
+			assert.Equal(t, tt.want, ogen.CreateErrorPutByIDResponseUnmatchID())
 		})
 	}
 }
@@ -238,13 +176,13 @@ func TestCreateErrorPostCreateCustomerResponse(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ogen.PostCreateCustomerRes
+		want ogenlib.PostCreateCustomerRes
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CreateErrorPostCreateCustomerResponse(tt.args.err))
+			assert.Equal(t, tt.want, ogen.CreateErrorPostCreateCustomerResponse(tt.args.err))
 		})
 	}
 }
@@ -256,49 +194,13 @@ func TestCreateErrorPostSearchCustomerResponse(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ogen.PostSearchCustomerRes
+		want ogenlib.PostSearchCustomerRes
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, CreateErrorPostSearchCustomerResponse(tt.args.err))
-		})
-	}
-}
-
-func Test_toOptString(t *testing.T) {
-	type args struct {
-		value *string
-	}
-	tests := []struct {
-		name string
-		args args
-		want ogen.OptString
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, toOptString(tt.args.value))
-		})
-	}
-}
-
-func Test_getStringFromOptString(t *testing.T) {
-	type args struct {
-		optString ogen.OptString
-	}
-	tests := []struct {
-		name string
-		args args
-		want *string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, getStringFromOptString(tt.args.optString))
+			assert.Equal(t, tt.want, ogen.CreateErrorPostSearchCustomerResponse(tt.args.err))
 		})
 	}
 }
@@ -310,13 +212,13 @@ func TestNewEnAPIAdapter(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *EnAPIAdapter
+		want *ogen.EnAPIAdapter
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, NewEnAPIAdapter(tt.args.customerAPI))
+			assert.Equal(t, tt.want, ogen.NewEnAPIAdapter(tt.args.customerAPI))
 		})
 	}
 }

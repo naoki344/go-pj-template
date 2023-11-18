@@ -9,8 +9,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DBSecretID = os.Getenv("EN_DB_SECRET_NAME")
-
 type SecretsManagerAdapter struct {
 	Client SecretsManagerClientInterface
 }
@@ -22,6 +20,7 @@ func NewSecretsManagerAdapter(client SecretsManagerClientInterface) *SecretsMana
 }
 
 func (adapter *SecretsManagerAdapter) GetDBAccount(ctx context.Context) (*DBAccount, error) {
+	DBSecretID := os.Getenv("EN_DB_SECRET_NAME")
 	secretString, err := adapter.Client.GetSecret(ctx, DBSecretID)
 	if err != nil {
 		slog.Error("Fetch db account secrets error", slog.Any("error", err))

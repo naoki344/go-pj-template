@@ -8,8 +8,7 @@ import (
 	"os"
 )
 
-type SecretsManagerClient struct {
-}
+type SecretsManagerClient struct{}
 
 func (client *SecretsManagerClient) GetSecret(ctx context.Context, secretsID string) (*string, error) {
 	url := "http://localhost:2773/secretsmanager/get?secretId=" + secretsID
@@ -38,5 +37,4 @@ func (client *SecretsManagerClient) GetSecret(ctx context.Context, secretsID str
 	}
 	secretString := string(body)
 	return &secretString, nil
-
 }

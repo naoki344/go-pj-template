@@ -17,6 +17,7 @@ func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
 		ogenadapter.NewEnAPIAdapter,
 		apiport.NewCustomerAPIPort,
 		customerusecase.NewCustomerUsecase,
+		wire.Bind(new(apiport.CustomerAPIPortInterface), new(*apiport.CustomerAPIPort)),
 		wire.Bind(new(customerusecase.CustomerUsecaseInterface), new(*customerusecase.CustomerUsecase)),
 		rdbport.NewCustomerRdbPort,
 		wire.Bind(new(rdbport.CustomerRdbPortInterface), new(*rdbport.CustomerRdbPort)),

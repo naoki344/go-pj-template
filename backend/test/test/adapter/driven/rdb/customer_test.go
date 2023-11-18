@@ -11,22 +11,27 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var Columns = []string{"id", "name", "name_kana", "telephone", "email", "person_in_charge_name", "person_in_charge_name_kana", "postal_code", "pref_id", "address1", "address2"}
-var nameKana = "テストメイ"
-var personInChargeNameKana = "タントウシャA"
-var customerData = rdbadapter.Customer{
-	ID:                     11,
-	Name:                   "テスト名",
-	NameKana:               &nameKana,
-	Telephone:              "09011112222",
-	Email:                  "example@example.comm",
-	PersonInChargeName:     "担当者A",
-	PersonInChargeNameKana: &personInChargeNameKana,
-	PostalCode:             "8801111",
-	PrefID:                 1,
-	Address1:               "宮崎市佐土原町上田島",
-	Address2:               "111-1111",
-}
+var (
+	columns                = []string{"id", "name", "name_kana", "telephone", "email", "person_in_charge_name", "person_in_charge_name_kana", "postal_code", "pref_id", "address1", "address2"} //nolint:gochecknoglobals
+	nameKana               = "テストメイ"                                                                                                                                                            //nolint:gochecknoglobals
+	personInChargeNameKana = "タントウシャA"                                                                                                                                                          //nolint:gochecknoglobals
+	//nolint:gochecknoglobals
+	customerData = rdbadapter.Customer{
+		ID:                     11,
+		Name:                   "テスト名",
+		NameKana:               &nameKana,
+		Telephone:              "09011112222",
+		Email:                  "example@example.comm",
+		PersonInChargeName:     "担当者A",
+		PersonInChargeNameKana: &personInChargeNameKana,
+		PostalCode:             "8801111",
+		PrefID:                 1,
+		Address1:               "宮崎市佐土原町上田島",
+		Address2:               "111-1111",
+	}
+)
+
+//nolint:gochecknoglobals
 var newCustomerData = rdbadapter.Customer{
 	Name:                   "テスト名",
 	NameKana:               &nameKana,
@@ -44,7 +49,7 @@ func TestMySQL_GetCustomerByIDFull(t *testing.T) {
 	expectQuery := "SELECT `customer`.`id`, `customer`.`name`, `customer`.`name_kana`, `customer`.`telephone`, `customer`.`email`, `customer`.`person_in_charge_name`, `customer`.`person_in_charge_name_kana`, `customer`.`postal_code`, `customer`.`pref_id`, `customer`.`address1`, `customer`.`address2` FROM `customers` AS `customer` WHERE \\(`id` = 11\\)"
 	db, mock, err := sqlmock.New()
 	mock.ExpectQuery(expectQuery).
-		WillReturnRows(sqlmock.NewRows(Columns).AddRow(
+		WillReturnRows(sqlmock.NewRows(columns).AddRow(
 			customerData.ID,
 			customerData.Name,
 			*customerData.NameKana,
@@ -266,7 +271,7 @@ func TestMySQL_SearchCustomer(t *testing.T) {
 	expectQuery := "SELECT `customer`.`id`, `customer`.`name`, `customer`.`name_kana`, `customer`.`telephone`, `customer`.`email`, `customer`.`person_in_charge_name`, `customer`.`person_in_charge_name_kana`, `customer`.`postal_code`, `customer`.`pref_id`, `customer`.`address1`, `customer`.`address2` FROM `customers` AS `customer` WHERE \\(`id` between 901 and 1000\\)"
 	db, mock, err := sqlmock.New()
 	mock.ExpectQuery(expectQuery).
-		WillReturnRows(sqlmock.NewRows(Columns).AddRow(
+		WillReturnRows(sqlmock.NewRows(columns).AddRow(
 			customerData.ID,
 			customerData.Name,
 			*customerData.NameKana,
@@ -287,7 +292,7 @@ func TestMySQL_SearchCustomer(t *testing.T) {
 
 	db2, mock2, err := sqlmock.New()
 	mock2.ExpectQuery(expectQuery).
-		WillReturnRows(sqlmock.NewRows(Columns))
+		WillReturnRows(sqlmock.NewRows(columns))
 	mock2.ExpectQuery("SELECT").
 		WillReturnRows(sqlmock.NewRows([]string{"Total"}).AddRow(0))
 

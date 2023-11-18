@@ -17,7 +17,7 @@ const (
 )
 
 type EnAPIAdapter struct {
-	customerAPI *apiport.CustomerAPIPort
+	customerAPI apiport.CustomerAPIPortInterface
 }
 
 func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerRequest) (ogen.PostCreateCustomerRes, error) {
@@ -247,7 +247,7 @@ func getStringFromOptString(optString ogen.OptString) *string {
 	return nil
 }
 
-func NewEnAPIAdapter(customerAPI *apiport.CustomerAPIPort) *EnAPIAdapter {
+func NewEnAPIAdapter(customerAPI apiport.CustomerAPIPortInterface) *EnAPIAdapter {
 	return &EnAPIAdapter{
 		customerAPI: customerAPI,
 	}

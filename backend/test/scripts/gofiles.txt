@@ -3,4 +3,5 @@ adapter/driven/rdb/interface.go
 adapter/driver/lambda/interface.go
 adapter/driver/ogenlib/oas_server_gen.go
 port/driven/rdb/interface.go
+port/driver/api/interface.go
 usecase/customer/interface.go

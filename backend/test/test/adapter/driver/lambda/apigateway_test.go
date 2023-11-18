@@ -1,4 +1,4 @@
-package lambdaadapter
+package lambdaadapter_test
 
 import (
 	"context"
@@ -15,8 +15,8 @@ type HandlerMock struct {
 }
 
 func (handler *HandlerMock) ServeHTTP(w http.ResponseWriter, request *http.Request) {
-	w.WriteHeader(200)
-	w.Write([]byte(handler.resBody))
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(handler.resBody)) //nolint
 }
 
 func TestNewAPIGatewayHandler(t *testing.T) {
@@ -47,7 +47,6 @@ func TestNewAPIGatewayHandler(t *testing.T) {
 }
 
 func TestAPIGatewayHandler_Run(t *testing.T) {
-
 	type fields struct {
 		server http.Handler
 	}
