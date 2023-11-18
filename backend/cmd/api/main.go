@@ -7,10 +7,10 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/g-stayfresh/en/backend/api/lib/ogen"
 	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	secretsadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/secretsmanager"
 	lambdaadapter "github.com/g-stayfresh/en/backend/internal/adapter/driver/lambda"
+	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
 	_ "github.com/go-sql-driver/mysql"
 )
 

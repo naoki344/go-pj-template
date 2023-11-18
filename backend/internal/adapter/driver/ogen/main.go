@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/g-stayfresh/en/backend/api/lib/ogen"
+	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
 )
 

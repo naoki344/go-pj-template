@@ -1,5 +1,6 @@
 adapter/driven/secretsmanager/interface.go
 adapter/driven/rdb/interface.go
 adapter/driver/lambda/interface.go
+adapter/driver/ogenlib/oas_server_gen.go
 port/driven/rdb/interface.go
 usecase/customer/interface.go

@@ -10,12 +10,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type HandlerMock struct{}
+type HandlerMock struct {
+	resBody string
+}
 
-func (handler *HandlerMock) ServeHTTP(http.ResponseWriter, *http.Request) {}
+func (handler *HandlerMock) ServeHTTP(w http.ResponseWriter, request *http.Request) {
+	w.WriteHeader(200)
+	w.Write([]byte(handler.resBody))
+}
 
 func TestNewAPIGatewayHandler(t *testing.T) {
-	serverMock := &HandlerMock{}
+	serverMock := &HandlerMock{"message"}
 	type args struct {
 		Server http.Handler
 	}
@@ -42,50 +47,6 @@ func TestNewAPIGatewayHandler(t *testing.T) {
 }
 
 func TestAPIGatewayHandler_Run(t *testing.T) {
-	reqContext := events.APIGatewayProxyRequestContext{
-		AccountID:         "111122222",
-		ResourceID:        "111122222",
-		OperationName:     "111122222",
-		Stage:             "111122222",
-		DomainName:        "111122222",
-		DomainPrefix:      "111122222",
-		RequestID:         "111122222",
-		ExtendedRequestID: "111122222",
-		Protocol:          "111122222",
-		Identity:          events.APIGatewayRequestIdentity{},
-		ResourcePath:      "111122222",
-		Path:              "111122222",
-		HTTPMethod:        "GET",
-		RequestTime:       "111122222",
-		RequestTimeEpoch:  int64(11111111111),
-		APIID:             "111122222",
-	}
-	event := events.APIGatewayProxyRequest{
-		Resource:   "resource",
-		Path:       "/path/string",
-		HTTPMethod: "GET",
-		Headers: map[string]string{
-			"Content-Type": "application/json",
-		},
-		MultiValueHeaders: map[string][]string{
-			"Content-Type": {"application/json"},
-		},
-		QueryStringParameters: map[string]string{
-			"Params1": "paramsValue",
-		},
-		MultiValueQueryStringParameters: map[string][]string{
-			"Content-Type": {"application/json"},
-		},
-		PathParameters: map[string]string{
-			"Params1": "paramsValue",
-		},
-		StageVariables: map[string]string{
-			"Params1": "paramsValue",
-		},
-		RequestContext:  reqContext,
-		Body:            "body value",
-		IsBase64Encoded: false,
-	}
 
 	type fields struct {
 		server http.Handler
@@ -94,7 +55,8 @@ func TestAPIGatewayHandler_Run(t *testing.T) {
 		ctx   context.Context
 		event events.APIGatewayProxyRequest
 	}
-	serverMock := &HandlerMock{}
+	body := "body message"
+	serverMock := &HandlerMock{body}
 	ctx := context.Background()
 	tests := []struct {
 		name      string
@@ -110,9 +72,16 @@ func TestAPIGatewayHandler_Run(t *testing.T) {
 			},
 			args: args{
 				ctx:   ctx,
-				event: event,
+				event: events.APIGatewayProxyRequest{},
 			},
-			want:      events.APIGatewayProxyResponse{StatusCode: 200},
+			want: events.APIGatewayProxyResponse{
+				StatusCode: 200,
+				MultiValueHeaders: map[string][]string{
+					"Content-Type": {"text/plain; charset=utf-8"},
+				},
+				Body:            body,
+				IsBase64Encoded: false,
+			},
 			assertion: assert.NoError,
 		},
 	}
