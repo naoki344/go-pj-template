@@ -19,8 +19,8 @@ func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
 		customerusecase.NewCustomerUsecase,
 		wire.Bind(new(apiport.CustomerAPIPortInterface), new(*apiport.CustomerAPIPort)),
 		wire.Bind(new(customerusecase.CustomerUsecaseInterface), new(*customerusecase.CustomerUsecase)),
-		rdbport.NewCustomerRdbPort,
-		wire.Bind(new(rdbport.CustomerRdbPortInterface), new(*rdbport.CustomerRdbPort)),
+		rdbport.NewRdbPort,
+		wire.Bind(new(rdbport.RdbPortInterface), new(*rdbport.RdbPort)),
 		// NewMySQLはmain内に実装するため、bindのみ行う
 		wire.Bind(new(rdbadapter.RdbInterface), new(*rdbadapter.MySQL)),
 	)

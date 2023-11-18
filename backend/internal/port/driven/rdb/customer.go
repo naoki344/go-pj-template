@@ -9,12 +9,12 @@ import (
 	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
 )
 
-type CustomerRdbPort struct {
+type RdbPort struct {
 	rdb rdbadapter.RdbInterface
 }
 
-func NewCustomerRdbPort(rdb rdbadapter.RdbInterface) *CustomerRdbPort {
-	return &CustomerRdbPort{rdb}
+func NewRdbPort(rdb rdbadapter.RdbInterface) *RdbPort {
+	return &RdbPort{rdb}
 }
 
 func toModelCustomer(customer *rdbadapter.Customer) *customermodel.Customer {
@@ -60,7 +60,7 @@ func toAdapterCustomer(customer *customermodel.Customer) *rdbadapter.Customer {
 	}
 }
 
-func (port *CustomerRdbPort) Create(customer *customermodel.Customer) (*customermodel.Customer, error) {
+func (port *RdbPort) CustomerCreate(customer *customermodel.Customer) (*customermodel.Customer, error) {
 	ogenCustomer := toAdapterCustomer(customer)
 	res, err := port.rdb.InsertCustomer(ogenCustomer)
 	if err != nil {
@@ -72,7 +72,7 @@ func (port *CustomerRdbPort) Create(customer *customermodel.Customer) (*customer
 	return toModelCustomer(res), nil
 }
 
-func (port *CustomerRdbPort) Get(customerID customermodel.ID) (*customermodel.Customer, error) {
+func (port *RdbPort) CustomerGet(customerID customermodel.ID) (*customermodel.Customer, error) {
 	res, err := port.rdb.GetCustomerByID(int64(customerID))
 	if err != nil {
 		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
@@ -83,7 +83,7 @@ func (port *CustomerRdbPort) Get(customerID customermodel.ID) (*customermodel.Cu
 	return toModelCustomer(res), nil
 }
 
-func (port *CustomerRdbPort) Update(customer *customermodel.Customer) error {
+func (port *RdbPort) CustomerUpdate(customer *customermodel.Customer) error {
 	ogenCustomer := toAdapterCustomer(customer)
 	err := port.rdb.UpdateCustomerByID(ogenCustomer)
 	if err != nil {
@@ -95,7 +95,7 @@ func (port *CustomerRdbPort) Update(customer *customermodel.Customer) error {
 	return nil
 }
 
-func (port *CustomerRdbPort) Search(pageNumber int64, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
+func (port *RdbPort) CustomerSearch(pageNumber int64, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
 	res, err := port.rdb.SearchCustomer(pageNumber, pageSize, &rdbadapter.SearchConditions{})
 	if err != nil {
 		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {

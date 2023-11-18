@@ -19,7 +19,7 @@ func TestNewCustomerUsecase(t *testing.T) {
 	defer ctrl.Finish()
 
 	type args struct {
-		port rdbport.CustomerRdbPortInterface
+		port rdbport.RdbPortInterface
 	}
 	tests := []struct {
 		name string
@@ -29,7 +29,7 @@ func TestNewCustomerUsecase(t *testing.T) {
 		{
 			name: "New CustomerUsecase",
 			args: args{
-				port: rdbportMock.NewMockCustomerRdbPortInterface(ctrl),
+				port: rdbportMock.NewMockRdbPortInterface(ctrl),
 			},
 			want: &testTarget.CustomerUsecase{},
 		},
@@ -46,7 +46,7 @@ func TestCustomerUsecase_GetByID(t *testing.T) {
 	defer ctrl.Finish()
 
 	type fields struct {
-		port rdbport.CustomerRdbPortInterface
+		port rdbport.RdbPortInterface
 	}
 	type args struct {
 		customerID customermodel.ID
@@ -54,8 +54,8 @@ func TestCustomerUsecase_GetByID(t *testing.T) {
 
 	mockInput := customermodel.ID(11)
 	mockExpect := customermodel.Customer{}
-	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
-	mock.EXPECT().Get(mockInput).Return(&mockExpect, nil)
+	mock := rdbportMock.NewMockRdbPortInterface(ctrl)
+	mock.EXPECT().CustomerGet(mockInput).Return(&mockExpect, nil)
 	tests := []struct {
 		name      string
 		fields    fields
@@ -90,16 +90,16 @@ func TestCustomerUsecase_UpdateByID(t *testing.T) {
 	customer := customermodel.Customer{ID: 1}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
-	mock.EXPECT().Update(&customer).Return(nil)
-	mock.EXPECT().Get(customer.ID).Return(&customer, nil)
+	mock := rdbportMock.NewMockRdbPortInterface(ctrl)
+	mock.EXPECT().CustomerUpdate(&customer).Return(nil)
+	mock.EXPECT().CustomerGet(customer.ID).Return(&customer, nil)
 
-	mock2 := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
-	mock2.EXPECT().Update(&customer).Return(nil)
-	mock2.EXPECT().Get(customer.ID).Return(nil, errors.New("error"))
+	mock2 := rdbportMock.NewMockRdbPortInterface(ctrl)
+	mock2.EXPECT().CustomerUpdate(&customer).Return(nil)
+	mock2.EXPECT().CustomerGet(customer.ID).Return(nil, errors.New("error"))
 
 	type fields struct {
-		port rdbport.CustomerRdbPortInterface
+		port rdbport.RdbPortInterface
 	}
 	type args struct {
 		customer *customermodel.Customer
@@ -149,10 +149,10 @@ func TestCustomerUsecase_Create(t *testing.T) {
 	createdCustomer := customermodel.Customer{ID: 11}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
-	mock.EXPECT().Create(&customer).Return(&createdCustomer, nil)
+	mock := rdbportMock.NewMockRdbPortInterface(ctrl)
+	mock.EXPECT().CustomerCreate(&customer).Return(&createdCustomer, nil)
 	type fields struct {
-		port rdbport.CustomerRdbPortInterface
+		port rdbport.RdbPortInterface
 	}
 	type args struct {
 		customer *customermodel.Customer
@@ -193,12 +193,12 @@ func TestCustomerUsecase_Search(t *testing.T) {
 	searchConditions := &customermodel.SearchConditions{}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mock := rdbportMock.NewMockCustomerRdbPortInterface(ctrl)
+	mock := rdbportMock.NewMockRdbPortInterface(ctrl)
 	pageNumber := int64(1)
 	pageSize := int64(100)
-	mock.EXPECT().Search(pageNumber, pageSize, searchConditions).Return(&searchCustomers, &pageRes, nil)
+	mock.EXPECT().CustomerSearch(pageNumber, pageSize, searchConditions).Return(&searchCustomers, &pageRes, nil)
 	type fields struct {
-		port rdbport.CustomerRdbPortInterface
+		port rdbport.RdbPortInterface
 	}
 	type args struct {
 		pageNumber int64

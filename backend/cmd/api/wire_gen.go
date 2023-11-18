@@ -21,8 +21,8 @@ import (
 // Injectors from wire.go:
 
 func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
-	customerRdbPort := rdbport.NewCustomerRdbPort(db)
-	customerUsecase := customerusecase.NewCustomerUsecase(customerRdbPort)
+	rdbPort := rdbport.NewRdbPort(db)
+	customerUsecase := customerusecase.NewCustomerUsecase(rdbPort)
 	customerAPIPort := apiport.NewCustomerAPIPort(customerUsecase)
 	enAPIAdapter := ogenadapter.NewEnAPIAdapter(customerAPIPort)
 	return enAPIAdapter

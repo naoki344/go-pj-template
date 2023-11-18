@@ -12,85 +12,85 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockCustomerRdbPortInterface is a mock of CustomerRdbPortInterface interface.
-type MockCustomerRdbPortInterface struct {
+// MockRdbPortInterface is a mock of RdbPortInterface interface.
+type MockRdbPortInterface struct {
 	ctrl     *gomock.Controller
-	recorder *MockCustomerRdbPortInterfaceMockRecorder
+	recorder *MockRdbPortInterfaceMockRecorder
 }
 
-// MockCustomerRdbPortInterfaceMockRecorder is the mock recorder for MockCustomerRdbPortInterface.
-type MockCustomerRdbPortInterfaceMockRecorder struct {
-	mock *MockCustomerRdbPortInterface
+// MockRdbPortInterfaceMockRecorder is the mock recorder for MockRdbPortInterface.
+type MockRdbPortInterfaceMockRecorder struct {
+	mock *MockRdbPortInterface
 }
 
-// NewMockCustomerRdbPortInterface creates a new mock instance.
-func NewMockCustomerRdbPortInterface(ctrl *gomock.Controller) *MockCustomerRdbPortInterface {
-	mock := &MockCustomerRdbPortInterface{ctrl: ctrl}
-	mock.recorder = &MockCustomerRdbPortInterfaceMockRecorder{mock}
+// NewMockRdbPortInterface creates a new mock instance.
+func NewMockRdbPortInterface(ctrl *gomock.Controller) *MockRdbPortInterface {
+	mock := &MockRdbPortInterface{ctrl: ctrl}
+	mock.recorder = &MockRdbPortInterfaceMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockCustomerRdbPortInterface) EXPECT() *MockCustomerRdbPortInterfaceMockRecorder {
+func (m *MockRdbPortInterface) EXPECT() *MockRdbPortInterfaceMockRecorder {
 	return m.recorder
 }
 
-// Create mocks base method.
-func (m *MockCustomerRdbPortInterface) Create(customer *customermodel.Customer) (*customermodel.Customer, error) {
+// CustomerCreate mocks base method.
+func (m *MockRdbPortInterface) CustomerCreate(customer *customermodel.Customer) (*customermodel.Customer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", customer)
+	ret := m.ctrl.Call(m, "CustomerCreate", customer)
 	ret0, _ := ret[0].(*customermodel.Customer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Create indicates an expected call of Create.
-func (mr *MockCustomerRdbPortInterfaceMockRecorder) Create(customer interface{}) *gomock.Call {
+// CustomerCreate indicates an expected call of CustomerCreate.
+func (mr *MockRdbPortInterfaceMockRecorder) CustomerCreate(customer interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCustomerRdbPortInterface)(nil).Create), customer)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CustomerCreate", reflect.TypeOf((*MockRdbPortInterface)(nil).CustomerCreate), customer)
 }
 
-// Get mocks base method.
-func (m *MockCustomerRdbPortInterface) Get(customerID customermodel.ID) (*customermodel.Customer, error) {
+// CustomerGet mocks base method.
+func (m *MockRdbPortInterface) CustomerGet(customerID customermodel.ID) (*customermodel.Customer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", customerID)
+	ret := m.ctrl.Call(m, "CustomerGet", customerID)
 	ret0, _ := ret[0].(*customermodel.Customer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Get indicates an expected call of Get.
-func (mr *MockCustomerRdbPortInterfaceMockRecorder) Get(customerID interface{}) *gomock.Call {
+// CustomerGet indicates an expected call of CustomerGet.
+func (mr *MockRdbPortInterfaceMockRecorder) CustomerGet(customerID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockCustomerRdbPortInterface)(nil).Get), customerID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CustomerGet", reflect.TypeOf((*MockRdbPortInterface)(nil).CustomerGet), customerID)
 }
 
-// Search mocks base method.
-func (m *MockCustomerRdbPortInterface) Search(pageNumber, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
+// CustomerSearch mocks base method.
+func (m *MockRdbPortInterface) CustomerSearch(pageNumber, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Search", pageNumber, pageSize, conditions)
+	ret := m.ctrl.Call(m, "CustomerSearch", pageNumber, pageSize, conditions)
 	ret0, _ := ret[0].(*[]*customermodel.Customer)
 	ret1, _ := ret[1].(*pagemodel.PageResult)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// Search indicates an expected call of Search.
-func (mr *MockCustomerRdbPortInterfaceMockRecorder) Search(pageNumber, pageSize, conditions interface{}) *gomock.Call {
+// CustomerSearch indicates an expected call of CustomerSearch.
+func (mr *MockRdbPortInterfaceMockRecorder) CustomerSearch(pageNumber, pageSize, conditions interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockCustomerRdbPortInterface)(nil).Search), pageNumber, pageSize, conditions)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CustomerSearch", reflect.TypeOf((*MockRdbPortInterface)(nil).CustomerSearch), pageNumber, pageSize, conditions)
 }
 
-// Update mocks base method.
-func (m *MockCustomerRdbPortInterface) Update(customer *customermodel.Customer) error {
+// CustomerUpdate mocks base method.
+func (m *MockRdbPortInterface) CustomerUpdate(customer *customermodel.Customer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", customer)
+	ret := m.ctrl.Call(m, "CustomerUpdate", customer)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Update indicates an expected call of Update.
-func (mr *MockCustomerRdbPortInterfaceMockRecorder) Update(customer interface{}) *gomock.Call {
+// CustomerUpdate indicates an expected call of CustomerUpdate.
+func (mr *MockRdbPortInterfaceMockRecorder) CustomerUpdate(customer interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockCustomerRdbPortInterface)(nil).Update), customer)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CustomerUpdate", reflect.TypeOf((*MockRdbPortInterface)(nil).CustomerUpdate), customer)
 }

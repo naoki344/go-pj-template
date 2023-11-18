@@ -27,7 +27,7 @@ if [ ! -d "$OUTPUT_DIR" ]; then
 fi
 echo "出力先: ${OUTPUT_FILE}"
 # コマンドの実行
-gotests -exported -template testify "${SOURCE_DIR}${FILE}" > ${OUTPUT_FILE}
+gotests -exported -template testify "${SOURCE_DIR}${FILE}" >> ${OUTPUT_FILE}
 
 # 終了ステータスの確認
 if [ $? -eq 0 ]; then

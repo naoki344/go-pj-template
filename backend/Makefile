@@ -33,7 +33,7 @@ build-ogen:
 	ogen -package ogen -target internal/adapter/driver/ogenlib -clean ./apidocs/openapi/dist/openapi/openapi.yaml
 
 build-openapi:
-	./node_modules/.bin/openapi-generator-cli generate -i ./apidocs/openapi/docsroot.yaml -g openapi-yaml -o api/openapi/dist --generate-alias-as-model
+	./node_modules/.bin/openapi-generator-cli generate -i ./apidocs/openapi/docsroot.yaml -g openapi-yaml -o openapi/openapi/dist --generate-alias-as-model
 
 setup-all: setup-install migrate build-openapi build-ogen build-wire
 
@@ -43,7 +43,7 @@ deploy: build-all
 	cd ./cdk/ && npx cdk deploy
 
 test:
-	go test ./test/...
+	go test ./test/test/...
 
 genmock:
 	./test/scripts/genmock.sh

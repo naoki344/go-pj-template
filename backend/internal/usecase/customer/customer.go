@@ -7,23 +7,23 @@ import (
 )
 
 type CustomerUsecase struct {
-	port rdbport.CustomerRdbPortInterface
+	port rdbport.RdbPortInterface
 }
 
-func NewCustomerUsecase(port rdbport.CustomerRdbPortInterface) *CustomerUsecase {
+func NewCustomerUsecase(port rdbport.RdbPortInterface) *CustomerUsecase {
 	return &CustomerUsecase{port}
 }
 
 func (usecase *CustomerUsecase) GetByID(customerID customermodel.ID) (*customermodel.Customer, error) {
-	return usecase.port.Get(customerID) //nolint:wrapcheck
+	return usecase.port.CustomerGet(customerID) //nolint:wrapcheck
 }
 
 func (usecase *CustomerUsecase) UpdateByID(customer *customermodel.Customer) (*customermodel.Customer, error) {
-	err := usecase.port.Update(customer)
+	err := usecase.port.CustomerUpdate(customer)
 	if err != nil {
 		return nil, err //nolint:wrapcheck
 	}
-	newCustomer, err := usecase.port.Get(customer.ID)
+	newCustomer, err := usecase.port.CustomerGet(customer.ID)
 	if err != nil {
 		return nil, err //nolint:wrapcheck
 	}
@@ -31,9 +31,9 @@ func (usecase *CustomerUsecase) UpdateByID(customer *customermodel.Customer) (*c
 }
 
 func (usecase *CustomerUsecase) Create(customer *customermodel.Customer) (*customermodel.Customer, error) {
-	return usecase.port.Create(customer) //nolint:wrapcheck
+	return usecase.port.CustomerCreate(customer) //nolint:wrapcheck
 }
 
 func (usecase *CustomerUsecase) Search(pageNumber int64, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
-	return usecase.port.Search(pageNumber, pageSize, conditions) //nolint:wrapcheck
+	return usecase.port.CustomerSearch(pageNumber, pageSize, conditions) //nolint:wrapcheck
 }
