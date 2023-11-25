@@ -10,7 +10,6 @@ excludeFiles:
 components:
   main:                           { in: ../cmd/** }
   driverAdapter:                  { in: adapter/driver/** }
-  apiOgenServer:                  { in: ../api/lib/ogen/** }
   drivenAdapter:                  { in: adapter/driven/** }
   driverPort:                     { in: port/driver/** }
   drivenPort:                     { in: port/driven/** }
@@ -28,7 +27,6 @@ deps:
     mayDependOn:
       - driverAdapter
       - driverPort
-      - apiOgenServer
 
   driverPort:
     anyVendorDeps: true
