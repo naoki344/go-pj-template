@@ -1,8 +1,7 @@
 package apiport
 
 import (
-	"errors"
-
+	"github.com/cockroachdb/errors"
 	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
 	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
 	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
@@ -99,10 +98,11 @@ func NewCustomerAPIPort(usecase customerusecase.CustomerUsecaseInterface) *Custo
 func (port *CustomerAPIPort) GetByID(customerID CustomerID) (*Customer, error) {
 	res, err := port.usecase.GetByID(customermodel.ID(customerID))
 	if err != nil {
-		if errors.Is(err, errormodel.ErrCustomerNotFound) {
-			return nil, &APICustomerNotFoundError{customerID}
+		var notFoundErr *errormodel.CustomerNotFoundError
+		if errors.As(err, &notFoundErr) {
+			return nil, NewAPICustomerNotFoundError(err, customerID)
 		}
-		return nil, ErrUnexpected
+		return nil, NewAPIUnexpectedError(err)
 	}
 	return toPortCustomer(res), nil
 }
@@ -110,10 +110,11 @@ func (port *CustomerAPIPort) GetByID(customerID CustomerID) (*Customer, error) {
 func (port *CustomerAPIPort) UpdateByID(customer *Customer) (*Customer, error) {
 	res, err := port.usecase.UpdateByID(toModelCustomer(customer))
 	if err != nil {
-		if errors.Is(err, errormodel.ErrCustomerNotFound) {
-			return nil, &APICustomerNotFoundError{CustomerID(customer.ID)}
+		var notFoundErr *errormodel.CustomerNotFoundError
+		if errors.As(err, &notFoundErr) {
+			return nil, NewAPICustomerNotFoundError(err, CustomerID(customer.ID))
 		}
-		return nil, ErrUnexpected
+		return nil, NewAPIUnexpectedError(err)
 	}
 	return toPortCustomer(res), nil
 }
@@ -121,7 +122,7 @@ func (port *CustomerAPIPort) UpdateByID(customer *Customer) (*Customer, error) {
 func (port *CustomerAPIPort) CreateCustomer(customer *Customer) (*Customer, error) {
 	res, err := port.usecase.Create(toModelCustomer(customer))
 	if err != nil {
-		return nil, ErrUnexpected
+		return nil, NewAPIUnexpectedError(err)
 	}
 	return toPortCustomer(res), nil
 }
@@ -129,7 +130,7 @@ func (port *CustomerAPIPort) CreateCustomer(customer *Customer) (*Customer, erro
 func (port *CustomerAPIPort) SearchCustomer(pageNumber int64, pageSize int64, conditions *SearchConditions) (*CustomerSearchResult, error) {
 	customers, page, err := port.usecase.Search(pageNumber, pageSize, &customermodel.SearchConditions{})
 	if err != nil {
-		return nil, ErrUnexpected
+		return nil, NewAPIUnexpectedError(err)
 	}
 	return toCustomerSearchResult(customers, page), nil
 }

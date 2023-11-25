@@ -1,10 +1,10 @@
 package apiport_test
 
 import (
-	"errors"
 	"reflect"
 	"testing"
 
+	"github.com/cockroachdb/errors"
 	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
 	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
 	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
@@ -78,7 +78,8 @@ func TestCustomerAPIPort_GetByID(t *testing.T) {
 	mock := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
 	mock.EXPECT().GetByID(customermodel.ID(11)).Return(customerModel, nil)
 	mock2 := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
-	mock2.EXPECT().GetByID(customermodel.ID(11)).Return(nil, errormodel.ErrCustomerNotFound)
+	errMock := errormodel.NewCustomerNotFoundError(errors.New("test"))
+	mock2.EXPECT().GetByID(customermodel.ID(11)).Return(nil, errMock)
 	type fields struct {
 		usecase usecase.CustomerUsecaseInterface
 	}
@@ -163,7 +164,8 @@ func TestCustomerAPIPort_UpdateByID(t *testing.T) {
 	mock := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
 	mock.EXPECT().UpdateByID(customerModel).Return(customerModel, nil)
 	mock2 := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
-	mock2.EXPECT().UpdateByID(customerModel).Return(nil, errormodel.ErrCustomerNotFound)
+	errMock := errormodel.NewCustomerNotFoundError(errors.New("test"))
+	mock2.EXPECT().UpdateByID(customerModel).Return(nil, errMock)
 	type fields struct {
 		usecase usecase.CustomerUsecaseInterface
 	}
@@ -274,13 +276,15 @@ func TestCustomerAPIPort_CreateCustomer(t *testing.T) {
 	mock := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
 	mock.EXPECT().Create(customerReqModel).Return(customerResModel, nil)
 	mock2 := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
-	mock2.EXPECT().Create(customerReqModel).Return(nil, errormodel.ErrUnexpectedError)
+	errMock := errormodel.NewUnexpectedError(errors.New("test"))
+	mock2.EXPECT().Create(customerReqModel).Return(nil, errMock)
 	type fields struct {
 		usecase usecase.CustomerUsecaseInterface
 	}
 	type args struct {
 		customer *apiport.Customer
 	}
+	var expectErr *apiport.APIUnexpectedError
 	tests := []struct {
 		name      string
 		fields    fields
@@ -309,7 +313,7 @@ func TestCustomerAPIPort_CreateCustomer(t *testing.T) {
 			},
 			want: nil,
 			assertion: func(t assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, apiport.ErrUnexpected)
+				return assert.ErrorAs(t, err, &expectErr)
 			},
 		},
 	}
@@ -363,7 +367,6 @@ func TestCustomerAPIPort_SearchCustomer(t *testing.T) {
 		Address1:               "宮崎市",
 		Address2:               "佐土原",
 	}
-	// *[]*customermodel.Customer, *pagemodel.PageResult, error
 	input := args{
 		pageNumber: int64(1),
 		pageSize:   int64(1),
@@ -379,7 +382,8 @@ func TestCustomerAPIPort_SearchCustomer(t *testing.T) {
 	mock := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
 	mock.EXPECT().Search(input.pageNumber, input.pageSize, &customermodel.SearchConditions{}).Return(customerModel, page, nil)
 	mock2 := usecaseMock.NewMockCustomerUsecaseInterface(ctrl)
-	mock2.EXPECT().Search(input.pageNumber, input.pageSize, &customermodel.SearchConditions{}).Return(nil, nil, errormodel.ErrUnexpectedError)
+	errMock := errormodel.NewUnexpectedError(errors.New("test"))
+	mock2.EXPECT().Search(input.pageNumber, input.pageSize, &customermodel.SearchConditions{}).Return(nil, nil, errMock)
 	expect := &apiport.CustomerSearchResult{
 		Page: apiport.PageResult{
 			Size:    int64(1),
@@ -388,6 +392,7 @@ func TestCustomerAPIPort_SearchCustomer(t *testing.T) {
 		},
 		CustomerList: []*apiport.Customer{portModel},
 	}
+	var expectErr *apiport.APIUnexpectedError
 	tests := []struct {
 		name      string
 		fields    fields
@@ -412,7 +417,7 @@ func TestCustomerAPIPort_SearchCustomer(t *testing.T) {
 			args: input,
 			want: nil,
 			assertion: func(t assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, apiport.ErrUnexpected)
+				return assert.ErrorAs(t, err, &expectErr)
 			},
 		},
 	}

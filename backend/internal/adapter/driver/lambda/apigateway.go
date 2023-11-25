@@ -24,12 +24,19 @@ func NewAPIGatewayHandler(
 	}
 }
 
-type Lambda struct {
-	AWSRequestID string
-	FunctionName string
+type APIGateway struct {
+	Resource            string
+	Path                string
+	Method              string
+	APIGatewayRequestID string
+	APIID               string
+	APIStage            string
 }
 
-func (handler *APIGatewayHandler) SetLogger(ctx context.Context) {
+func (handler *APIGatewayHandler) SetLogger(
+	ctx context.Context,
+	event events.APIGatewayProxyRequest,
+) {
 	lc, ok := lambdacontext.FromContext(ctx)
 	if !ok {
 		slog.Error("error log settings failure.",
@@ -47,17 +54,27 @@ func (handler *APIGatewayHandler) SetLogger(ctx context.Context) {
 		slog.Any("Lambda", Lambda{
 			AWSRequestID: lc.AwsRequestID,
 			FunctionName: lc.InvokedFunctionArn,
+			FunctionType: FunctionTypeAPIGateway,
+		}),
+		slog.Any(string(FunctionTypeAPIGateway), APIGateway{
+			Resource:            event.Resource,
+			Path:                event.Path,
+			Method:              event.HTTPMethod,
+			APIGatewayRequestID: event.RequestContext.RequestID,
+			APIID:               event.RequestContext.APIID,
+			APIStage:            event.RequestContext.Stage,
 		}),
 	)
 	slog.SetDefault(slogger)
-	slog.Info("log settings success.", slog.Any("context", lc))
+	slog.Info("log settings success.", slog.Any("LambdaContext", lc))
 }
 
 func (handler *APIGatewayHandler) Run(
 	ctx context.Context,
 	event events.APIGatewayProxyRequest,
 ) (events.APIGatewayProxyResponse, error) {
-	handler.SetLogger(ctx)
+	handler.SetLogger(ctx, event)
+	slog.Debug("apigatewayEvent", slog.Any("event", event))
 
 	// NOTE: https://github.com/awslabs/aws-lambda-go-api-proxy/blob/master/httpadapter/adapter.go#L16
 	return httpadapter.New(handler.Server).ProxyWithContext(ctx, event) //nolint:wrapcheck

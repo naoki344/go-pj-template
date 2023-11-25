@@ -2,11 +2,11 @@ package rdbadapter_test
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/cockroachdb/errors"
 	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	"github.com/stretchr/testify/assert"
 )
@@ -73,9 +73,10 @@ func TestMySQL_GetCustomerByIDFull(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db2.Close()
+	errMock := errors.New("unexpected error")
 	db3, mock3, err := sqlmock.New()
 	mock3.ExpectQuery(expectQuery).
-		WillReturnError(errors.New("unexpected error"))
+		WillReturnError(errMock)
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
@@ -87,6 +88,9 @@ func TestMySQL_GetCustomerByIDFull(t *testing.T) {
 	type args struct {
 		customerID int64
 	}
+
+	var notFoundError *rdbadapter.RdbCustomerNotFoundError
+	var unexpectedError *rdbadapter.RdbUnexpectedError
 
 	tests := []struct {
 		name      string
@@ -112,7 +116,7 @@ func TestMySQL_GetCustomerByIDFull(t *testing.T) {
 			},
 			want: nil,
 			assertion: func(t assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, rdbadapter.ErrRdbCustomerNotFound)
+				return assert.ErrorAs(t, err, &notFoundError)
 			},
 		},
 		{
@@ -123,7 +127,7 @@ func TestMySQL_GetCustomerByIDFull(t *testing.T) {
 			},
 			want: nil,
 			assertion: func(t assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, rdbadapter.ErrRdbUnexpected)
+				return assert.ErrorAs(t, err, &unexpectedError)
 			},
 		},
 	}
@@ -166,6 +170,7 @@ func TestMySQL_UpdateCustomerByID(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db2.Close()
+	var notFoundError *rdbadapter.RdbCustomerNotFoundError
 
 	type fields struct {
 		Conn *sql.DB
@@ -194,7 +199,7 @@ func TestMySQL_UpdateCustomerByID(t *testing.T) {
 				customer: &customerData,
 			},
 			assertion: func(t assert.TestingT, err error, i ...interface{}) bool {
-				return assert.ErrorIs(t, err, rdbadapter.ErrRdbCustomerNotFound)
+				return assert.ErrorAs(t, err, &notFoundError)
 			},
 		},
 	}

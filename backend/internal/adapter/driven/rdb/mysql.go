@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log/slog"
-	"net/url"
+	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 )
 
 type MySQLConfig struct {
@@ -22,15 +22,32 @@ type MySQL struct {
 }
 
 func NewMySQL(cfg *MySQLConfig) (*MySQL, error) {
-	var err error
-	conn, err := sql.Open(
-		"mysql",
-		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true&loc=%s",
-			cfg.USERNAME, cfg.PASSWORD, cfg.HOST, cfg.PORT, cfg.NAME, url.PathEscape("Asia/Tokyo")),
-	)
+	jst, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		slog.Info("Fail to load timezone", "error_detail", err.Error())
+		return nil, NewRdbUnexpectedError(err)
+	}
+
+	dsnConfig := mysql.Config{
+		DBName:               cfg.NAME,
+		User:                 cfg.USERNAME,
+		Passwd:               cfg.PASSWORD,
+		Addr:                 fmt.Sprintf("%s:%s", cfg.HOST, cfg.PORT),
+		Net:                  "tcp",
+		ParseTime:            true,
+		Collation:            "utf8mb4_unicode_ci",
+		Loc:                  jst,
+		AllowNativePasswords: true,
+	}
+	conn, err := sql.Open("mysql", dsnConfig.FormatDSN())
+	if err != nil {
+		slog.Info("Fail to open db", "error_detail", err.Error())
+		return nil, NewRdbUnexpectedError(err)
+	}
+	err = conn.Ping()
 	if err != nil {
 		slog.Info("Fail to connect db", "error_detail", err.Error())
-		return &MySQL{}, nil
+		return nil, NewRdbUnexpectedError(err)
 	}
 	slog.Info("Create DB connection.")
 	return &MySQL{Conn: conn}, nil

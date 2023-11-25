@@ -95,6 +95,30 @@ func NewCdkLambdaGoStack(
 			StatusCode:   jsii.Number(corsDefaultStatusCode),
 		},
 	})
+	restAPI.AddGatewayResponse(jsii.String("default4xx"), &awsapigateway.GatewayResponseOptions{
+		Type:       awsapigateway.ResponseType_DEFAULT_4XX(),
+		StatusCode: jsii.String("400"),
+		ResponseHeaders: &map[string]*string{
+			"Access-Control-Allow-Origin":  jsii.String("'*'"),
+			"Access-Control-Allow-Methods": jsii.String("'*'"),
+			"Access-Control-Allow-Headers": jsii.String("'*'"),
+		},
+		Templates: &map[string]*string{
+			"application/json": jsii.String("{ \"message\": $context.error.messageString, \"type\": \"$context.error.responseType\" }"),
+		},
+	})
+	restAPI.AddGatewayResponse(jsii.String("default5xx"), &awsapigateway.GatewayResponseOptions{
+		Type:       awsapigateway.ResponseType_DEFAULT_5XX(),
+		StatusCode: jsii.String("500"),
+		ResponseHeaders: &map[string]*string{
+			"Access-Control-Allow-Origin":  jsii.String("'*'"),
+			"Access-Control-Allow-Methods": jsii.String("'*'"),
+			"Access-Control-Allow-Headers": jsii.String("'*'"),
+		},
+		Templates: &map[string]*string{
+			"application/json": jsii.String("{ \"message\": $context.error.messageString, \"type\": \"$context.error.responseType\" }"),
+		},
+	})
 
 	cognitoUserPool := awscognito.NewUserPool(stack, jsii.String("en-userpool"), &awscognito.UserPoolProps{
 		UserPoolName:        jsii.String("myawesomeapp-userpool"),

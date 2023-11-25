@@ -1,10 +1,10 @@
 package customerusecase_test
 
 import (
-	"errors"
 	"reflect"
 	"testing"
 
+	"github.com/cockroachdb/errors"
 	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
 	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
 	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"

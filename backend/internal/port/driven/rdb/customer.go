@@ -1,8 +1,7 @@
 package rdbport
 
 import (
-	"errors"
-
+	"github.com/cockroachdb/errors"
 	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
 	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
 	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
@@ -64,10 +63,11 @@ func (port *RdbPort) CustomerCreate(customer *customermodel.Customer) (*customer
 	ogenCustomer := toAdapterCustomer(customer)
 	res, err := port.rdb.InsertCustomer(ogenCustomer)
 	if err != nil {
-		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
-			return nil, errormodel.ErrCustomerNotFound
+		var notFoundErr *rdbadapter.RdbCustomerNotFoundError
+		if errors.As(err, &notFoundErr) {
+			return nil, errormodel.NewCustomerNotFoundError(err)
 		}
-		return nil, errormodel.ErrUnexpectedError
+		return nil, errormodel.NewUnexpectedError(err)
 	}
 	return toModelCustomer(res), nil
 }
@@ -75,10 +75,11 @@ func (port *RdbPort) CustomerCreate(customer *customermodel.Customer) (*customer
 func (port *RdbPort) CustomerGet(customerID customermodel.ID) (*customermodel.Customer, error) {
 	res, err := port.rdb.GetCustomerByID(int64(customerID))
 	if err != nil {
-		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
-			return nil, errormodel.ErrCustomerNotFound
+		var notFoundErr *rdbadapter.RdbCustomerNotFoundError
+		if errors.As(err, &notFoundErr) {
+			return nil, errormodel.NewCustomerNotFoundError(err)
 		}
-		return nil, errormodel.ErrUnexpectedError
+		return nil, errormodel.NewUnexpectedError(err)
 	}
 	return toModelCustomer(res), nil
 }
@@ -87,10 +88,11 @@ func (port *RdbPort) CustomerUpdate(customer *customermodel.Customer) error {
 	ogenCustomer := toAdapterCustomer(customer)
 	err := port.rdb.UpdateCustomerByID(ogenCustomer)
 	if err != nil {
-		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
-			return errormodel.ErrCustomerNotFound
+		var notFoundErr *rdbadapter.RdbCustomerNotFoundError
+		if errors.As(err, &notFoundErr) {
+			return errormodel.NewCustomerNotFoundError(err)
 		}
-		return errormodel.ErrUnexpectedError
+		return errormodel.NewUnexpectedError(err)
 	}
 	return nil
 }
@@ -98,10 +100,7 @@ func (port *RdbPort) CustomerUpdate(customer *customermodel.Customer) error {
 func (port *RdbPort) CustomerSearch(pageNumber int64, pageSize int64, conditions *customermodel.SearchConditions) (*[]*customermodel.Customer, *pagemodel.PageResult, error) {
 	res, err := port.rdb.SearchCustomer(pageNumber, pageSize, &rdbadapter.SearchConditions{})
 	if err != nil {
-		if errors.Is(err, rdbadapter.ErrRdbCustomerNotFound) {
-			return nil, nil, errormodel.ErrCustomerNotFound
-		}
-		return nil, nil, errormodel.ErrUnexpectedError
+		return nil, nil, errormodel.NewUnexpectedError(err)
 	}
 	return toModelCustomerList(res.CustomerList), &pagemodel.PageResult{
 		Size:    pagemodel.Size(res.PageInfo.Size),

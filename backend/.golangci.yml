@@ -41,6 +41,7 @@ linters:
     - ifshort
     - interfacer
     - varnamelen
+    - wrapcheck
 
 exclude-rules:
   - linters:

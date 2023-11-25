@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/cockroachdb/errors"
 	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
 	ogenlib "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
@@ -59,7 +60,8 @@ func TestEnAPIAdapter_PostCreateCustomer(t *testing.T) {
 	portMock := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
 	portMock.EXPECT().CreateCustomer(portModelReq).Return(portModelRes, nil)
 	portMock2 := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
-	portMock2.EXPECT().CreateCustomer(portModelReq).Return(nil, apiport.ErrUnexpected)
+	mockErr := apiport.NewAPIUnexpectedError(errors.New("test error"))
+	portMock2.EXPECT().CreateCustomer(portModelReq).Return(nil, mockErr)
 	ctx := context.Background()
 	as := "*"
 	expect := &ogenlib.CustomerHeaders{
@@ -217,10 +219,11 @@ func TestEnAPIAdapter_PostSearchCustomer(t *testing.T) {
 	portMock.EXPECT().SearchCustomer(
 		params.Pagination.Number, params.Pagination.Size, &apiport.SearchConditions{},
 	).Return(portResult, nil)
+	mockErr := apiport.NewAPIUnexpectedError(errors.New("test error"))
 	portMock2 := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
 	portMock2.EXPECT().SearchCustomer(
 		params.Pagination.Number, params.Pagination.Size, &apiport.SearchConditions{},
-	).Return(nil, apiport.ErrUnexpected)
+	).Return(nil, mockErr)
 	ctx := context.Background()
 	type fields struct {
 		customerAPI apiport.CustomerAPIPortInterface
@@ -306,10 +309,11 @@ func TestEnAPIAdapter_PutModifyCustomerByID(t *testing.T) {
 	portMock := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
 	portMock.EXPECT().UpdateByID(portModel).Return(portModel, nil)
 	portMock2 := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
-	portErr := apiport.APICustomerNotFoundError{
-		CustomerID: apiport.CustomerID(11),
-	}
-	portMock2.EXPECT().UpdateByID(portModel).Return(nil, &portErr)
+	portErr := apiport.NewAPICustomerNotFoundError(
+		errors.New("error message"),
+		apiport.CustomerID(11),
+	)
+	portMock2.EXPECT().UpdateByID(portModel).Return(nil, portErr)
 	ctx := context.Background()
 	as := "*"
 	expect := &ogenlib.CustomerHeaders{
@@ -451,10 +455,11 @@ func TestEnAPIAdapter_GetCustomerByID(t *testing.T) {
 	portMock := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
 	portMock.EXPECT().GetByID(apiport.CustomerID(11)).Return(portModel, nil)
 	portMock2 := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
-	portErr := apiport.APICustomerNotFoundError{
-		CustomerID: apiport.CustomerID(11),
-	}
-	portMock2.EXPECT().GetByID(apiport.CustomerID(11)).Return(nil, &portErr)
+	portErr := apiport.NewAPICustomerNotFoundError(
+		errors.New("error message"),
+		apiport.CustomerID(11),
+	)
+	portMock2.EXPECT().GetByID(apiport.CustomerID(11)).Return(nil, portErr)
 	ctx := context.Background()
 	type fields struct {
 		customerAPI apiport.CustomerAPIPortInterface

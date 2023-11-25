@@ -2,7 +2,8 @@ package secretsmanager
 
 import (
 	"context"
-	"errors"
+
+	"github.com/cockroachdb/errors"
 )
 
 var ErrDBAccountFetchFailure = errors.New("db account fetch failure")

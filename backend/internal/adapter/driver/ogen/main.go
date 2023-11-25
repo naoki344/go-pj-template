@@ -2,12 +2,16 @@ package ogenadapter
 
 import (
 	"context"
-	"errors"
 	"log/slog"
+	"time"
 
+	"github.com/cockroachdb/errors"
 	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
 	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
+	"github.com/getsentry/sentry-go"
 )
+
+const sentryTimeout = 2 * time.Second
 
 type ErrorType string
 
@@ -35,6 +39,8 @@ func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCre
 	}
 	res, err := n.customerAPI.CreateCustomer(portModel)
 	if err != nil {
+		defer sentry.Flush(sentryTimeout)
+		sentry.CaptureException(err)
 		return createErrorPostCreateCustomerResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
@@ -46,6 +52,8 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 	res, err := n.customerAPI.SearchCustomer(
 		pageNumber, pageSize, &apiport.SearchConditions{})
 	if err != nil {
+		defer sentry.Flush(sentryTimeout)
+		sentry.CaptureException(err)
 		return createErrorPostSearchCustomerResponse(err), nil
 	}
 	return createCustomerSearchResponse(res.Page, res.CustomerList), nil
@@ -71,6 +79,8 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 
 	res, err := n.customerAPI.UpdateByID(portModel)
 	if err != nil {
+		defer sentry.Flush(sentryTimeout)
+		sentry.CaptureException(err)
 		return createErrorPutByIDResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
@@ -79,6 +89,13 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
 	res, err := n.customerAPI.GetByID(apiport.CustomerID(params.CustomerID))
 	if err != nil {
+		defer sentry.Flush(sentryTimeout)
+		sentry.CaptureException(err)
+		slog.Error(
+			err.Error(),
+			slog.Any("trace", errors.GetAllSafeDetails(err)),
+			slog.Any("hints", errors.GetAllHints(err)),
+		)
 		return createErrorGetByIDResponse(err), nil
 	}
 	return createCustomerResponse(res), nil
