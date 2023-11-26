@@ -40,7 +40,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://stayfresh-dev-cost-management/99e0f0431908b64bf52d2df58a9b6186
+      CodeUri: s3://go-template-dev-cost-management/99e0f0431908b64bf52d2df58a9b6186
       Handler: app.lambda_handler
       Runtime: python3.8
       Environment:

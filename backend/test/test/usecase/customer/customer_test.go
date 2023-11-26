@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/cockroachdb/errors"
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
-	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
-	testTarget "github.com/g-stayfresh/en/backend/internal/usecase/customer"
-	rdbportMock "github.com/g-stayfresh/en/backend/test/mock/port/driven/rdb"
 	"github.com/golang/mock/gomock"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
+	rdbport "github.com/naoki344/go-pj-template/backend/internal/port/driven/rdb"
+	testTarget "github.com/naoki344/go-pj-template/backend/internal/usecase/customer"
+	rdbportMock "github.com/naoki344/go-pj-template/backend/test/mock/port/driven/rdb"
 	"github.com/stretchr/testify/assert"
 )
 

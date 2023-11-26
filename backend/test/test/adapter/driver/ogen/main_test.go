@@ -6,15 +6,15 @@ import (
 	"testing"
 
 	"github.com/cockroachdb/errors"
-	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
-	ogenlib "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
-	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	apiportMock "github.com/g-stayfresh/en/backend/test/mock/port/driver/api"
 	"github.com/golang/mock/gomock"
+	ogen "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogen"
+	ogenlib "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogenlib"
+	apiport "github.com/naoki344/go-pj-template/backend/internal/port/driver/api"
+	apiportMock "github.com/naoki344/go-pj-template/backend/test/mock/port/driver/api"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestEnAPIAdapter_PostCreateCustomer(t *testing.T) {
+func TestAPIAdapter_PostCreateCustomer(t *testing.T) {
 	optString := "テスト名"
 	req := ogenlib.PostCreateCustomerRequest{
 		Name:                   "testname",
@@ -134,7 +134,7 @@ func TestEnAPIAdapter_PostCreateCustomer(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
+			n := ogen.NewAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PostCreateCustomer(tt.args.ctx, tt.args.req)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -142,7 +142,7 @@ func TestEnAPIAdapter_PostCreateCustomer(t *testing.T) {
 	}
 }
 
-func TestEnAPIAdapter_PostSearchCustomer(t *testing.T) {
+func TestAPIAdapter_PostSearchCustomer(t *testing.T) {
 	optString := "テスト名"
 	params := &ogenlib.PostSearchCustomerRequest{
 		Conditions: ogenlib.PostSearchCustomerRequestConditions{},
@@ -266,7 +266,7 @@ func TestEnAPIAdapter_PostSearchCustomer(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
+			n := ogen.NewAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PostSearchCustomer(tt.args.ctx, tt.args.req)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -274,7 +274,7 @@ func TestEnAPIAdapter_PostSearchCustomer(t *testing.T) {
 	}
 }
 
-func TestEnAPIAdapter_PutModifyCustomerByID(t *testing.T) {
+func TestAPIAdapter_PutModifyCustomerByID(t *testing.T) {
 	optString := "テスト名"
 	req := ogenlib.PutModifyCustomerByIDRequest{
 		ID:                     11,
@@ -393,7 +393,7 @@ func TestEnAPIAdapter_PutModifyCustomerByID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
+			n := ogen.NewAPIAdapter(tt.fields.customerAPI)
 			got, err := n.PutModifyCustomerByID(tt.args.ctx, tt.args.req, tt.args.params)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -401,7 +401,7 @@ func TestEnAPIAdapter_PutModifyCustomerByID(t *testing.T) {
 	}
 }
 
-func TestEnAPIAdapter_GetCustomerByID(t *testing.T) {
+func TestAPIAdapter_GetCustomerByID(t *testing.T) {
 	optString := "テスト名"
 	params := ogenlib.GetCustomerByIDParams{
 		CustomerID: 11,
@@ -502,7 +502,7 @@ func TestEnAPIAdapter_GetCustomerByID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := ogen.NewEnAPIAdapter(tt.fields.customerAPI)
+			n := ogen.NewAPIAdapter(tt.fields.customerAPI)
 			got, err := n.GetCustomerByID(tt.args.ctx, tt.args.params)
 			tt.assertion(t, err)
 			assert.Equal(t, tt.want, got)
@@ -510,7 +510,7 @@ func TestEnAPIAdapter_GetCustomerByID(t *testing.T) {
 	}
 }
 
-func TestNewEnAPIAdapter(t *testing.T) {
+func TestNewAPIAdapter(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	portMock := apiportMock.NewMockCustomerAPIPortInterface(ctrl)
@@ -520,14 +520,14 @@ func TestNewEnAPIAdapter(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *ogen.EnAPIAdapter
+		want *ogen.APIAdapter
 	}{
 		{
-			name: "adapter/ogen - NewEnAPIAdapter - success",
+			name: "adapter/ogen - NewAPIAdapter - success",
 			args: args{
 				customerAPI: portMock,
 			},
-			want: &ogen.EnAPIAdapter{},
+			want: &ogen.APIAdapter{},
 		},
 	}
 	for _, tt := range tests {
@@ -535,7 +535,7 @@ func TestNewEnAPIAdapter(t *testing.T) {
 			assert.Equal(
 				t,
 				reflect.TypeOf(tt.want),
-				reflect.TypeOf(ogen.NewEnAPIAdapter(tt.args.customerAPI)))
+				reflect.TypeOf(ogen.NewAPIAdapter(tt.args.customerAPI)))
 		})
 	}
 }

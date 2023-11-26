@@ -5,13 +5,13 @@ import (
 	"testing"
 
 	"github.com/cockroachdb/errors"
-	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
-	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	usecase "github.com/g-stayfresh/en/backend/internal/usecase/customer"
-	usecaseMock "github.com/g-stayfresh/en/backend/test/mock/usecase/customer"
 	"github.com/golang/mock/gomock"
+	errormodel "github.com/naoki344/go-pj-template/backend/internal/domain/error"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
+	apiport "github.com/naoki344/go-pj-template/backend/internal/port/driver/api"
+	usecase "github.com/naoki344/go-pj-template/backend/internal/usecase/customer"
+	usecaseMock "github.com/naoki344/go-pj-template/backend/test/mock/usecase/customer"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -5,9 +5,9 @@ import (
 	"log/slog"
 
 	"github.com/cockroachdb/errors"
-	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
-	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	monitoring "github.com/g-stayfresh/en/backend/pkg/monitoring"
+	ogen "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogenlib"
+	apiport "github.com/naoki344/go-pj-template/backend/internal/port/driver/api"
+	monitoring "github.com/naoki344/go-pj-template/backend/pkg/monitoring"
 )
 
 type ErrorType string
@@ -17,11 +17,11 @@ const (
 	InternalServerError = ErrorType("InternalServerError")
 )
 
-type EnAPIAdapter struct {
+type APIAdapter struct {
 	customerAPI apiport.CustomerAPIPortInterface
 }
 
-func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerRequest) (ogen.PostCreateCustomerRes, error) {
+func (n *APIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCreateCustomerRequest) (ogen.PostCreateCustomerRes, error) {
 	portModel := &apiport.Customer{
 		Name:                   req.Name,
 		NameKana:               getStringFromOptString(req.NameKana),
@@ -42,7 +42,7 @@ func (n *EnAPIAdapter) PostCreateCustomer(ctx context.Context, req *ogen.PostCre
 	return createCustomerResponse(res), nil
 }
 
-func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSearchCustomerRequest) (ogen.PostSearchCustomerRes, error) {
+func (n *APIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSearchCustomerRequest) (ogen.PostSearchCustomerRes, error) {
 	pageNumber := req.Pagination.Number
 	pageSize := req.Pagination.Size
 	res, err := n.customerAPI.SearchCustomer(
@@ -54,7 +54,7 @@ func (n *EnAPIAdapter) PostSearchCustomer(ctx context.Context, req *ogen.PostSea
 	return createCustomerSearchResponse(res.Page, res.CustomerList), nil
 }
 
-func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDRequest, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
+func (n *APIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutModifyCustomerByIDRequest, params ogen.PutModifyCustomerByIDParams) (ogen.PutModifyCustomerByIDRes, error) {
 	if params.CustomerID != req.ID {
 		return createErrorPutByIDResponseUnmatchID(), nil
 	}
@@ -80,7 +80,7 @@ func (n *EnAPIAdapter) PutModifyCustomerByID(ctx context.Context, req *ogen.PutM
 	return createCustomerResponse(res), nil
 }
 
-func (n *EnAPIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
+func (n *APIAdapter) GetCustomerByID(ctx context.Context, params ogen.GetCustomerByIDParams) (ogen.GetCustomerByIDRes, error) {
 	res, err := n.customerAPI.GetByID(apiport.CustomerID(params.CustomerID))
 	if err != nil {
 		monitoring.ErrLoggingWithSentry(err)
@@ -252,8 +252,8 @@ func getStringFromOptString(optString ogen.OptString) *string {
 	return nil
 }
 
-func NewEnAPIAdapter(customerAPI apiport.CustomerAPIPortInterface) *EnAPIAdapter {
-	return &EnAPIAdapter{
+func NewAPIAdapter(customerAPI apiport.CustomerAPIPortInterface) *APIAdapter {
+	return &APIAdapter{
 		customerAPI: customerAPI,
 	}
 }

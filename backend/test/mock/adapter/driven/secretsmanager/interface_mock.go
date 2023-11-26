@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	secretsmanager "github.com/g-stayfresh/en/backend/internal/adapter/driven/secretsmanager"
+	secretsmanager "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/secretsmanager"
 	gomock "github.com/golang/mock/gomock"
 )
 

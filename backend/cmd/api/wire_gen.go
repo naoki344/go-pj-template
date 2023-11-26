@@ -7,11 +7,11 @@
 package main
 
 import (
-	"github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	"github.com/g-stayfresh/en/backend/internal/adapter/driver/ogen"
-	"github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
-	"github.com/g-stayfresh/en/backend/internal/port/driver/api"
-	"github.com/g-stayfresh/en/backend/internal/usecase/customer"
+	"github.com/naoki344/go-pj-template/backend/internal/adapter/driven/rdb"
+	"github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogen"
+	"github.com/naoki344/go-pj-template/backend/internal/port/driven/rdb"
+	"github.com/naoki344/go-pj-template/backend/internal/port/driver/api"
+	"github.com/naoki344/go-pj-template/backend/internal/usecase/customer"
 )
 
 import (
@@ -20,10 +20,10 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeEnAPIService(db *rdbadapter.MySQL) *ogenadapter.EnAPIAdapter {
+func InitializeAPIService(db *rdbadapter.MySQL) *ogenadapter.APIAdapter {
 	rdbPort := rdbport.NewRdbPort(db)
 	customerUsecase := customerusecase.NewCustomerUsecase(rdbPort)
 	customerAPIPort := apiport.NewCustomerAPIPort(customerUsecase)
-	enAPIAdapter := ogenadapter.NewEnAPIAdapter(customerAPIPort)
+	enAPIAdapter := ogenadapter.NewAPIAdapter(customerAPIPort)
 	return enAPIAdapter
 }

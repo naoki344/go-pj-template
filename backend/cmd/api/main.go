@@ -7,12 +7,12 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	secretsadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/secretsmanager"
-	lambdaadapter "github.com/g-stayfresh/en/backend/internal/adapter/driver/lambda"
-	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
-	"github.com/g-stayfresh/en/backend/pkg/monitoring"
 	_ "github.com/go-sql-driver/mysql"
+	rdbadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/rdb"
+	secretsadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/secretsmanager"
+	lambdaadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/lambda"
+	ogen "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogenlib"
+	"github.com/naoki344/go-pj-template/backend/pkg/monitoring"
 )
 
 const (
@@ -61,7 +61,7 @@ func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 		return createErrorResWithLogging(err), nil
 	}
 	defer dbadapter.Conn.Close() //nolint:errcheck
-	service := InitializeEnAPIService(dbadapter)
+	service := InitializeAPIService(dbadapter)
 	server, err := ogen.NewServer(service)
 	if err != nil {
 		return createErrorResWithLogging(err), nil

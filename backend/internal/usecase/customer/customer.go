@@ -1,9 +1,9 @@
 package customerusecase
 
 import (
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
-	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
+	rdbport "github.com/naoki344/go-pj-template/backend/internal/port/driven/rdb"
 )
 
 type CustomerUsecase struct {

@@ -2,10 +2,10 @@ package rdbport
 
 import (
 	"github.com/cockroachdb/errors"
-	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
+	rdbadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/rdb"
+	errormodel "github.com/naoki344/go-pj-template/backend/internal/domain/error"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
 )
 
 type RdbPort struct {

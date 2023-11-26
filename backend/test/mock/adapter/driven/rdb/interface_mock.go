@@ -7,7 +7,7 @@ package mock_rdbadapter
 import (
 	reflect "reflect"
 
-	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
+	rdbadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/rdb"
 	gomock "github.com/golang/mock/gomock"
 )
 

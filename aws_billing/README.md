@@ -2,7 +2,7 @@
 
 ### デプロイ用のS3バケットを作成しておく
 ```
-aws s3 mb s3://stayfresh-dev-cost-management
+aws s3 mb s3://go-template-dev-cost-management
 
 ```
 
@@ -13,7 +13,7 @@ sam build
 
 sam package \
     --output-template-file packaged.yaml \
-    --s3-bucket stayfresh-dev-cost-management
+    --s3-bucket go-template-dev-cost-management
 
 sam deploy \
     --template-file packaged.yaml \

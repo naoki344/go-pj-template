@@ -2,10 +2,10 @@ package apiport
 
 import (
 	"github.com/cockroachdb/errors"
-	errormodel "github.com/g-stayfresh/en/backend/internal/domain/error"
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
-	customerusecase "github.com/g-stayfresh/en/backend/internal/usecase/customer"
+	errormodel "github.com/naoki344/go-pj-template/backend/internal/domain/error"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
+	customerusecase "github.com/naoki344/go-pj-template/backend/internal/usecase/customer"
 )
 
 type CustomerID int64

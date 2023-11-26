@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
-	apigatewayadapter "github.com/g-stayfresh/en/backend/internal/adapter/driver/lambda"
+	apigatewayadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/lambda"
 	"github.com/stretchr/testify/assert"
 )
 

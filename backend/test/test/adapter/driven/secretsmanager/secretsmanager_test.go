@@ -5,10 +5,10 @@ import (
 	"os"
 	"testing"
 
-	secretsadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/secretsmanager"
-	secretsMock "github.com/g-stayfresh/en/backend/test/mock/adapter/driven/secretsmanager"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang/mock/gomock"
+	secretsadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/secretsmanager"
+	secretsMock "github.com/naoki344/go-pj-template/backend/test/mock/adapter/driven/secretsmanager"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +19,7 @@ func TestSecretsManagerAdapter_GetDBAccount(t *testing.T) {
 	DBSecretID := os.Getenv("EN_DB_SECRET_NAME")
 
 	mock := secretsMock.NewMockSecretsManagerClientInterface(ctrl)
-	secretString := "{\"username\":\"enstayfresh_test\",\"password\":\"testpassword\"}" //nolint:gosec
+	secretString := "{\"username\":\"account_test\",\"password\":\"testpassword\"}" //nolint:gosec
 	mock.EXPECT().GetSecretStringWithContext(ctx, DBSecretID).Return(secretString, nil)
 
 	type fields struct {
@@ -29,7 +29,7 @@ func TestSecretsManagerAdapter_GetDBAccount(t *testing.T) {
 		ctx context.Context
 	}
 	expectAccount := secretsadapter.DBAccount{
-		UserName: "enstayfresh_test",
+		UserName: "account_test",
 		Password: "testpassword",
 	}
 	tests := []struct {

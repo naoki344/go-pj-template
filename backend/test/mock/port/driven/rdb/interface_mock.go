@@ -7,8 +7,8 @@ package mock_rdbport
 import (
 	reflect "reflect"
 
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
 	gomock "github.com/golang/mock/gomock"
 )
 

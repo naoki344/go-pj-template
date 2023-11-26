@@ -7,7 +7,7 @@ package mock_apiport
 import (
 	reflect "reflect"
 
-	apiport "github.com/g-stayfresh/en/backend/internal/port/driver/api"
+	apiport "github.com/naoki344/go-pj-template/backend/internal/port/driver/api"
 	gomock "github.com/golang/mock/gomock"
 )
 

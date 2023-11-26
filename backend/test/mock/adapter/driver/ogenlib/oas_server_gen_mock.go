@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	ogen "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
+	ogen "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogenlib"
 	gomock "github.com/golang/mock/gomock"
 )
 

@@ -1,4 +1,4 @@
-module github.com/g-stayfresh/en/backend
+module github.com/naoki344/go-pj-template/backend
 
 go 1.18
 

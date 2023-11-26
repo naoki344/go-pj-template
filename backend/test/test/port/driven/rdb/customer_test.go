@@ -4,12 +4,12 @@ import (
 	"reflect"
 	"testing"
 
-	rdbadapter "github.com/g-stayfresh/en/backend/internal/adapter/driven/rdb"
-	customermodel "github.com/g-stayfresh/en/backend/internal/domain/model/customer"
-	pagemodel "github.com/g-stayfresh/en/backend/internal/domain/model/page"
-	rdbport "github.com/g-stayfresh/en/backend/internal/port/driven/rdb"
-	adaptermock "github.com/g-stayfresh/en/backend/test/mock/adapter/driven/rdb"
 	"github.com/golang/mock/gomock"
+	rdbadapter "github.com/naoki344/go-pj-template/backend/internal/adapter/driven/rdb"
+	customermodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/customer"
+	pagemodel "github.com/naoki344/go-pj-template/backend/internal/domain/model/page"
+	rdbport "github.com/naoki344/go-pj-template/backend/internal/port/driven/rdb"
+	adaptermock "github.com/naoki344/go-pj-template/backend/test/mock/adapter/driven/rdb"
 	"github.com/stretchr/testify/assert"
 )
 

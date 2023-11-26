@@ -1,7 +1,7 @@
 package ogenadapter_test
 
 import (
-	ogenlib "github.com/g-stayfresh/en/backend/internal/adapter/driver/ogenlib"
+	ogenlib "github.com/naoki344/go-pj-template/backend/internal/adapter/driver/ogenlib"
 )
 
 func getStringFromOptString(optString ogenlib.OptString) *string {
