@@ -61,6 +61,7 @@ func NewCdkLambdaGoStack(
 			"EN_DB_NAME":        jsii.String(os.Getenv("EN_DB_NAME")),
 			"EN_DB_SECRET_NAME": jsii.String(os.Getenv("EN_DB_SECRET_NAME")),
 			"EN_AWS_REGION":     jsii.String(os.Getenv("EN_AWS_REGION")),
+			"EN_SENTRY_DSN":     jsii.String(os.Getenv("EN_SENTRY_DSN")),
 		},
 		Role:             myRole,
 		ParamsAndSecrets: paramsAndSecrets,

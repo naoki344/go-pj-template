@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"log/slog"
 	"os"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type SecretsManagerAdapter struct {
