@@ -35,19 +35,19 @@ func (m *MockSecretsManagerClientInterface) EXPECT() *MockSecretsManagerClientIn
 	return m.recorder
 }
 
-// GetSecret mocks base method.
-func (m *MockSecretsManagerClientInterface) GetSecret(ctx context.Context, secretsID string) (*string, error) {
+// GetSecretStringWithContext mocks base method.
+func (m *MockSecretsManagerClientInterface) GetSecretStringWithContext(ctx context.Context, secretsID string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSecret", ctx, secretsID)
-	ret0, _ := ret[0].(*string)
+	ret := m.ctrl.Call(m, "GetSecretStringWithContext", ctx, secretsID)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetSecret indicates an expected call of GetSecret.
-func (mr *MockSecretsManagerClientInterfaceMockRecorder) GetSecret(ctx, secretsID interface{}) *gomock.Call {
+// GetSecretStringWithContext indicates an expected call of GetSecretStringWithContext.
+func (mr *MockSecretsManagerClientInterfaceMockRecorder) GetSecretStringWithContext(ctx, secretsID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecret", reflect.TypeOf((*MockSecretsManagerClientInterface)(nil).GetSecret), ctx, secretsID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecretStringWithContext", reflect.TypeOf((*MockSecretsManagerClientInterface)(nil).GetSecretStringWithContext), ctx, secretsID)
 }
 
 // MockSecretsManagerAdapterInterface is a mock of SecretsManagerAdapterInterface interface.
@@ -73,16 +73,30 @@ func (m *MockSecretsManagerAdapterInterface) EXPECT() *MockSecretsManagerAdapter
 	return m.recorder
 }
 
-// GetDBAccount mocks base method.
-func (m *MockSecretsManagerAdapterInterface) GetDBAccount(ctx context.Context) secretsmanager.DBAccount {
+// GetPrimaryDBAccount mocks base method.
+func (m *MockSecretsManagerAdapterInterface) GetPrimaryDBAccount(ctx context.Context) secretsmanager.DBAccount {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDBAccount", ctx)
+	ret := m.ctrl.Call(m, "GetPrimaryDBAccount", ctx)
 	ret0, _ := ret[0].(secretsmanager.DBAccount)
 	return ret0
 }
 
-// GetDBAccount indicates an expected call of GetDBAccount.
-func (mr *MockSecretsManagerAdapterInterfaceMockRecorder) GetDBAccount(ctx interface{}) *gomock.Call {
+// GetPrimaryDBAccount indicates an expected call of GetPrimaryDBAccount.
+func (mr *MockSecretsManagerAdapterInterfaceMockRecorder) GetPrimaryDBAccount(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDBAccount", reflect.TypeOf((*MockSecretsManagerAdapterInterface)(nil).GetDBAccount), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPrimaryDBAccount", reflect.TypeOf((*MockSecretsManagerAdapterInterface)(nil).GetPrimaryDBAccount), ctx)
+}
+
+// GetSecondaryDBAccount mocks base method.
+func (m *MockSecretsManagerAdapterInterface) GetSecondaryDBAccount(ctx context.Context) secretsmanager.DBAccount {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSecondaryDBAccount", ctx)
+	ret0, _ := ret[0].(secretsmanager.DBAccount)
+	return ret0
+}
+
+// GetSecondaryDBAccount indicates an expected call of GetSecondaryDBAccount.
+func (mr *MockSecretsManagerAdapterInterfaceMockRecorder) GetSecondaryDBAccount(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecondaryDBAccount", reflect.TypeOf((*MockSecretsManagerAdapterInterface)(nil).GetSecondaryDBAccount), ctx)
 }

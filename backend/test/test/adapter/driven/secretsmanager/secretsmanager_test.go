@@ -19,8 +19,8 @@ func TestSecretsManagerAdapter_GetDBAccount(t *testing.T) {
 	DBSecretID := os.Getenv("EN_DB_SECRET_NAME")
 
 	mock := secretsMock.NewMockSecretsManagerClientInterface(ctrl)
-	secretString := "{\"ARN\":\"arn:aws:secretsmanager:ap-northeast-1:xxxxxxxxxxxxxx\",\"CreatedDate\":\"2023-11-11T10:10:38.495Z\",\"Name\":\"rds!db-xxxxxxxxxxxxx\",\"SecretBinary\":null,\"SecretString\":\"{\\\"username\\\":\\\"enstayfresh_test\\\",\\\"password\\\":\\\"testpassword\\\"}\",\"VersionId\":\"2e57d54\",\"VersionStages\":[\"AWSCURRENT\",\"AWSPENDING\"],\"ResultMetadata\":{}}" //nolint:gosec
-	mock.EXPECT().GetSecret(ctx, DBSecretID).Return(&secretString, nil)
+	secretString := "{\"username\":\"enstayfresh_test\",\"password\":\"testpassword\"}" //nolint:gosec
+	mock.EXPECT().GetSecretStringWithContext(ctx, DBSecretID).Return(secretString, nil)
 
 	type fields struct {
 		Client secretsadapter.SecretsManagerClientInterface

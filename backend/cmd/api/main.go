@@ -20,7 +20,9 @@ const (
 	sentryTimeout   = 2 * time.Second
 )
 
-func createErrorRes(err error) events.APIGatewayProxyResponse {
+var Client, _ = secretsadapter.NewClient() //nolint:gochecknoglobals
+
+func createErrorResWithLogging(err error) events.APIGatewayProxyResponse {
 	monitoring.ErrLoggingWithSentry(err)
 	return events.APIGatewayProxyResponse{
 		StatusCode: ErrorStatusCode,
@@ -33,13 +35,11 @@ func createErrorRes(err error) events.APIGatewayProxyResponse {
 	}
 }
 
-func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	monitoring.SetupSentry()
-	client := &secretsadapter.SecretsManagerClient{}
-	secretsAdapter := secretsadapter.NewSecretsManagerAdapter(client)
+func createDBAdapter(ctx context.Context) (*rdbadapter.MySQL, error) {
+	secretsAdapter := secretsadapter.NewSecretsManagerAdapter(Client)
 	account, err := secretsAdapter.GetDBAccount(ctx)
 	if err != nil {
-		return createErrorRes(err), nil
+		return nil, err
 	}
 	dbadapter, err := rdbadapter.NewMySQL(&rdbadapter.MySQLConfig{
 		USERNAME: account.UserName,
@@ -49,13 +49,22 @@ func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 		NAME:     os.Getenv("EN_DB_NAME"),
 	})
 	if err != nil {
-		return createErrorRes(err), nil
+		return nil, err
+	}
+	return dbadapter, nil
+}
+
+func wrapper(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	monitoring.SetupSentry()
+	dbadapter, err := createDBAdapter(ctx)
+	if err != nil {
+		return createErrorResWithLogging(err), nil
 	}
 	defer dbadapter.Conn.Close() //nolint:errcheck
 	service := InitializeEnAPIService(dbadapter)
 	server, err := ogen.NewServer(service)
 	if err != nil {
-		return createErrorRes(err), nil
+		return createErrorResWithLogging(err), nil
 	}
 	return lambdaadapter.NewAPIGatewayHandler(server).Run(ctx, event) //nolint:wrapcheck
 }

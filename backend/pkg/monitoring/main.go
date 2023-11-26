@@ -7,7 +7,6 @@ import (
 	"github.com/getsentry/sentry-go"
 )
 
-
 func ErrLoggingWithSentry(err error) {
 	defer sentry.Flush(sentryTimeout)
 	sentry.CaptureException(err)
